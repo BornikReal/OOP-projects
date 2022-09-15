@@ -25,9 +25,9 @@ public class EduTypeNumber
 
     public void SetNumber(GroupName group_name, Edu number)
     {
-        if (group_name.Type == PDLetter && number != Edu.PostGradId && number != Edu.DoctId)
+        if (group_name.Letter.Letter == PDLetter && number != Edu.PostGradId && number != Edu.DoctId)
             throw new FrongGroupInfoException(nameof(number));
-        if (group_name.Type != PDLetter && (number < Edu.BachId || number > Edu.SpecId))
+        if (group_name.Letter.Letter != PDLetter && (number < Edu.BachId || number > Edu.SpecId))
             throw new FrongGroupInfoException(nameof(number));
         _number = number;
     }

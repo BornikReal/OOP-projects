@@ -20,7 +20,7 @@ public class GroupName
     public const int BMSGroupNameLenNoSpec = 5;
     public const int BMSGroupNameLen = 6;
 
-    private char _type;
+    private GroupLetter _letter;
     private EduTypeNumber _edu_type;
     private CourseNumber _course;
     private GroupNumber _number;
@@ -29,81 +29,42 @@ public class GroupName
     public GroupName(string name)
     {
         GroupName new_group = Parse(name);
-        (_type, _edu_type, _course, _number, _spec) = (new_group._type, new_group._edu_type, new_group._course, new_group._number, new_group._spec);
+        (_letter, _edu_type, _course, _number, _spec) = (new_group._letter, new_group._edu_type, new_group._course, new_group._number, new_group._spec);
     }
 
-    public GroupName(char type, EduTypeNumber edu_type, CourseNumber course, GroupNumber number, SpecNumber spec)
+    public GroupName(GroupLetter letter, EduTypeNumber edu_type, CourseNumber course, GroupNumber number, SpecNumber spec)
     {
-        ValidateInput(type);
-        (_type, _edu_type, _number, _spec, _course) = (type, edu_type, number, spec, course);
+        (_letter, _edu_type, _number, _spec, _course) = (letter, edu_type, number, spec, course);
     }
 
     private GroupName()
     {
+        _letter = new GroupLetter();
         _edu_type = new EduTypeNumber(this);
         _course = new CourseNumber(this);
         _number = new GroupNumber(this);
         _spec = new SpecNumber(this);
     }
 
-    public char Type
-    {
-        get => _type;
-        set
-        {
-            _type = value;
-            ValidateInput(Type);
-        }
-    }
+    public GroupLetter Letter { get => _letter; }
 
-    public EduTypeNumber EduType
-        {
-        get => _edu_type;
-        set
-        {
-            _edu_type = value;
-            ValidateInput(Type);
-        }
-    }
+    public EduTypeNumber EduType { get => _edu_type; }
 
-    public CourseNumber Course
-    {
-        get => _course;
-        set
-        {
-            _course = value;
-            ValidateInput(Type);
-        }
-    }
+    public CourseNumber Course { get => _course; }
 
-    public GroupNumber Number
-    {
-        get => _number;
-        set
-        {
-            _number = value;
-            ValidateInput(Type);
-        }
-    }
+    public GroupNumber Number { get => _number; }
 
-    public SpecNumber Spec
-    {
-        get => _spec;
-        set
-        {
-            _spec = value;
-            ValidateInput(Type);
-        }
-    }
+    public SpecNumber Spec { get => _spec; }
 
     public static GroupName Parse(string input)
     {
+        // var groupRegex = new Regex(@"[A-Z]\d{3}[a-z]?$");
         var new_group = new GroupName();
         int x;
         bool success;
         if (input.Length == PDGroupNameLen)
         {
-            new_group._type = PDLetter;
+            new_group._letter.SetLetter(PDLetter);
 
             if (input[0] is not (char)(Edu.PostGradId + '0') and not (char)(Edu.DoctId + '0'))
                 throw new InvalidFormatGroupNameException(input);
@@ -117,13 +78,11 @@ public class GroupName
             new_group._number.SetNumber(new_group, x);
 
             new_group._spec.SetNumber(new_group, NoneSpec);
-
-            ValidateInput(new_group.Type);
             return new_group;
         }
         else if (input.Length is BMSGroupNameLenNoSpec or BMSGroupNameLen)
         {
-            new_group._type = input[0];
+            new_group._letter.SetLetter(input[0]);
 
             if (input[1] is not (char)(Edu.BachId + '0') and not (char)(Edu.SpecId + '0') and not (char)(Edu.MagId + '0'))
                 throw new InvalidFormatGroupNameException(input);
@@ -149,7 +108,6 @@ public class GroupName
                 new_group._spec.SetNumber(new_group, NoneSpec);
             }
 
-            ValidateInput(new_group.Type);
             return new_group;
         }
         else
@@ -158,16 +116,9 @@ public class GroupName
         }
     }
 
-    public override string ToString() => Type switch
+    public override string ToString() => _letter.Letter switch
     {
-        ' ' => $"{(int)EduType.Number}{Number:D3}",
-        _ => $"{Type}{(int)EduType.Number}{Course.Number}{Number:D2}{(Spec.Number == NoneSpec ? null : Spec)}"
+        ' ' => $"{(int)_edu_type.Number}{_number.Number:D3}",
+        _ => $"{_letter.Letter}{(int)_edu_type.Number}{_course.Number}{_number.Number:D2}{(_spec.Number == NoneSpec ? null : _spec.Number)}"
     };
-
-    private static void ValidateInput(char type)
-    {
-        // var groupRegex = new Regex(@"[A-Z]\d{3}[a-z]?$");
-        if (type is(< 'A' or > 'Z') and not ' ')
-            throw new FrongGroupInfoException(nameof(type));
-    }
 }
