@@ -1,7 +1,7 @@
 ﻿using Isu.Exception.InvalidGroupNameException;
-using static Isu.Models.EduTypeNumber;
+using static Isu.Models.GroupNameParts.EduTypeNumber;
 
-namespace Isu.Models;
+namespace Isu.Models.GroupNameParts;
 
 public class SpecNumber
 {

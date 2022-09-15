@@ -1,6 +1,6 @@
 ﻿using Isu.Exception.InvalidGroupNameException;
 
-namespace Isu.Models;
+namespace Isu.Models.GroupNameParts;
 
 public class GroupLetter
 {
@@ -15,7 +15,7 @@ public class GroupLetter
 
     public void SetLetter(char letter)
     {
-        if (letter is(< 'A' or > 'Z') and not ' ')
+        if (letter is (< 'A' or > 'Z') and not ' ')
             throw new FrongGroupInfoException(nameof(letter));
         Letter = letter;
     }

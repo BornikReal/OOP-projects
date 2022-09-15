@@ -1,7 +1,7 @@
 ﻿using Isu.Exception.InvalidGroupNameException;
-using static Isu.Models.GroupLetter;
+using static Isu.Models.GroupNameParts.GroupLetter;
 
-namespace Isu.Models;
+namespace Isu.Models.GroupNameParts;
 
 public class GroupNumber
 {

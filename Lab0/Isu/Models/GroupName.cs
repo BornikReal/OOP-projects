@@ -1,7 +1,8 @@
 using Isu.Exception.InvalidGroupNameException;
-using static Isu.Models.EduTypeNumber;
-using static Isu.Models.GroupLetter;
-using static Isu.Models.SpecNumber;
+using Isu.Models.GroupNameParts;
+using static Isu.Models.GroupNameParts.EduTypeNumber;
+using static Isu.Models.GroupNameParts.GroupLetter;
+using static Isu.Models.GroupNameParts.SpecNumber;
 
 namespace Isu.Models;
 
