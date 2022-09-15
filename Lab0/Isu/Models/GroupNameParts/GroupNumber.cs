@@ -18,9 +18,9 @@ public class GroupNumber
     public void SetNumber(GroupName group_name, int number)
     {
         if (group_name.Letter.Letter != PDLetter && (number < 0 || number > MaxGroupNumBMS))
-            throw new FrongGroupInfoException(nameof(number));
+            throw new InvalidGroupNumberException(number);
         if (group_name.Letter.Letter == PDLetter && (number < 0 || number > MaxGroupNumPD))
-            throw new FrongGroupInfoException(nameof(number));
+            throw new InvalidGroupNumberException(number);
         Number = number;
     }
 }

@@ -16,10 +16,10 @@ public class SpecNumber
 
     public void SetNumber(GroupName group_name, int number)
     {
-        if (number < 0 || number > 9)
-            throw new FrongGroupInfoException(nameof(number));
+        if (number is < 0 or > 9)
+            throw new InvalidSpecNumberException(number);
         if ((group_name.EduType.Number == Edu.PostGradId || group_name.EduType.Number == Edu.DoctId) && number != NoneSpec)
-            throw new FrongGroupInfoException(nameof(number));
+            throw new InvalidSpecNumberException(number);
         Number = number;
     }
 }

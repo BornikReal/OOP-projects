@@ -15,8 +15,8 @@ public class GroupLetter
 
     public void SetLetter(char letter)
     {
-        if (letter is (< 'A' or > 'Z') and not ' ')
-            throw new FrongGroupInfoException(nameof(letter));
+        if (letter is(< 'A' or > 'Z') and not ' ')
+            throw new InvalidGroupLetterException(letter);
         Letter = letter;
     }
 }

@@ -6,7 +6,7 @@ namespace Isu.Test;
 
 public class IsuService
 {
-    private Isu.Services.IsuService testIsu;
+    private readonly Isu.Services.IsuService testIsu;
 
     public IsuService()
     {

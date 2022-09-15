@@ -1,4 +1,4 @@
-using Isu.Exception;
+using Isu.Exception.InvalidGroupNameException;
 using static Isu.Models.GroupNameParts.EduTypeNumber;
 
 namespace Isu.Models.GroupNameParts;
