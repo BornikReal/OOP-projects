@@ -1,12 +1,10 @@
 ﻿using Isu.Exception.InvalidGroupNameException;
-using static Isu.Models.GroupName;
+using static Isu.Models.GroupLetter;
 
 namespace Isu.Models;
 
 public class EduTypeNumber
 {
-    private Edu _number;
-
     public EduTypeNumber(GroupName group_name, Edu number = Edu.BachId)
     {
         SetNumber(group_name, number);
@@ -21,7 +19,7 @@ public class EduTypeNumber
         DoctId = 8,
     }
 
-    public Edu Number { get => _number; }
+    public Edu Number { get; private set; }
 
     public void SetNumber(GroupName group_name, Edu number)
     {
@@ -29,6 +27,6 @@ public class EduTypeNumber
             throw new FrongGroupInfoException(nameof(number));
         if (group_name.Letter.Letter != PDLetter && (number < Edu.BachId || number > Edu.SpecId))
             throw new FrongGroupInfoException(nameof(number));
-        _number = number;
+        Number = number;
     }
 }
