@@ -23,7 +23,7 @@ public class GroupName
     private Edu _edu_type;
     private CourseNumber _course;
     private GroupNumber _number;
-    private int _spec;
+    private SpecNumber _spec;
 
     public GroupName(string name)
     {
@@ -31,9 +31,9 @@ public class GroupName
         (_type, _edu_type, _course, _number, _spec) = (new_group._type, new_group._edu_type, new_group._course, new_group._number, new_group._spec);
     }
 
-    public GroupName(CourseNumber course, char type, Edu edu_type, GroupNumber number, int spec)
+    public GroupName(char type, Edu edu_type, CourseNumber course, GroupNumber number, SpecNumber spec)
     {
-        ValidateInput(type, edu_type, spec);
+        ValidateInput(type, edu_type);
         (_type, _edu_type, _number, _spec, _course) = (type, edu_type, number, spec, course);
     }
 
@@ -41,6 +41,7 @@ public class GroupName
     {
         _course = new CourseNumber(this);
         _number = new GroupNumber(this);
+        _spec = new SpecNumber(this);
     }
 
     public enum Edu
@@ -58,7 +59,7 @@ public class GroupName
         set
         {
             _type = value;
-            ValidateInput(Type, EduType, Spec);
+            ValidateInput(Type, EduType);
         }
     }
 
@@ -68,7 +69,7 @@ public class GroupName
         set
         {
             _edu_type = value;
-            ValidateInput(Type, EduType, Spec);
+            ValidateInput(Type, EduType);
         }
     }
 
@@ -78,7 +79,7 @@ public class GroupName
         set
         {
             _course = value;
-            ValidateInput(Type, EduType, Spec);
+            ValidateInput(Type, EduType);
         }
     }
 
@@ -88,17 +89,17 @@ public class GroupName
         set
         {
             _number = value;
-            ValidateInput(Type, EduType, Spec);
+            ValidateInput(Type, EduType);
         }
     }
 
-    public int Spec
+    public SpecNumber Spec
     {
         get => _spec;
         set
         {
             _spec = value;
-            ValidateInput(Type, EduType, Spec);
+            ValidateInput(Type, EduType);
         }
     }
 
@@ -122,9 +123,9 @@ public class GroupName
                 throw new InvalidFormatGroupNameException(input);
             new_group._number.SetNumber(new_group, x);
 
-            new_group._spec = NoneSpec;
+            new_group._spec.SetNumber(new_group, NoneSpec);
 
-            ValidateInput(new_group.Type, new_group.EduType, new_group.Spec);
+            ValidateInput(new_group.Type, new_group.EduType);
             return new_group;
         }
         else if (input.Length is BMSGroupNameLenNoSpec or BMSGroupNameLen)
@@ -148,14 +149,14 @@ public class GroupName
             {
                 if (input[5] is < '0' or > '9')
                     throw new InvalidFormatGroupNameException(input);
-                new_group._spec = input[5] - '0';
+                new_group._spec.SetNumber(new_group, input[5] - '0');
             }
             else
             {
-                new_group._spec = NoneSpec;
+                new_group._spec.SetNumber(new_group, NoneSpec);
             }
 
-            ValidateInput(new_group.Type, new_group.EduType, new_group.Spec);
+            ValidateInput(new_group.Type, new_group.EduType);
             return new_group;
         }
         else
@@ -167,10 +168,10 @@ public class GroupName
     public override string ToString() => Type switch
     {
         ' ' => $"{(int)EduType}{Number:D3}",
-        _ => $"{Type}{(int)EduType}{Course.Number}{Number:D2}{(Spec == NoneSpec ? null : Spec)}"
+        _ => $"{Type}{(int)EduType}{Course.Number}{Number:D2}{(Spec.Number == NoneSpec ? null : Spec)}"
     };
 
-    private static void ValidateInput(char type, Edu edu_type, int spec)
+    private static void ValidateInput(char type, Edu edu_type)
     {
         // var groupRegex = new Regex(@"[A-Z]\d{3}[a-z]?$");
         if (type is(< 'A' or > 'Z') and not ' ')
@@ -179,9 +180,5 @@ public class GroupName
             throw new FrongGroupInfoException(nameof(edu_type));
         if (type != PDLetter && (edu_type < Edu.BachId || edu_type > Edu.SpecId))
             throw new FrongGroupInfoException(nameof(edu_type));
-        if (spec < 0 || spec > 9)
-            throw new FrongGroupInfoException(nameof(spec));
-        if ((edu_type == Edu.PostGradId || edu_type == Edu.DoctId) && spec != NoneSpec)
-            throw new FrongGroupInfoException(nameof(spec));
     }
 }
