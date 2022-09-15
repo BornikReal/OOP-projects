@@ -1,3 +1,4 @@
+using Isu.Exception;
 using Isu.Models;
 
 namespace Isu.Entities;
@@ -29,6 +30,6 @@ public class Group
         if (student.Group == null)
             _students.Add(student);
         if (_students.Count > MaxSize)
-            throw new ArgumentException();
+            throw new GroupOverflowException(MaxSize);
     }
 }
