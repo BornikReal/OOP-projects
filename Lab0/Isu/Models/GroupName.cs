@@ -167,32 +167,6 @@ public class GroupName
         }
     }
 
-    // public override string ToString()
-    // {
-    //    string result = string.Empty;
-    //    if (Type != ' ')
-    //    {
-    //        result += Type;
-    //        result += EduType;
-    //        result += Course.Number;
-    //        if (Number < 10)
-    //            result += "0";
-    //        result += Number;
-    //        if (Spec != NoneSpec)
-    //            result += Spec;
-    //    }
-    //    else
-    //    {
-    //        result += EduType;
-    //        if (Number < 100)
-    //            result += "00";
-    //        if (Number < 10)
-    //            result += "0";
-    //        result += Number;
-    //    }
-
-    // return result;
-    // }
     public override string ToString() => Type switch
     {
         ' ' => $"{(int)EduType}{Number:D3}",

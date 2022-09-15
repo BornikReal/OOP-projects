@@ -12,7 +12,7 @@ public class Student
         {
             Id = GeneratorId.Generate();
         }
-        else if (id >= 0 || id <= 999999)
+        else if (id >= GeneratorId.MinId || id <= GeneratorId.MaxId)
         {
             if (!GeneratorId.CheckAvail(id))
                 throw new UnavailableIdException(id);

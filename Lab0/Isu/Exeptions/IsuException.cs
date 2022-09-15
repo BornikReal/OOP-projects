@@ -44,6 +44,10 @@ public class InvalidCourseNumberException : IsuException
 
 public class UnavailableIdException : IsuException
 {
+    public UnavailableIdException()
+        : base("There are no ID's available for issuing.")
+    { }
+
     public UnavailableIdException(int id)
         : base($"Id {id} has already used or out of range.")
     { }

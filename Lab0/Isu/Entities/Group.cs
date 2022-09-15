@@ -30,20 +30,4 @@ public class Group
         if (student.Group == null)
             _students.Add(student);
     }
-
-    // public Student RemoveStudent(Student student)
-    // {
-    //    StudentList?.Remove(student);
-    //    student.Group = null;
-    //    return student;
-    // }
-
-    // public Student AddStudent(Student new_student)
-    // {
-    //    if (new_student.Group != null)
-    //        throw new InvalidOperationException();
-    //    StudentList?.Add(new_student);
-    //    new_student.Group = this;
-    //    return new_student;
-    // }
 }

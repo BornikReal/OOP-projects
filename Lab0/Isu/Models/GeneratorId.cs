@@ -1,6 +1,11 @@
-﻿namespace Isu.Models;
+﻿using Isu.Exception;
+
+namespace Isu.Models;
 public class GeneratorId
 {
+    public const int MinId = 100000;
+    public const int MaxId = 999999;
+
     private static readonly string Path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\UserData.txt";
     public static List<int> GetIdList()
     {
@@ -32,12 +37,15 @@ public class GeneratorId
         if (list.Count != 0)
             new_id = list.Last() + 1;
         else
-            new_id = 0;
+            new_id = MinId;
+        int round = new_id;
         while (list.Contains(new_id))
         {
             new_id++;
-            if (new_id >= 1000000)
-                new_id = 0;
+            if (new_id > MaxId)
+                new_id = MinId;
+            if (new_id == round)
+                throw new UnavailableIdException();
         }
 
         StreamWriter sr = File.AppendText(Path);
