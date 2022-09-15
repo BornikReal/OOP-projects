@@ -1,4 +1,4 @@
-using Isu.Exception;
+using Isu.Exception.IdException;
 using Isu.Models;
 
 namespace Isu.Entities;
@@ -15,12 +15,12 @@ public class Student
         else if (id >= GeneratorId.MinId || id <= GeneratorId.MaxId)
         {
             if (!GeneratorId.CheckAvail(id))
-                throw new UnavailableIdException(id);
+                throw new IdOutOfRangeException(id);
             Id = id;
         }
         else
         {
-            throw new UnavailableIdException(id);
+            throw new IdOutOfRangeException(id);
         }
 
         Group = group;

@@ -1,5 +1,5 @@
 using Isu.Entities;
-using Isu.Exception;
+using Isu.Exception.InvalidGroupNameException;
 using Xunit;
 
 namespace Isu.Test;

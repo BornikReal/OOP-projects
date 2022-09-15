@@ -1,4 +1,4 @@
-using Isu.Exception;
+using Isu.Exception.InvalidGroupNameException;
 
 namespace Isu.Models;
 

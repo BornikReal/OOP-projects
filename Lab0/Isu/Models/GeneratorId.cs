@@ -1,4 +1,4 @@
-﻿using Isu.Exception;
+﻿using Isu.Exception.IdException;
 
 namespace Isu.Models;
 public class GeneratorId
