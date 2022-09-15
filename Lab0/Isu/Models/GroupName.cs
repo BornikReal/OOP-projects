@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Isu.Exception.InvalidGroupNameException;
 using Isu.Models.GroupNameParts;
 using static Isu.Models.GroupNameParts.EduTypeNumber;
@@ -44,49 +45,30 @@ public class GroupName
 
     public static GroupName Parse(string input)
     {
-        // var groupRegex = new Regex(@"[A-Z]\d{3}[a-z]?$");
+        string groupPDRegex = @"^[78]\d{3}$";
+        string groupBMSRegex = @"^[A-Z]\d{4}\d?$";
+        string groupBMSSpecRegex = @"^[A-Z]\d{5}$";
+
         var new_group = new GroupName();
-        int x;
-        bool success;
-        if (input.Length == PDGroupNameLen)
+
+        if (Regex.IsMatch(input, groupPDRegex, RegexOptions.Compiled))
         {
             new_group.Letter.SetLetter(PDLetter);
-
-            if (input[0] is not (char)(Edu.PostGradId + '0') and not (char)(Edu.DoctId + '0'))
-                throw new InvalidFormatGroupNameException(input);
             new_group.EduType.SetNumber(new_group, (Edu)(input[0] - '0'));
-
             new_group.Course.SetCourse(new_group, 7);
-
-            success = int.TryParse(input[1..], out x);
-            if (!success)
-                throw new InvalidFormatGroupNameException(input);
-            new_group.Number.SetNumber(new_group, x);
-
+            new_group.Number.SetNumber(new_group, int.Parse(input[1..]));
             new_group.Spec.SetNumber(new_group, NoneSpec);
             return new_group;
         }
-        else if (input.Length is BMSGroupNameLenNoSpec or BMSGroupNameLen)
+        else if (Regex.IsMatch(input, groupBMSRegex, RegexOptions.Compiled))
         {
             new_group.Letter.SetLetter(input[0]);
-
-            if (input[1] is not (char)(Edu.BachId + '0') and not (char)(Edu.SpecId + '0') and not (char)(Edu.MagId + '0'))
-                throw new InvalidFormatGroupNameException(input);
             new_group.EduType.SetNumber(new_group, (Edu)(input[1] - '0'));
-
-            if (input[2] is < '0' or > '9')
-                throw new InvalidFormatGroupNameException(input);
             new_group.Course = new CourseNumber(new_group, input[2] - '0');
+            new_group.Number.SetNumber(new_group, int.Parse(input.AsSpan(3, 2)));
 
-            success = int.TryParse(input.AsSpan(3, 2), out x);
-            if (!success)
-                throw new InvalidFormatGroupNameException(input);
-            new_group.Number.SetNumber(new_group, x);
-
-            if (input.Length == 6)
+            if (Regex.IsMatch(input, groupBMSSpecRegex, RegexOptions.Compiled))
             {
-                if (input[5] is < '0' or > '9')
-                    throw new InvalidFormatGroupNameException(input);
                 new_group.Spec.SetNumber(new_group, input[5] - '0');
             }
             else
