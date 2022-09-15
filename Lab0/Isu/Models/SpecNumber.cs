@@ -1,4 +1,5 @@
 ﻿using Isu.Exception.InvalidGroupNameException;
+using static Isu.Models.EduTypeNumber;
 using static Isu.Models.GroupName;
 
 namespace Isu.Models;
@@ -18,7 +19,7 @@ public class SpecNumber
     {
         if (number < 0 || number > 9)
             throw new FrongGroupInfoException(nameof(number));
-        if ((group_name.EduType == Edu.PostGradId || group_name.EduType == Edu.DoctId) && number != NoneSpec)
+        if ((group_name.EduType.Number == Edu.PostGradId || group_name.EduType.Number == Edu.DoctId) && number != NoneSpec)
             throw new FrongGroupInfoException(nameof(number));
         _number = number;
     }

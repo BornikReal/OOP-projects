@@ -1,4 +1,5 @@
 using Isu.Exception.InvalidGroupNameException;
+using static Isu.Models.EduTypeNumber;
 
 namespace Isu.Models;
 
@@ -20,7 +21,7 @@ public class GroupName
     public const int BMSGroupNameLen = 6;
 
     private char _type;
-    private Edu _edu_type;
+    private EduTypeNumber _edu_type;
     private CourseNumber _course;
     private GroupNumber _number;
     private SpecNumber _spec;
@@ -31,26 +32,18 @@ public class GroupName
         (_type, _edu_type, _course, _number, _spec) = (new_group._type, new_group._edu_type, new_group._course, new_group._number, new_group._spec);
     }
 
-    public GroupName(char type, Edu edu_type, CourseNumber course, GroupNumber number, SpecNumber spec)
+    public GroupName(char type, EduTypeNumber edu_type, CourseNumber course, GroupNumber number, SpecNumber spec)
     {
-        ValidateInput(type, edu_type);
+        ValidateInput(type);
         (_type, _edu_type, _number, _spec, _course) = (type, edu_type, number, spec, course);
     }
 
     private GroupName()
     {
+        _edu_type = new EduTypeNumber(this);
         _course = new CourseNumber(this);
         _number = new GroupNumber(this);
         _spec = new SpecNumber(this);
-    }
-
-    public enum Edu
-    {
-        BachId = 3,
-        MagId = 4,
-        SpecId = 5,
-        PostGradId = 7,
-        DoctId = 8,
     }
 
     public char Type
@@ -59,17 +52,17 @@ public class GroupName
         set
         {
             _type = value;
-            ValidateInput(Type, EduType);
+            ValidateInput(Type);
         }
     }
 
-    public Edu EduType
+    public EduTypeNumber EduType
         {
         get => _edu_type;
         set
         {
             _edu_type = value;
-            ValidateInput(Type, EduType);
+            ValidateInput(Type);
         }
     }
 
@@ -79,7 +72,7 @@ public class GroupName
         set
         {
             _course = value;
-            ValidateInput(Type, EduType);
+            ValidateInput(Type);
         }
     }
 
@@ -89,7 +82,7 @@ public class GroupName
         set
         {
             _number = value;
-            ValidateInput(Type, EduType);
+            ValidateInput(Type);
         }
     }
 
@@ -99,7 +92,7 @@ public class GroupName
         set
         {
             _spec = value;
-            ValidateInput(Type, EduType);
+            ValidateInput(Type);
         }
     }
 
@@ -114,7 +107,7 @@ public class GroupName
 
             if (input[0] is not (char)(Edu.PostGradId + '0') and not (char)(Edu.DoctId + '0'))
                 throw new InvalidFormatGroupNameException(input);
-            new_group._edu_type = (Edu)(input[0] - '0');
+            new_group._edu_type.SetNumber(new_group, (Edu)(input[0] - '0'));
 
             new_group._course.SetCourse(new_group, 7);
 
@@ -125,7 +118,7 @@ public class GroupName
 
             new_group._spec.SetNumber(new_group, NoneSpec);
 
-            ValidateInput(new_group.Type, new_group.EduType);
+            ValidateInput(new_group.Type);
             return new_group;
         }
         else if (input.Length is BMSGroupNameLenNoSpec or BMSGroupNameLen)
@@ -134,7 +127,7 @@ public class GroupName
 
             if (input[1] is not (char)(Edu.BachId + '0') and not (char)(Edu.SpecId + '0') and not (char)(Edu.MagId + '0'))
                 throw new InvalidFormatGroupNameException(input);
-            new_group._edu_type = (Edu)(input[1] - '0');
+            new_group._edu_type.SetNumber(new_group, (Edu)(input[1] - '0'));
 
             if (input[2] is < '0' or > '9')
                 throw new InvalidFormatGroupNameException(input);
@@ -156,7 +149,7 @@ public class GroupName
                 new_group._spec.SetNumber(new_group, NoneSpec);
             }
 
-            ValidateInput(new_group.Type, new_group.EduType);
+            ValidateInput(new_group.Type);
             return new_group;
         }
         else
@@ -167,18 +160,14 @@ public class GroupName
 
     public override string ToString() => Type switch
     {
-        ' ' => $"{(int)EduType}{Number:D3}",
-        _ => $"{Type}{(int)EduType}{Course.Number}{Number:D2}{(Spec.Number == NoneSpec ? null : Spec)}"
+        ' ' => $"{(int)EduType.Number}{Number:D3}",
+        _ => $"{Type}{(int)EduType.Number}{Course.Number}{Number:D2}{(Spec.Number == NoneSpec ? null : Spec)}"
     };
 
-    private static void ValidateInput(char type, Edu edu_type)
+    private static void ValidateInput(char type)
     {
         // var groupRegex = new Regex(@"[A-Z]\d{3}[a-z]?$");
         if (type is(< 'A' or > 'Z') and not ' ')
             throw new FrongGroupInfoException(nameof(type));
-        if (type == PDLetter && edu_type != Edu.PostGradId && edu_type != Edu.DoctId)
-            throw new FrongGroupInfoException(nameof(edu_type));
-        if (type != PDLetter && (edu_type < Edu.BachId || edu_type > Edu.SpecId))
-            throw new FrongGroupInfoException(nameof(edu_type));
     }
 }
