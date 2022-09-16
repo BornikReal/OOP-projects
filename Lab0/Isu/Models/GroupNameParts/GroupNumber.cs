@@ -8,18 +8,18 @@ public class GroupNumber
     public const int MaxGroupNumBMS = 99;
     public const int MaxGroupNumPD = 999;
 
-    public GroupNumber(GroupName group_name, int number = 1)
+    public GroupNumber(GroupName groupName, int number = 1)
     {
-        SetNumber(group_name, number);
+        SetNumber(groupName, number);
     }
 
     public int Number { get; private set; }
 
-    public void SetNumber(GroupName group_name, int number)
+    public void SetNumber(GroupName groupName, int number)
     {
-        if (group_name.Letter.Letter != PDLetter && (number < 0 || number > MaxGroupNumBMS))
+        if (groupName.Letter.Letter != PDLetter && (number < 0 || number > MaxGroupNumBMS))
             throw new InvalidGroupNumberException(number);
-        if (group_name.Letter.Letter == PDLetter && (number < 0 || number > MaxGroupNumPD))
+        if (groupName.Letter.Letter == PDLetter && (number < 0 || number > MaxGroupNumPD))
             throw new InvalidGroupNumberException(number);
         Number = number;
     }

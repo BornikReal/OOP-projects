@@ -10,22 +10,22 @@ public class CourseNumber
     public const int MaxSpecCourse = 6;
     public const int MaxPDCourse = 9;
 
-    public CourseNumber(GroupName group_name, int number = 1)
+    public CourseNumber(GroupName groupName, int number = 1)
     {
-        SetCourse(group_name, number);
+        SetCourse(groupName, number);
     }
 
     public int Number { get; private set; }
 
-    public void SetCourse(GroupName group_name, int number)
+    public void SetCourse(GroupName groupName, int number)
     {
-        if (group_name.EduType.Number == Edu.MagId && (number < 1 || number > MaxMagCourse))
+        if (groupName.EduType.Number == Edu.MagId && (number < 1 || number > MaxMagCourse))
             throw new InvalidCourseNumberException(number);
-        if (group_name.EduType.Number == Edu.BachId && (number < 1 || number > MaxBachCourse))
+        if (groupName.EduType.Number == Edu.BachId && (number < 1 || number > MaxBachCourse))
             throw new InvalidCourseNumberException(number);
-        if (group_name.EduType.Number == Edu.SpecId && (number < 1 || number > MaxSpecCourse))
+        if (groupName.EduType.Number == Edu.SpecId && (number < 1 || number > MaxSpecCourse))
             throw new InvalidCourseNumberException(number);
-        if ((group_name.EduType.Number == Edu.PostGradId || group_name.EduType.Number == Edu.DoctId) && (number < 1 || number > MaxPDCourse))
+        if ((groupName.EduType.Number == Edu.PostGradId || groupName.EduType.Number == Edu.DoctId) && (number < 1 || number > MaxPDCourse))
             throw new InvalidCourseNumberException(number);
         Number = number;
     }

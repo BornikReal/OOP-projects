@@ -14,11 +14,11 @@ public class SpecNumber
 
     public int Number { get; private set; }
 
-    public void SetNumber(GroupName group_name, int number)
+    public void SetNumber(GroupName groupName, int number)
     {
         if (number is < 0 or > 9)
             throw new InvalidSpecNumberException(number);
-        if ((group_name.EduType.Number == Edu.PostGradId || group_name.EduType.Number == Edu.DoctId) && number != NoneSpec)
+        if ((groupName.EduType.Number == Edu.PostGradId || groupName.EduType.Number == Edu.DoctId) && number != NoneSpec)
             throw new InvalidSpecNumberException(number);
         Number = number;
     }

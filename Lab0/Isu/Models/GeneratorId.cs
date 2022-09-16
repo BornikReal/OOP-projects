@@ -14,15 +14,15 @@ public class GeneratorId
         StreamReader sr;
         sr = new StreamReader(Path);
 
-        var new_list = new List<int>();
+        var newList = new List<int>();
         while (!sr.EndOfStream)
         {
             _ = int.TryParse(sr.ReadLine(), out int x);
-            new_list.Add(x);
+            newList.Add(x);
         }
 
         sr.Close();
-        return new_list;
+        return newList;
     }
 
     public static bool CheckAvail(int id)
@@ -33,24 +33,24 @@ public class GeneratorId
     public static int Generate()
     {
         List<int> list = GetIdList();
-        int new_id;
+        int newId;
         if (list.Count != 0)
-            new_id = list.Last() + 1;
+            newId = list.Last() + 1;
         else
-            new_id = MinId;
-        int round = new_id;
-        while (list.Contains(new_id))
+            newId = MinId;
+        int round = newId;
+        while (list.Contains(newId))
         {
-            new_id++;
-            if (new_id > MaxId)
-                new_id = MinId;
-            if (new_id == round)
+            newId++;
+            if (newId > MaxId)
+                newId = MinId;
+            if (newId == round)
                 throw new UnavailableIdException();
         }
 
         StreamWriter sr = File.AppendText(Path);
-        sr.WriteLine(new_id);
+        sr.WriteLine(newId);
         sr.Close();
-        return new_id;
+        return newId;
     }
 }

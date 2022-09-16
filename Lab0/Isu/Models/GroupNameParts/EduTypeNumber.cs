@@ -5,9 +5,9 @@ namespace Isu.Models.GroupNameParts;
 
 public class EduTypeNumber
 {
-    public EduTypeNumber(GroupName group_name, Edu number = Edu.BachId)
+    public EduTypeNumber(GroupName groupName, Edu number = Edu.BachId)
     {
-        SetNumber(group_name, number);
+        SetNumber(groupName, number);
     }
 
     public enum Edu
@@ -21,11 +21,11 @@ public class EduTypeNumber
 
     public Edu Number { get; private set; }
 
-    public void SetNumber(GroupName group_name, Edu number)
+    public void SetNumber(GroupName groupName, Edu number)
     {
-        if (group_name.Letter.Letter == PDLetter && number != Edu.PostGradId && number != Edu.DoctId)
+        if (groupName.Letter.Letter == PDLetter && number != Edu.PostGradId && number != Edu.DoctId)
             throw new InvalidEduTypeException(number);
-        if (group_name.Letter.Letter != PDLetter && (number < Edu.BachId || number > Edu.SpecId))
+        if (groupName.Letter.Letter != PDLetter && (number < Edu.BachId || number > Edu.SpecId))
             throw new InvalidEduTypeException(number);
         Number = number;
     }

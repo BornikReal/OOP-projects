@@ -34,7 +34,7 @@ public class Student
         set => ChangeGroup(value);
     }
 
-    private void ChangeGroup(Group? new_group)
+    private void ChangeGroup(Group? newGroup)
     {
         if (_group != null)
         {
@@ -43,8 +43,8 @@ public class Student
             del_group.Remove(this);
         }
 
-        if (new_group != null)
-            new_group.Add(this);
-        _group = new_group;
+        if (newGroup != null)
+            newGroup.Add(this);
+        _group = newGroup;
     }
 }

@@ -15,13 +15,13 @@ public class GroupName
 
     public GroupName(string name)
     {
-        GroupName new_group = Parse(name);
-        (Letter, EduType, Course, Number, Spec) = (new_group.Letter, new_group.EduType, new_group.Course, new_group.Number, new_group.Spec);
+        GroupName newGroup = Parse(name);
+        (Letter, EduType, Course, Number, Spec) = (newGroup.Letter, newGroup.EduType, newGroup.Course, newGroup.Number, newGroup.Spec);
     }
 
-    public GroupName(GroupLetter letter, EduTypeNumber edu_type, CourseNumber course, GroupNumber number, SpecNumber spec)
+    public GroupName(GroupLetter letter, EduTypeNumber eduType, CourseNumber course, GroupNumber number, SpecNumber spec)
     {
-        (Letter, EduType, Number, Spec, Course) = (letter, edu_type, number, spec, course);
+        (Letter, EduType, Number, Spec, Course) = (letter, eduType, number, spec, course);
     }
 
     private GroupName()
@@ -49,34 +49,34 @@ public class GroupName
         string groupBMSRegex = @"^[A-Z]\d{4}\d?$";
         string groupBMSSpecRegex = @"^[A-Z]\d{5}$";
 
-        var new_group = new GroupName();
+        var newGroup = new GroupName();
 
         if (Regex.IsMatch(input, groupPDRegex, RegexOptions.Compiled))
         {
-            new_group.Letter.SetLetter(PDLetter);
-            new_group.EduType.SetNumber(new_group, (Edu)(input[0] - '0'));
-            new_group.Course.SetCourse(new_group, 7);
-            new_group.Number.SetNumber(new_group, int.Parse(input[1..]));
-            new_group.Spec.SetNumber(new_group, NoneSpec);
-            return new_group;
+            newGroup.Letter.SetLetter(PDLetter);
+            newGroup.EduType.SetNumber(newGroup, (Edu)(input[0] - '0'));
+            newGroup.Course.SetCourse(newGroup, 7);
+            newGroup.Number.SetNumber(newGroup, int.Parse(input[1..]));
+            newGroup.Spec.SetNumber(newGroup, NoneSpec);
+            return newGroup;
         }
         else if (Regex.IsMatch(input, groupBMSRegex, RegexOptions.Compiled))
         {
-            new_group.Letter.SetLetter(input[0]);
-            new_group.EduType.SetNumber(new_group, (Edu)(input[1] - '0'));
-            new_group.Course = new CourseNumber(new_group, input[2] - '0');
-            new_group.Number.SetNumber(new_group, int.Parse(input.AsSpan(3, 2)));
+            newGroup.Letter.SetLetter(input[0]);
+            newGroup.EduType.SetNumber(newGroup, (Edu)(input[1] - '0'));
+            newGroup.Course = new CourseNumber(newGroup, input[2] - '0');
+            newGroup.Number.SetNumber(newGroup, int.Parse(input.AsSpan(3, 2)));
 
             if (Regex.IsMatch(input, groupBMSSpecRegex, RegexOptions.Compiled))
             {
-                new_group.Spec.SetNumber(new_group, input[5] - '0');
+                newGroup.Spec.SetNumber(newGroup, input[5] - '0');
             }
             else
             {
-                new_group.Spec.SetNumber(new_group, NoneSpec);
+                newGroup.Spec.SetNumber(newGroup, NoneSpec);
             }
 
-            return new_group;
+            return newGroup;
         }
         else
         {
