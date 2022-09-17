@@ -23,4 +23,9 @@ public class GroupNumber
             throw new InvalidGroupNumberException(number);
         Number = number;
     }
+
+    public bool Equals(GroupNumber obj)
+    {
+        return Number == obj.Number;
+    }
 }

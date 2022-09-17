@@ -1,4 +1,5 @@
-﻿using Isu.Exception.IdException;
+﻿using System.Text.Json;
+using Isu.Exception.IdException;
 
 namespace Isu.Models;
 public class GeneratorId
@@ -20,6 +21,8 @@ public class GeneratorId
             _ = int.TryParse(sr.ReadLine(), out int x);
             newList.Add(x);
         }
+
+        JsonSerializer.Serialize(newList);
 
         sr.Close();
         return newList;

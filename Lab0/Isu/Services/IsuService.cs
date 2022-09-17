@@ -45,22 +45,22 @@ public class IsuService : IIsuService
 
     public List<Student> FindStudents(GroupName groupName)
     {
-        return _students.FindAll(s => s.Group != null && s.Group.Name == groupName);
+        return _students.FindAll(s => s.Group != null && s.Group.Name.Equals(groupName));
     }
 
     public List<Student> FindStudents(CourseNumber courseNumber)
     {
-        return _students.FindAll(s => s.Group != null && s.Group.Name.Course == courseNumber);
+        return _students.FindAll(s => s.Group != null && s.Group.Name.Course.Equals(courseNumber));
     }
 
     public Group? FindGroup(GroupName groupName)
     {
-        return _groups.Find(g => g.Name == groupName);
+        return _groups.Find(g => g.Name.Equals(groupName));
     }
 
     public List<Group> FindGroups(CourseNumber courseNumber)
     {
-        return _groups.FindAll(g => g.Name.Course == courseNumber);
+        return _groups.FindAll(g => g.Name.Course.Equals(courseNumber));
     }
 
     public void ChangeStudentGroup(Student student, Group newGroup)

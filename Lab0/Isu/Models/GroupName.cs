@@ -37,7 +37,7 @@ public class GroupName
 
     public EduTypeNumber EduType { get; }
 
-    public CourseNumber Course { get; private set; }
+    public CourseNumber Course { get; }
 
     public GroupNumber Number { get; }
 
@@ -64,7 +64,7 @@ public class GroupName
         {
             newGroup.Letter.SetLetter(input[0]);
             newGroup.EduType.SetNumber(newGroup, (Edu)(input[1] - '0'));
-            newGroup.Course = new CourseNumber(newGroup, input[2] - '0');
+            newGroup.Course.SetCourse(newGroup, input[2] - '0');
             newGroup.Number.SetNumber(newGroup, int.Parse(input.AsSpan(3, 2)));
 
             if (Regex.IsMatch(input, groupBMSSpecRegex, RegexOptions.Compiled))
@@ -89,4 +89,9 @@ public class GroupName
         ' ' => $"{(int)EduType.Number}{Number.Number:D3}",
         _ => $"{Letter.Letter}{(int)EduType.Number}{Course.Number}{Number.Number:D2}{(Spec.Number == NoneSpec ? null : Spec.Number)}"
     };
+
+    public bool Equals(GroupName obj)
+    {
+        return Letter == obj.Letter && EduType == obj.EduType && Course == obj.Course && Number == obj.Number && Spec == obj.Spec;
+    }
 }

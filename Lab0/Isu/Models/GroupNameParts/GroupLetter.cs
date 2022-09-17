@@ -19,4 +19,9 @@ public class GroupLetter
             throw new InvalidGroupLetterException(letter);
         Letter = letter;
     }
+
+    public bool Equals(GroupLetter obj)
+    {
+        return Letter == obj.Letter;
+    }
 }

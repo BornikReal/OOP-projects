@@ -29,4 +29,9 @@ public class EduTypeNumber
             throw new InvalidEduTypeException(number);
         Number = number;
     }
+
+    public bool Equals(EduTypeNumber obj)
+    {
+        return Number == obj.Number;
+    }
 }

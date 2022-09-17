@@ -22,4 +22,9 @@ public class SpecNumber
             throw new InvalidSpecNumberException(number);
         Number = number;
     }
+
+    public bool Equals(SpecNumber obj)
+    {
+        return Number == obj.Number;
+    }
 }

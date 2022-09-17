@@ -29,4 +29,9 @@ public class CourseNumber
             throw new InvalidCourseNumberException(number);
         Number = number;
     }
+
+    public bool Equals(CourseNumber obj)
+    {
+        return Number == obj.Number;
+    }
 }
