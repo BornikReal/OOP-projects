@@ -16,12 +16,11 @@ public class GroupName
     public GroupName(string name)
     {
         GroupName newGroup = Parse(name);
-        (Letter, EduType, Course, Number, Spec) = (newGroup.Letter, newGroup.EduType, newGroup.Course, newGroup.Number, newGroup.Spec);
-    }
-
-    public GroupName(GroupLetter letter, EduTypeNumber eduType, CourseNumber course, GroupNumber number, SpecNumber spec)
-    {
-        (Letter, EduType, Number, Spec, Course) = (letter, eduType, number, spec, course);
+        Letter = newGroup.Letter;
+        EduType = newGroup.EduType;
+        Course = newGroup.Course;
+        Number = newGroup.Number;
+        Spec = newGroup.Spec;
     }
 
     private GroupName()
