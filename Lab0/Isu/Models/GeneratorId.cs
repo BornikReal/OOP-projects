@@ -7,7 +7,7 @@ public class GeneratorId
     public const int MinId = 100000;
     public const int MaxId = 999999;
 
-    private static readonly string Path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\UserData.json";
+    private static readonly string Path = "UserData.json";
     public static List<int>? GetIdList()
     {
         try
