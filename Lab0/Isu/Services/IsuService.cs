@@ -22,6 +22,8 @@ public class IsuService : IIsuService
 
     public Group AddGroup(GroupName name)
     {
+        if (FindGroup(name) != null)
+            throw new GroupAlreadyExistException(name);
         _groups.Add(new Group(name));
         return _groups.Last();
     }
@@ -45,12 +47,19 @@ public class IsuService : IIsuService
 
     public List<Student> FindStudents(GroupName groupName)
     {
-        return _students.FindAll(s => s.Group != null && s.Group.Name.Equals(groupName));
+        Group? group = FindGroup(groupName);
+        if (group == null)
+            return new List<Student>();
+        return new List<Student>((List<Student>)group.Students);
     }
 
     public List<Student> FindStudents(CourseNumber courseNumber)
     {
-        return _students.FindAll(s => s.Group != null && s.Group.Name.Course.Equals(courseNumber));
+        List<Group> groups = FindGroups(courseNumber);
+        var students = new List<Student>();
+        foreach (Group group in groups)
+            students.AddRange(group.Students);
+        return students;
     }
 
     public Group? FindGroup(GroupName groupName)

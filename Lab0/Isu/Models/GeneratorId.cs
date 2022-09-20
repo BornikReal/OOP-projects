@@ -54,10 +54,20 @@ public class GeneratorId
         }
 
         list.Add(newId);
-
         var fs = new StreamWriter(Path);
         fs.Write(JsonSerializer.Serialize<List<int>>(list));
         fs.Close();
         return newId;
+    }
+
+    public static void FreeID(int id)
+    {
+        List<int>? list = GetIdList();
+        if (list == null)
+            return;
+        list.Remove(id);
+        var fs = new StreamWriter(Path);
+        fs.Write(JsonSerializer.Serialize<List<int>>(list));
+        fs.Close();
     }
 }
