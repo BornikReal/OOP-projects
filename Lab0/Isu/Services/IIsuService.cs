@@ -1,5 +1,6 @@
 using Isu.Entities;
 using Isu.Models;
+using Isu.Models.GroupNameParts;
 
 namespace Isu.Services;
 
