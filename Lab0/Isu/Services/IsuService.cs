@@ -22,7 +22,7 @@ public class IsuService : IIsuService
 
     public Group AddGroup(GroupName name)
     {
-        if (FindGroup(name) == null)
+        if (FindGroup(name) != null)
             throw new GroupAlreadyExistException(name);
         _groups.Add(new Group(name));
         return _groups.Last();
