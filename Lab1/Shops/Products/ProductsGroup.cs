@@ -1,8 +1,11 @@
-﻿namespace Shops.Products;
+﻿using Shops.Entities;
+
+namespace Shops.Products;
 
 public class ProductsGroup
 {
     private float _discount;
+    private Shop? _shop;
 
     public ProductsGroup(Product product, int amount)
     {
@@ -13,7 +16,15 @@ public class ProductsGroup
 
     public Product Product { get; }
     public int Amount { get; }
-    public int ShopID { get; }
+    public Shop? Shop
+    {
+        get => _shop;
+        set
+        {
+            ChangeShop(value);
+        }
+    }
+
     public float Discount
     {
         get => _discount;
@@ -35,5 +46,14 @@ public class ProductsGroup
     public void SetPrice(int price)
     {
         Product.Price = price;
+    }
+
+    private void ChangeShop(Shop? new_shop)
+    {
+        if (new_shop != null && new_shop.FindProducts(this) == null)
+            throw new Exception();
+        else if (_shop != null && _shop.FindProducts(this) != null)
+            throw new Exception();
+        _shop = new_shop;
     }
 }

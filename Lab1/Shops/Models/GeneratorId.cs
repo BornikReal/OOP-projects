@@ -56,7 +56,7 @@ public class GeneratorId
             if (newId > MaxId)
                 newId = MinId;
             if (newId == round)
-                throw new Exception(); // UnavailableIdException();
+                throw new Exception();
         }
 
         list.Add(newId);
@@ -64,6 +64,19 @@ public class GeneratorId
         fs.Write(JsonSerializer.Serialize<List<int>>(list));
         fs.Close();
         return newId;
+    }
+
+    public void UseID(int id)
+    {
+        List<int>? list = GetIdList();
+        if (list == null)
+            return;
+        if (!CheckAvail(id))
+            throw new Exception();
+        list.Add(id);
+        var fs = new StreamWriter(Path);
+        fs.Write(JsonSerializer.Serialize<List<int>>(list));
+        fs.Close();
     }
 
     public void FreeID(int id)

@@ -4,12 +4,24 @@ public class Product
 {
     private readonly GeneratorId _generatorId;
     private float _price;
-    public Product(string name, float price)
+    public Product(string name, float price, int id = 0)
     {
         Name = name;
         Price = price;
         _generatorId = new GeneratorId("ProductsId.json");
-        Id = _generatorId.Generate();
+        if (id == 0)
+        {
+            Id = _generatorId.Generate();
+        }
+        else if (id >= _generatorId.MinId && id <= _generatorId.MaxId)
+        {
+            _generatorId.UseID(id);
+            Id = id;
+        }
+        else
+        {
+            throw new Exception();
+        }
     }
 
     public string Name { get; set; }
