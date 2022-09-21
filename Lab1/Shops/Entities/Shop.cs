@@ -37,15 +37,19 @@ public class Shop
     {
         if (new_products.Shop == null)
         {
-            ProductsGroup? productsGroup = _products.Find(s => s.Product.Id == new_products.Product.Id && s.Product.Price == new_products.Product.Price);
+            ProductsGroup? productsGroup = _products.Find(s => s.Product.Id == new_products.Product.Id);
             if (productsGroup == null)
             {
                 _products.Add(new_products);
                 new_products.Shop = this;
             }
-            else
+            else if (productsGroup == new_products)
             {
                 productsGroup.Amount += new_products.Amount;
+            }
+            else
+            {
+                throw new Exception();
             }
         }
         else
