@@ -15,7 +15,7 @@ public class ProductsGroup
     }
 
     public Product Product { get; }
-    public int Amount { get; }
+    public int Amount { get; set; }
     public Shop? Shop
     {
         get => _shop;
@@ -36,16 +36,16 @@ public class ProductsGroup
         }
     }
 
-    public float GetPrice(int amount)
+    public float GetPrice(int amount = -1)
     {
         if (amount < 0 || amount > Amount)
             amount = Amount;
         return Product.Price * amount * (100 - Discount) / 100;
     }
 
-    public void SetPrice(int price)
+    public bool Equals(ProductsGroup obj)
     {
-        Product.Price = price;
+        return Product.Id == obj.Product.Id && Amount == obj.Amount && Product.Price == obj.Product.Price;
     }
 
     private void ChangeShop(Shop? new_shop)

@@ -37,8 +37,16 @@ public class Shop
     {
         if (new_products.Shop == null)
         {
-            _products.Add(new_products);
-            new_products.Shop = this;
+            ProductsGroup? productsGroup = _products.Find(s => s.Product.Id == new_products.Product.Id && s.Product.Price == new_products.Product.Price);
+            if (productsGroup == null)
+            {
+                _products.Add(new_products);
+                new_products.Shop = this;
+            }
+            else
+            {
+                productsGroup.Amount += new_products.Amount;
+            }
         }
         else
         {
@@ -49,5 +57,18 @@ public class Shop
     public ProductsGroup? FindProducts(ProductsGroup? products)
     {
         return _products.Find(s => s == products);
+    }
+
+    public void Buy(Person person, int productID, int amount)
+    {
+        ProductsGroup? new_product = _products.Find(s => s.Product.Id == productID);
+        if (new_product == null)
+            throw new Exception();
+        if (new_product.Amount < amount)
+            throw new Exception();
+        if (person.Wallet < new_product.GetPrice())
+            throw new Exception();
+        person.Wallet -= new_product.GetPrice();
+        new_product.Amount -= amount;
     }
 }
