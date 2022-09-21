@@ -3,8 +3,8 @@ namespace Shops.Products;
 public class Product
 {
     private readonly GeneratorId _generatorId;
-    private float _price;
-    public Product(string name, float price, int id = 0)
+    private decimal _price;
+    public Product(string name, decimal price, int id = 0)
     {
         Name = name;
         Price = price;
@@ -26,7 +26,7 @@ public class Product
 
     public string Name { get; set; }
     public int Id { get; }
-    public float Price
+    public decimal Price
     {
         get => _price;
         set

@@ -2,6 +2,8 @@
 
 public class Person
 {
+    private decimal _wallet;
+
     public Person(string name, int wallet)
     {
         Name = name;
@@ -9,5 +11,14 @@ public class Person
     }
 
     public string Name { get; set; }
-    public float Wallet { get; set; }
+    public decimal Wallet
+    {
+        get => _wallet;
+        set
+        {
+            if (value < 0)
+                throw new Exception();
+            _wallet = value;
+        }
+    }
 }

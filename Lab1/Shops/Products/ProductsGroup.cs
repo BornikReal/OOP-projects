@@ -4,8 +4,9 @@ namespace Shops.Products;
 
 public class ProductsGroup
 {
-    private float _discount;
+    private decimal _discount;
     private Shop? _shop;
+    private int _amount;
 
     public ProductsGroup(Product product, int amount)
     {
@@ -15,7 +16,17 @@ public class ProductsGroup
     }
 
     public Product Product { get; }
-    public int Amount { get; set; }
+    public int Amount
+    {
+        get => _amount;
+        set
+        {
+            if (value < 0)
+                throw new Exception();
+            _amount = value;
+        }
+    }
+
     public Shop? Shop
     {
         get => _shop;
@@ -25,7 +36,7 @@ public class ProductsGroup
         }
     }
 
-    public float Discount
+    public decimal Discount
     {
         get => _discount;
         set
@@ -36,7 +47,7 @@ public class ProductsGroup
         }
     }
 
-    public float GetPrice(int amount = -1)
+    public decimal GetPrice(int amount = -1)
     {
         if (amount < 0 || amount > Amount)
             amount = Amount;
