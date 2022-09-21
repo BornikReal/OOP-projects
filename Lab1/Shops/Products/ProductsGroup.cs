@@ -9,7 +9,7 @@ public class ProductsGroup
     private Shop? _shop;
     private int _amount;
 
-    public ProductsGroup(Product product, int price, int amount)
+    public ProductsGroup(Product product, decimal price, int amount)
     {
         Product = product;
         Amount = amount;

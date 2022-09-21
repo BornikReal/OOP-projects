@@ -70,17 +70,19 @@ public class Shop
         return _products.Find(s => s.Product == product);
     }
 
-    public void Buy(Person person, int productID, int amount)
+    public void Buy(Person person, ProductsGroup product, int amount)
     {
-        ProductsGroup? new_product = _products.Find(s => s.Product.Id == productID);
-        if (new_product == null)
+        if (product.Amount < amount)
             throw new Exception();
-        if (new_product.Amount < amount)
+        if (person.Wallet < product.GetPrice(amount))
             throw new Exception();
-        if (person.Wallet < new_product.GetPrice(amount))
-            throw new Exception();
-        person.Wallet -= new_product.GetPrice(amount);
-        Wallet += new_product.GetPrice(amount);
-        new_product.Amount -= amount;
+        person.Wallet -= product.GetPrice(amount);
+        Wallet += product.GetPrice(amount);
+        product.Amount -= amount;
+    }
+
+    public bool Equals(Shop obj)
+    {
+        return Name == obj.Name && Adress == obj.Adress;
     }
 }
