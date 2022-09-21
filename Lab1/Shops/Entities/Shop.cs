@@ -14,11 +14,13 @@ public class Shop
         _products = new List<ProductsGroup>();
         _generatorId = new GeneratorId("ShopsId.json");
         Id = _generatorId.Generate();
+        Wallet = 0;
     }
 
     public IReadOnlyList<ProductsGroup> Products => _products;
     public string Name { get; set; }
     public string Adress { get; set; }
+    public decimal Wallet { get; private set; }
     public int Id { get; }
     public void RemoveProducts(ProductsGroup new_products)
     {
@@ -37,7 +39,7 @@ public class Shop
     {
         if (new_products.Shop == null)
         {
-            ProductsGroup? productsGroup = _products.Find(s => s.Product.Id == new_products.Product.Id);
+            ProductsGroup? productsGroup = _products.Find(s => s.Product == new_products.Product);
             if (productsGroup == null)
             {
                 _products.Add(new_products);
@@ -58,9 +60,14 @@ public class Shop
         }
     }
 
-    public ProductsGroup? FindProducts(ProductsGroup? products)
+    public ProductsGroup? FindProducts(ProductsGroup products)
     {
         return _products.Find(s => s == products);
+    }
+
+    public ProductsGroup? GetProductsGroup(Product product)
+    {
+        return _products.Find(s => s.Product == product);
     }
 
     public void Buy(Person person, int productID, int amount)
@@ -70,9 +77,10 @@ public class Shop
             throw new Exception();
         if (new_product.Amount < amount)
             throw new Exception();
-        if (person.Wallet < new_product.GetPrice())
+        if (person.Wallet < new_product.GetPrice(amount))
             throw new Exception();
-        person.Wallet -= new_product.GetPrice();
+        person.Wallet -= new_product.GetPrice(amount);
+        Wallet += new_product.GetPrice(amount);
         new_product.Amount -= amount;
     }
 }

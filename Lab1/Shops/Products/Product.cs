@@ -1,13 +1,13 @@
 ﻿using Shops.Models;
+using System.Diagnostics;
+
 namespace Shops.Products;
 public class Product
 {
     private readonly GeneratorId _generatorId;
-    private decimal _price;
-    public Product(string name, decimal price, int id = 0)
+    public Product(string name, int id = 0)
     {
         Name = name;
-        Price = price;
         _generatorId = new GeneratorId("ProductsId.json");
         if (id == 0)
         {
@@ -26,14 +26,9 @@ public class Product
 
     public string Name { get; set; }
     public int Id { get; }
-    public decimal Price
+
+    public bool Equals(Product obj)
     {
-        get => _price;
-        set
-        {
-            if (value < 0)
-                throw new Exception();
-            _price = value;
-        }
+        return Id == obj.Id && Name == obj.Name;
     }
 }
