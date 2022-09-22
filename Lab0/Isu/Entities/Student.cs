@@ -8,7 +8,8 @@ public class Student
     {
         Name = name;
         Id = GeneratorId.Generate();
-        Group = group;
+        group.Add(this);
+        _group = group;
     }
 
     public string Name { get; set; }
@@ -21,9 +22,9 @@ public class Student
 
     private void ChangeGroup(Group newGroup)
     {
-        Group delGroup = _group;
-        _group = null;
-        delGroup.Remove(this);
+        if (_group == newGroup)
+            return;
+        _group.Remove(this);
         newGroup.Add(this);
         _group = newGroup;
     }

@@ -21,15 +21,16 @@ public class Group
 
     public void Remove(Student student)
     {
-        if (student.Group == null)
-            _students.Remove(student);
+        if (!_students.Remove(student))
+            throw new System.Exception();
     }
 
     public void Add(Student student)
     {
-        if (student.Group == null)
-            _students.Add(student);
         if (_students.Count > MaxSize)
             throw new GroupOverflowException(MaxSize);
+        if (_students.Contains(student))
+            throw new System.Exception();
+        _students.Add(student);
     }
 }
