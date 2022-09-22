@@ -1,6 +1,7 @@
 using Isu.Entities;
 using Isu.Exception;
 using Isu.Exception.InvalidGroupNameException;
+using Isu.Models;
 using Xunit;
 
 namespace Isu.Test;
@@ -48,7 +49,7 @@ public class IsuService
     [InlineData("M9999")]
     public void CreateGroupWithInvalidName_ThrowException(string name)
     {
-        Assert.ThrowsAny<InvalidGroupNameException>(() => testIsu.AddGroup(new Models.GroupName(name)));
+        Assert.ThrowsAny<InvalidGroupNameException>(() => testIsu.AddGroup(new GroupName(name)));
     }
 
     [Fact]
