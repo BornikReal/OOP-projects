@@ -38,9 +38,9 @@ public class Student
     {
         if (_group != null)
         {
-            Group del_group = _group;
+            Group delGroup = _group;
             _group = null;
-            del_group.Remove(this);
+            delGroup.Remove(this);
         }
 
         if (newGroup != null)
