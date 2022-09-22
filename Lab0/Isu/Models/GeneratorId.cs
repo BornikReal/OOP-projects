@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using Isu.Exception.IdException;
+using Isu.Exception;
 
 namespace Isu.Models;
 public class GeneratorId

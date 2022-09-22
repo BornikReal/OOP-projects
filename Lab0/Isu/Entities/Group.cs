@@ -22,7 +22,7 @@ public class Group
     public void Remove(Student student)
     {
         if (!_students.Remove(student))
-            throw new System.Exception();
+            throw new StudentIdNotFoundException(student.Id);
     }
 
     public void Add(Student student)
@@ -30,7 +30,7 @@ public class Group
         if (_students.Count > MaxSize)
             throw new GroupOverflowException(MaxSize);
         if (_students.Contains(student))
-            throw new System.Exception();
+            throw new StudentAlreadyInGroupException(student.Name);
         _students.Add(student);
     }
 }
