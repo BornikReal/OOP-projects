@@ -5,8 +5,8 @@ namespace Isu.Models.GroupNameParts;
 
 public class GroupNumber
 {
-    public const int MaxGroupNumBMS = 99;
-    public const int MaxGroupNumPD = 999;
+    public const int MaxGroupNumBachMagSpec = 99;
+    public const int MaxGroupNumPostgradDoct = 999;
 
     public GroupNumber(GroupName groupName, int number = 1)
     {
@@ -17,9 +17,9 @@ public class GroupNumber
 
     public void SetNumber(GroupName groupName, int number)
     {
-        if (groupName.Letter.Letter != PDLetter && (number < 0 || number > MaxGroupNumBMS))
+        if (groupName.Letter.Letter != PostgradDoctLetter && (number < 0 || number > MaxGroupNumBachMagSpec))
             throw new InvalidGroupNumberException(number);
-        if (groupName.Letter.Letter == PDLetter && (number < 0 || number > MaxGroupNumPD))
+        if (groupName.Letter.Letter == PostgradDoctLetter && (number < 0 || number > MaxGroupNumPostgradDoct))
             throw new InvalidGroupNumberException(number);
         Number = number;
     }

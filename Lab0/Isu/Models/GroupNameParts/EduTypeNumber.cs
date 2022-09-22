@@ -23,9 +23,9 @@ public class EduTypeNumber
 
     public void SetNumber(GroupName groupName, Edu number)
     {
-        if (groupName.Letter.Letter == PDLetter && number != Edu.PostGradId && number != Edu.DoctId)
+        if (groupName.Letter.Letter == PostgradDoctLetter && number != Edu.PostGradId && number != Edu.DoctId)
             throw new InvalidEduTypeException(number);
-        if (groupName.Letter.Letter != PDLetter && (number < Edu.BachId || number > Edu.SpecId))
+        if (groupName.Letter.Letter != PostgradDoctLetter && (number < Edu.BachId || number > Edu.SpecId))
             throw new InvalidEduTypeException(number);
         Number = number;
     }

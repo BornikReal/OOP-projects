@@ -9,9 +9,9 @@ namespace Isu.Models;
 
 public class GroupName
 {
-    public const int PDGroupNameLen = 4;
-    public const int BMSGroupNameLenNoSpec = 5;
-    public const int BMSGroupNameLen = 6;
+    public const int PostgradDoctGroupNameLen = 4;
+    public const int BachMagSpecGroupNameLenNoSpec = 5;
+    public const int BachMagSpecGroupNameLen = 6;
 
     public GroupName(string name)
     {
@@ -52,7 +52,7 @@ public class GroupName
 
         if (Regex.IsMatch(input, groupPDRegex, RegexOptions.Compiled))
         {
-            newGroup.Letter.SetLetter(PDLetter);
+            newGroup.Letter.SetLetter(PostgradDoctLetter);
             newGroup.EduType.SetNumber(newGroup, (Edu)(input[0] - '0'));
             newGroup.Course.SetCourse(newGroup, 7);
             newGroup.Number.SetNumber(newGroup, int.Parse(input[1..]));

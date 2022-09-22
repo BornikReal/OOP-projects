@@ -4,7 +4,7 @@ namespace Isu.Models.GroupNameParts;
 
 public class GroupLetter
 {
-    public const char PDLetter = ' ';
+    public const char PostgradDoctLetter = ' ';
 
     public GroupLetter(char letter = 'M')
     {
