@@ -30,8 +30,7 @@ public class IsuService : IIsuService
 
     public Student AddStudent(Group group, string name)
     {
-        _students.Add(new Student(name));
-        _students.Last().Group = group;
+        _students.Add(new Student(name, group));
         return _students.Last();
     }
 
@@ -45,21 +44,18 @@ public class IsuService : IIsuService
         return _students.Find(s => s.Id == id) ?? throw new StudentIdNotFoundException(id);
     }
 
-    public List<Student> FindStudents(GroupName groupName)
+    public IReadOnlyList<Student> FindStudents(GroupName groupName)
     {
         Group? group = FindGroup(groupName);
         if (group == null)
             return new List<Student>();
-        return new List<Student>((List<Student>)group.Students);
+        return group.Students;
     }
 
     public List<Student> FindStudents(CourseNumber courseNumber)
     {
         List<Group> groups = FindGroups(courseNumber);
-        var students = new List<Student>();
-        foreach (Group group in groups)
-            students.AddRange(group.Students);
-        return students;
+        return groups.SelectMany(x => x.Students).ToList();
     }
 
     public Group? FindGroup(GroupName groupName)

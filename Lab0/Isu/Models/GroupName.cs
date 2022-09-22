@@ -1,7 +1,6 @@
 using System.Text.RegularExpressions;
 using Isu.Exception.InvalidGroupNameException;
 using Isu.Models.GroupNameParts;
-using static Isu.Models.GroupNameParts.EduTypeNumber;
 using static Isu.Models.GroupNameParts.GroupLetter;
 using static Isu.Models.GroupNameParts.SpecNumber;
 
@@ -9,9 +8,9 @@ namespace Isu.Models;
 
 public class GroupName
 {
-    public const int PDGroupNameLen = 4;
-    public const int BMSGroupNameLenNoSpec = 5;
-    public const int BMSGroupNameLen = 6;
+    public const int PostgradDoctGroupNameLen = 4;
+    public const int BachMagSpecGroupNameLenNoSpec = 5;
+    public const int BachMagSpecGroupNameLen = 6;
 
     public GroupName(string name)
     {
@@ -23,24 +22,24 @@ public class GroupName
         Spec = newGroup.Spec;
     }
 
-    private GroupName()
+    private GroupName(char letter, EduId eduId, int course, int number, int spec)
     {
-        Letter = new GroupLetter();
-        EduType = new EduTypeNumber(this);
-        Course = new CourseNumber(this);
-        Number = new GroupNumber(this);
-        Spec = new SpecNumber(this);
+        Letter = new GroupLetter(letter);
+        EduType = new EduTypeNumber(this, eduId);
+        Course = new CourseNumber(this, course);
+        Number = new GroupNumber(this, number);
+        Spec = new SpecNumber(this, spec);
     }
 
-    public GroupLetter Letter { get; }
+    public GroupLetter Letter { get; private set; }
 
-    public EduTypeNumber EduType { get; }
+    public EduTypeNumber EduType { get; private set; }
 
-    public CourseNumber Course { get; }
+    public CourseNumber Course { get; private set; }
 
-    public GroupNumber Number { get; }
+    public GroupNumber Number { get; private set; }
 
-    public SpecNumber Spec { get; }
+    public SpecNumber Spec { get; private set; }
 
     public static GroupName Parse(string input)
     {
@@ -48,34 +47,20 @@ public class GroupName
         string groupBMSRegex = @"^[A-Z]\d{4}\d?$";
         string groupBMSSpecRegex = @"^[A-Z]\d{5}$";
 
-        var newGroup = new GroupName();
-
         if (Regex.IsMatch(input, groupPDRegex, RegexOptions.Compiled))
         {
-            newGroup.Letter.SetLetter(PDLetter);
-            newGroup.EduType.SetNumber(newGroup, (Edu)(input[0] - '0'));
-            newGroup.Course.SetCourse(newGroup, 7);
-            newGroup.Number.SetNumber(newGroup, int.Parse(input[1..]));
-            newGroup.Spec.SetNumber(newGroup, NoneSpec);
-            return newGroup;
+            return new GroupName(PostgradDoctLetter, (EduId)(input[0] - '0'), 7, int.Parse(input[1..]), NoneSpec);
         }
         else if (Regex.IsMatch(input, groupBMSRegex, RegexOptions.Compiled))
         {
-            newGroup.Letter.SetLetter(input[0]);
-            newGroup.EduType.SetNumber(newGroup, (Edu)(input[1] - '0'));
-            newGroup.Course.SetCourse(newGroup, input[2] - '0');
-            newGroup.Number.SetNumber(newGroup, int.Parse(input.AsSpan(3, 2)));
-
             if (Regex.IsMatch(input, groupBMSSpecRegex, RegexOptions.Compiled))
             {
-                newGroup.Spec.SetNumber(newGroup, input[5] - '0');
+                return new GroupName(input[0], (EduId)(input[1] - '0'), input[2] - '0', int.Parse(input.AsSpan(3, 2)), input[5] - '0');
             }
             else
             {
-                newGroup.Spec.SetNumber(newGroup, NoneSpec);
+                return new GroupName(input[0], (EduId)(input[1] - '0'), input[2] - '0', int.Parse(input.AsSpan(3, 2)), NoneSpec);
             }
-
-            return newGroup;
         }
         else
         {
