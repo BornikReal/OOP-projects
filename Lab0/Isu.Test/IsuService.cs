@@ -1,4 +1,5 @@
 using Isu.Entities;
+using Isu.Exception;
 using Isu.Exception.InvalidGroupNameException;
 using Xunit;
 
@@ -31,7 +32,14 @@ public class IsuService
     }
 
     [Fact]
-    public void ReachMaxStudentPerGroup_ThrowException() { }
+    public void ReachMaxStudentPerGroup_ThrowException()
+    {
+        var groupName = new Isu.Models.GroupName("M32011");
+        Group testGroup = testIsu.AddGroup(groupName);
+        for (int i = 0; i < 30; i++)
+            testIsu.AddStudent(testGroup, "BornikReal");
+        Assert.ThrowsAny<GroupOverflowException>(() => testIsu.AddStudent(testGroup, "BornikReal"));
+    }
 
     [Theory]
     [InlineData("jakdh")]
