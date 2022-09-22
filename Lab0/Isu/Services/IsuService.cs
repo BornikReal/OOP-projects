@@ -55,10 +55,7 @@ public class IsuService : IIsuService
     public List<Student> FindStudents(CourseNumber courseNumber)
     {
         List<Group> groups = FindGroups(courseNumber);
-        var students = new List<Student>();
-        foreach (Group group in groups)
-            students.AddRange(group.Students);
-        return students;
+        return groups.SelectMany(x => x.Students).ToList();
     }
 
     public Group? FindGroup(GroupName groupName)
