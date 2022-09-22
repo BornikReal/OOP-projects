@@ -43,24 +43,21 @@ public class GroupName
 
     public static GroupName Parse(string input)
     {
-        string groupPDRegex = @"^[78]\d{3}$";
-        string groupBMSRegex = @"^[A-Z]\d{4}\d?$";
-        string groupBMSSpecRegex = @"^[A-Z]\d{5}$";
+        string groupPDPattern = @"^[78]\d{3}$";
+        string groupBMSPattern = @"^[A-Z]\d{4}\d?$";
+        string groupBMSSpecPattern = @"^[A-Z]\d{5}$";
 
-        if (Regex.IsMatch(input, groupPDRegex, RegexOptions.Compiled))
+        Match groupPDRegex = Regex.Match(input, groupPDPattern, RegexOptions.Compiled);
+        Match groupBMSRegex = Regex.Match(input, groupBMSPattern, RegexOptions.Compiled);
+
+        if (groupPDRegex.Success)
         {
             return new GroupName(PostgradDoctLetter, (EduId)(input[0] - '0'), 7, int.Parse(input[1..]), NoneSpec);
         }
-        else if (Regex.IsMatch(input, groupBMSRegex, RegexOptions.Compiled))
+        else if (groupBMSRegex.Success)
         {
-            if (Regex.IsMatch(input, groupBMSSpecRegex, RegexOptions.Compiled))
-            {
-                return new GroupName(input[0], (EduId)(input[1] - '0'), input[2] - '0', int.Parse(input.AsSpan(3, 2)), input[5] - '0');
-            }
-            else
-            {
-                return new GroupName(input[0], (EduId)(input[1] - '0'), input[2] - '0', int.Parse(input.AsSpan(3, 2)), NoneSpec);
-            }
+            Match groupBMSSpecRegex = Regex.Match(input, groupBMSSpecPattern, RegexOptions.Compiled);
+            return new GroupName(input[0], (EduId)(input[1] - '0'), input[2] - '0', int.Parse(input.AsSpan(3, 2)), groupBMSSpecRegex.Success ? input[5] - '0' : NoneSpec);
         }
         else
         {

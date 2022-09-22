@@ -3,11 +3,13 @@ using Isu.Models;
 namespace Isu.Entities;
 public class Student
 {
+    private readonly GeneratorId _generatorId;
     private Group _group;
     public Student(string name, Group group)
     {
         Name = name;
-        Id = GeneratorId.Generate();
+        _generatorId = new GeneratorId();
+        Id = _generatorId.Generate();
         group.Add(this);
         _group = group;
     }

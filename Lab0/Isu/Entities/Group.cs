@@ -27,7 +27,7 @@ public class Group
 
     public void Add(Student student)
     {
-        if (_students.Count > MaxSize)
+        if (_students.Count >= MaxSize)
             throw new GroupOverflowException(MaxSize);
         if (_students.Contains(student))
             throw new StudentAlreadyInGroupException(student.Name);
