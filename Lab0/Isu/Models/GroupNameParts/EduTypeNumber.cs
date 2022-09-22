@@ -5,27 +5,18 @@ namespace Isu.Models.GroupNameParts;
 
 public class EduTypeNumber
 {
-    public EduTypeNumber(GroupName groupName, Edu number = Edu.BachId)
+    public EduTypeNumber(GroupName groupName, EduId number = EduId.BachId)
     {
         SetNumber(groupName, number);
     }
 
-    public enum Edu
-    {
-        BachId = 3,
-        MagId = 4,
-        SpecId = 5,
-        PostGradId = 7,
-        DoctId = 8,
-    }
+    public EduId Number { get; private set; }
 
-    public Edu Number { get; private set; }
-
-    public void SetNumber(GroupName groupName, Edu number)
+    public void SetNumber(GroupName groupName, EduId number)
     {
-        if (groupName.Letter.Letter == PostgradDoctLetter && number != Edu.PostGradId && number != Edu.DoctId)
+        if (groupName.Letter.Letter == PostgradDoctLetter && number != EduId.PostGradId && number != EduId.DoctId)
             throw new InvalidEduTypeException(number);
-        if (groupName.Letter.Letter != PostgradDoctLetter && (number < Edu.BachId || number > Edu.SpecId))
+        if (groupName.Letter.Letter != PostgradDoctLetter && (number < EduId.BachId || number > EduId.SpecId))
             throw new InvalidEduTypeException(number);
         Number = number;
     }

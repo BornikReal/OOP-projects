@@ -1,7 +1,6 @@
 using System.Text.RegularExpressions;
 using Isu.Exception.InvalidGroupNameException;
 using Isu.Models.GroupNameParts;
-using static Isu.Models.GroupNameParts.EduTypeNumber;
 using static Isu.Models.GroupNameParts.GroupLetter;
 using static Isu.Models.GroupNameParts.SpecNumber;
 
@@ -53,7 +52,7 @@ public class GroupName
         if (Regex.IsMatch(input, groupPDRegex, RegexOptions.Compiled))
         {
             newGroup.Letter.SetLetter(PostgradDoctLetter);
-            newGroup.EduType.SetNumber(newGroup, (Edu)(input[0] - '0'));
+            newGroup.EduType.SetNumber(newGroup, (EduId)(input[0] - '0'));
             newGroup.Course.SetCourse(newGroup, 7);
             newGroup.Number.SetNumber(newGroup, int.Parse(input[1..]));
             newGroup.Spec.SetNumber(newGroup, NoneSpec);
@@ -62,7 +61,7 @@ public class GroupName
         else if (Regex.IsMatch(input, groupBMSRegex, RegexOptions.Compiled))
         {
             newGroup.Letter.SetLetter(input[0]);
-            newGroup.EduType.SetNumber(newGroup, (Edu)(input[1] - '0'));
+            newGroup.EduType.SetNumber(newGroup, (EduId)(input[1] - '0'));
             newGroup.Course.SetCourse(newGroup, input[2] - '0');
             newGroup.Number.SetNumber(newGroup, int.Parse(input.AsSpan(3, 2)));
 
