@@ -1,43 +1,21 @@
-﻿using System.Text.Json;
-using Isu.Exception;
+﻿using Isu.Exception;
 
 namespace Isu.Models;
 public class GeneratorId
 {
-    public const int MinId = 100000;
-    public const int MaxId = 999999;
+    private readonly int _maxId;
+    private int _curId;
 
-    private static readonly string Path = "UserData.json";
-
-    public static int Generate()
+    public GeneratorId(int minId = 100000, int maxId = 999999)
     {
-        List<int>? list;
-        try
-        {
-            list = JsonSerializer.Deserialize<List<int>>(File.ReadAllText(Path));
-            list ??= new List<int>();
-        }
-        catch (FileNotFoundException)
-        {
-            list = new List<int>();
-        }
-        catch (JsonException)
-        {
-            list = new List<int>();
-        }
+        _maxId = maxId;
+        _curId = minId;
+    }
 
-        int newId;
-        if (list.Count != 0)
-            newId = list.Last() + 1;
-        else
-            newId = MinId;
-        if (newId is < MinId or > MaxId)
+    public int Generate()
+    {
+        if (_curId == _maxId)
             throw new UnavailableIdException();
-
-        list.Add(newId);
-        var fs = new StreamWriter(Path);
-        fs.Write(JsonSerializer.Serialize<List<int>>(list));
-        fs.Close();
-        return newId;
+        return _curId++;
     }
 }
