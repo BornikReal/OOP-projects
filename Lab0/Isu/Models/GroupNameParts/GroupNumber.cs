@@ -10,19 +10,14 @@ public class GroupNumber
 
     public GroupNumber(GroupName groupName, int number = 1)
     {
-        SetNumber(groupName, number);
-    }
-
-    public int Number { get; private set; }
-
-    public void SetNumber(GroupName groupName, int number)
-    {
         if (groupName.Letter.Letter != PostgradDoctLetter && (number < 0 || number > MaxGroupNumBachMagSpec))
             throw new InvalidGroupNumberException(number);
         if (groupName.Letter.Letter == PostgradDoctLetter && (number < 0 || number > MaxGroupNumPostgradDoct))
             throw new InvalidGroupNumberException(number);
         Number = number;
     }
+
+    public int Number { get; }
 
     public bool Equals(GroupNumber obj)
     {

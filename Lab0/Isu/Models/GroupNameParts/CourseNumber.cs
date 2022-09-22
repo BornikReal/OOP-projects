@@ -11,13 +11,6 @@ public class CourseNumber
 
     public CourseNumber(GroupName groupName, int number = 1)
     {
-        SetCourse(groupName, number);
-    }
-
-    public int Number { get; private set; }
-
-    public void SetCourse(GroupName groupName, int number)
-    {
         if (groupName.EduType.Number == EduId.MagId && (number < 1 || number > MaxMagCourse))
             throw new InvalidCourseNumberException(number);
         if (groupName.EduType.Number == EduId.BachId && (number < 1 || number > MaxBachCourse))
@@ -28,6 +21,8 @@ public class CourseNumber
             throw new InvalidCourseNumberException(number);
         Number = number;
     }
+
+    public int Number { get; }
 
     public bool Equals(CourseNumber obj)
     {
