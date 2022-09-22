@@ -1,50 +1,30 @@
-using Isu.Exception.IdException;
 using Isu.Models;
 
 namespace Isu.Entities;
 public class Student
 {
-    private Group? _group;
-    public Student(string name, int id = -1, Group? group = null)
+    private Group _group;
+    public Student(string name, Group group)
     {
         Name = name;
-        if (id == -1)
-        {
-            Id = GeneratorId.Generate();
-        }
-        else if (id is >= GeneratorId.MinId and <= GeneratorId.MaxId)
-        {
-            if (!GeneratorId.CheckAvail(id))
-                throw new IdOutOfRangeException(id);
-            Id = id;
-        }
-        else
-        {
-            throw new IdOutOfRangeException(id);
-        }
-
+        Id = GeneratorId.Generate();
         Group = group;
     }
 
     public string Name { get; set; }
     public int Id { get; }
-    public Group? Group
+    public Group Group
     {
         get => _group;
         set => ChangeGroup(value);
     }
 
-    private void ChangeGroup(Group? newGroup)
+    private void ChangeGroup(Group newGroup)
     {
-        if (_group != null)
-        {
-            Group delGroup = _group;
-            _group = null;
-            delGroup.Remove(this);
-        }
-
-        if (newGroup != null)
-            newGroup.Add(this);
+        Group delGroup = _group;
+        _group = null;
+        delGroup.Remove(this);
+        newGroup.Add(this);
         _group = newGroup;
     }
 }
