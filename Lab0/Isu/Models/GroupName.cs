@@ -61,11 +61,11 @@ public class GroupName
         else if (matchBMS.Success)
         {
             return new GroupName(
-                char.Parse(matchPD.Groups[1].Value),
-                (EduId)int.Parse(matchPD.Groups[2].Value),
-                int.Parse(matchPD.Groups[3].Value),
-                int.Parse(matchPD.Groups[4].Value),
-                matchPD.Groups[5].Value.Length != 0 ? int.Parse(matchPD.Groups[5].Value) : NoneSpec);
+                char.Parse(matchBMS.Groups[1].Value),
+                (EduId)int.Parse(matchBMS.Groups[2].Value),
+                int.Parse(matchBMS.Groups[3].Value),
+                int.Parse(matchBMS.Groups[4].Value),
+                matchBMS.Groups[5].Value.Length != 0 ? int.Parse(matchBMS.Groups[5].Value) : NoneSpec);
         }
         else
         {
