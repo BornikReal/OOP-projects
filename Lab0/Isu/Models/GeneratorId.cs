@@ -3,10 +3,17 @@
 namespace Isu.Models;
 public class GeneratorId
 {
-    private static readonly int _maxId;
-    private static int _curId = 100000;
-    public static int Generate()
+    private int _maxId;
+    private int _curId;
+    public GeneratorId(int minId = 100000, int maxId = 999999)
     {
+        _maxId = maxId;
+        _curId = minId;
+    }
+
+    public int Generate()
+    {
+        _maxId++;
         if (_curId == _maxId)
             throw new UnavailableIdException();
         return _curId++;

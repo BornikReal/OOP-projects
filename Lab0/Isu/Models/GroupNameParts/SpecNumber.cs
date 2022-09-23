@@ -6,11 +6,11 @@ public class SpecNumber
 {
     public const int NoneSpec = 0;
 
-    public SpecNumber(GroupName groupName, int number = NoneSpec)
+    public SpecNumber(EduTypeNumber eduNumber, int number = NoneSpec)
     {
         if (number is < 0 or > 9)
             throw new InvalidSpecNumberException(number);
-        if ((groupName.EduType.Number == EduId.PostGradId || groupName.EduType.Number == EduId.DoctId) && number != NoneSpec)
+        if ((eduNumber.Number == EduId.PostGradId || eduNumber.Number == EduId.DoctId) && number != NoneSpec)
             throw new InvalidSpecNumberException(number);
         Number = number;
     }

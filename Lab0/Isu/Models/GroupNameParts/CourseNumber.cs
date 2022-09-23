@@ -9,15 +9,15 @@ public class CourseNumber
     public const int MaxSpecCourse = 6;
     public const int MaxPostgradDoctCourse = 9;
 
-    public CourseNumber(GroupName groupName, int number = 1)
+    public CourseNumber(EduTypeNumber eduNumber, int number = 1)
     {
-        if (groupName.EduType.Number == EduId.MagId && (number < 1 || number > MaxMagCourse))
+        if (eduNumber.Number == EduId.MagId && (number < 1 || number > MaxMagCourse))
             throw new InvalidCourseNumberException(number);
-        if (groupName.EduType.Number == EduId.BachId && (number < 1 || number > MaxBachCourse))
+        if (eduNumber.Number == EduId.BachId && (number < 1 || number > MaxBachCourse))
             throw new InvalidCourseNumberException(number);
-        if (groupName.EduType.Number == EduId.SpecId && (number < 1 || number > MaxSpecCourse))
+        if (eduNumber.Number == EduId.SpecId && (number < 1 || number > MaxSpecCourse))
             throw new InvalidCourseNumberException(number);
-        if ((groupName.EduType.Number == EduId.PostGradId || groupName.EduType.Number == EduId.DoctId) && (number < 1 || number > MaxPostgradDoctCourse))
+        if ((eduNumber.Number == EduId.PostGradId || eduNumber.Number == EduId.DoctId) && (number < 1 || number > MaxPostgradDoctCourse))
             throw new InvalidCourseNumberException(number);
         Number = number;
     }
