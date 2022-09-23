@@ -5,11 +5,11 @@ namespace Isu.Models.GroupNameParts;
 
 public class EduTypeNumber
 {
-    public EduTypeNumber(GroupName groupName, EduId number = EduId.BachId)
+    public EduTypeNumber(GroupLetter letter, EduId number = EduId.BachId)
     {
-        if (groupName.Letter.Letter == PostgradDoctLetter && number != EduId.PostGradId && number != EduId.DoctId)
+        if (letter.Letter == PostgradDoctLetter && number != EduId.PostGradId && number != EduId.DoctId)
             throw new InvalidEduTypeException(number);
-        if (groupName.Letter.Letter != PostgradDoctLetter && (number < EduId.BachId || number > EduId.SpecId))
+        if (letter.Letter != PostgradDoctLetter && (number < EduId.BachId || number > EduId.SpecId))
             throw new InvalidEduTypeException(number);
         Number = number;
     }

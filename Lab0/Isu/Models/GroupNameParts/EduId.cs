@@ -1,4 +1,5 @@
 ﻿namespace Isu.Models.GroupNameParts;
+
 public enum EduId
 {
     BachId = 3,

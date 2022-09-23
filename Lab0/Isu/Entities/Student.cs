@@ -1,33 +1,40 @@
-using Isu.Models;
-
 namespace Isu.Entities;
-public class Student
+public class Student : IEquatable<Student>
 {
-    private readonly GeneratorId _generatorId;
-    private Group _group;
-    public Student(string name, Group group)
+    public Student(string name, Group group, int id)
     {
         Name = name;
-        _generatorId = new GeneratorId();
-        Id = _generatorId.Generate();
+        Id = id;
         group.Add(this);
-        _group = group;
+        Group = group;
     }
 
     public string Name { get; set; }
     public int Id { get; }
-    public Group Group
+    public Group Group { get; private set; }
+
+    public void ChangeGroup(Group newGroup)
     {
-        get => _group;
-        set => ChangeGroup(value);
+        if (Group == newGroup)
+            return;
+        Group.Remove(this);
+        newGroup.Add(this);
+        Group = newGroup;
     }
 
-    private void ChangeGroup(Group newGroup)
+    public override bool Equals(object? obj) => Equals(obj as Student);
+    public bool Equals(Student? other)
     {
-        if (_group == newGroup)
-            return;
-        _group.Remove(this);
-        newGroup.Add(this);
-        _group = newGroup;
+        if (this == other) return true;
+        if (other == null) return false;
+        if (Name != other.Name) return false;
+        if (Id != other.Id) return false;
+        if (Group != other.Group) return false;
+        return true;
+    }
+
+    public override int GetHashCode()
+    {
+        return Name.GetHashCode() ^ Id.GetHashCode();
     }
 }

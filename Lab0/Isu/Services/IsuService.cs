@@ -9,11 +9,13 @@ public class IsuService : IIsuService
 {
     private readonly List<Student> _students;
     private readonly List<Group> _groups;
+    private readonly GeneratorId _generatorId;
 
     public IsuService()
     {
         _students = new List<Student>();
         _groups = new List<Group>();
+        _generatorId = new GeneratorId();
     }
 
     public IReadOnlyList<Student> Students => _students;
@@ -30,7 +32,7 @@ public class IsuService : IIsuService
 
     public Student AddStudent(Group group, string name)
     {
-        _students.Add(new Student(name, group));
+        _students.Add(new Student(name, group, _generatorId.Generate()));
         return _students.Last();
     }
 
@@ -70,6 +72,6 @@ public class IsuService : IIsuService
 
     public void ChangeStudentGroup(Student student, Group newGroup)
     {
-        student.Group = newGroup;
+        student.ChangeGroup(newGroup);
     }
 }
