@@ -11,6 +11,8 @@ public class GroupName
     public const int PostgradDoctGroupNameLen = 4;
     public const int BachMagSpecGroupNameLenNoSpec = 5;
     public const int BachMagSpecGroupNameLen = 6;
+    private static readonly Regex RegexPD = new Regex(@"^([78])(\d{3})$", RegexOptions.Compiled);
+    private static readonly Regex RegexBMS = new Regex(@"^([A-Z])(\d)(\d)(\d{2})(\d?)$", RegexOptions.Compiled);
 
     public GroupName(string name)
     {
@@ -43,11 +45,8 @@ public class GroupName
 
     public static GroupName Parse(string input)
     {
-        var regexPD = new Regex(@"^([78])(\d{3})$", RegexOptions.Compiled);
-        var regexBMS = new Regex(@"^([A-Z])(\d)(\d)(\d{2})(\d?)$", RegexOptions.Compiled);
-
-        Match matchPD = regexPD.Match(input);
-        Match matchBMS = regexBMS.Match(input);
+        Match matchPD = RegexPD.Match(input);
+        Match matchBMS = RegexBMS.Match(input);
 
         if (matchPD.Success)
         {
