@@ -70,6 +70,6 @@ public class IsuService : IIsuService
 
     public void ChangeStudentGroup(Student student, Group newGroup)
     {
-        student.Group = newGroup;
+        student.ChangeGroup(newGroup);
     }
 }

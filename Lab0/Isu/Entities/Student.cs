@@ -4,30 +4,25 @@ namespace Isu.Entities;
 public class Student
 {
     private readonly GeneratorId _generatorId;
-    private Group _group;
     public Student(string name, Group group)
     {
         Name = name;
         _generatorId = new GeneratorId();
         Id = _generatorId.Generate();
         group.Add(this);
-        _group = group;
+        Group = group;
     }
 
     public string Name { get; set; }
     public int Id { get; }
-    public Group Group
-    {
-        get => _group;
-        set => ChangeGroup(value);
-    }
+    public Group Group { get; private set; }
 
-    private void ChangeGroup(Group newGroup)
+    public void ChangeGroup(Group newGroup)
     {
-        if (_group == newGroup)
+        if (Group == newGroup)
             return;
-        _group.Remove(this);
+        Group.Remove(this);
         newGroup.Add(this);
-        _group = newGroup;
+        Group = newGroup;
     }
 }
