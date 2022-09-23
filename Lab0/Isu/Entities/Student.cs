@@ -1,5 +1,5 @@
 namespace Isu.Entities;
-public class Student
+public class Student : IEquatable<Student>
 {
     public Student(string name, Group group, int id)
     {
@@ -20,5 +20,21 @@ public class Student
         Group.Remove(this);
         newGroup.Add(this);
         Group = newGroup;
+    }
+
+    public override bool Equals(object? obj) => Equals(obj as Student);
+    public bool Equals(Student? other)
+    {
+        if (this == other) return true;
+        if (other == null) return false;
+        if (Name != other.Name) return false;
+        if (Id != other.Id) return false;
+        if (Group != other.Group) return false;
+        return true;
+    }
+
+    public override int GetHashCode()
+    {
+        return Name.GetHashCode() ^ Id.GetHashCode();
     }
 }

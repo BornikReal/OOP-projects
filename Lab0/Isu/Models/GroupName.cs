@@ -12,7 +12,7 @@ public class GroupName
     public const int BachMagSpecGroupNameLenNoSpec = 5;
     public const int BachMagSpecGroupNameLen = 6;
     private static readonly Regex RegexPD = new Regex(@"^([78])(\d{3})$", RegexOptions.Compiled);
-    private static readonly Regex RegexBMS = new Regex(@"^([A-Z])(\d)(\d)(\d{2})(\d?)$", RegexOptions.Compiled);
+    private static readonly Regex RegexBMS = new Regex(@"^([A-Z])([345])(\d)(\d{2})(\d?)$", RegexOptions.Compiled);
 
     public GroupName(string name)
     {
