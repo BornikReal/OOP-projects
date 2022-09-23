@@ -1,14 +1,10 @@
-using Isu.Models;
-
 namespace Isu.Entities;
 public class Student
 {
-    private readonly GeneratorId _generatorId;
-    public Student(string name, Group group)
+    public Student(string name, Group group, int id)
     {
         Name = name;
-        _generatorId = new GeneratorId();
-        Id = _generatorId.Generate();
+        Id = id;
         group.Add(this);
         Group = group;
     }

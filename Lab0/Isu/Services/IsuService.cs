@@ -30,7 +30,7 @@ public class IsuService : IIsuService
 
     public Student AddStudent(Group group, string name)
     {
-        _students.Add(new Student(name, group));
+        _students.Add(new Student(name, group, GeneratorId.Generate()));
         return _students.Last();
     }
 
