@@ -4,13 +4,27 @@ namespace Shops.Entities;
 
 public class Shop
 {
-    public Shop(string name)
+    private ShopProductsContainer? _productsContainer;
+    private string? _name;
+    public Shop() { }
+
+    public ShopProductsContainer ProductsContainer
     {
-        Name = name;
+        get => _productsContainer!;
+        set
+        {
+            if (_productsContainer != null)
+                throw new Exception();
+            _productsContainer = value;
+        }
     }
 
-    public ShopProductsContainer ProductsContainer { get; } = new ShopProductsContainer();
-    public string Name { get; set; }
+    public string Name
+    {
+        get => _name!;
+        set => _name = value;
+    }
+
     public Guid Id { get; } = Guid.NewGuid();
 
     // TODO

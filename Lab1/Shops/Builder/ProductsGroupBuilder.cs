@@ -38,4 +38,14 @@ public class ProductsGroupBuilder : IShopElementsBuilder
         _productsGroup = new ShopProduct();
         return productsGroup;
     }
+
+    public void ShopBuildName(string name)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ShopBuildProducts(ShopProductsContainer shopProductsContainer)
+    {
+        throw new NotImplementedException();
+    }
 }

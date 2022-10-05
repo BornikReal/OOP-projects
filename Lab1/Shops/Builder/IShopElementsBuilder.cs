@@ -9,5 +9,7 @@ public interface IShopElementsBuilder
     void ProductsGroupBuildAmount(int amount);
     void ProductsGroupBuildProduct(Product product);
     void ProductsGroupBuildShop(Shop shop);
+    void ShopBuildName(string name);
+    void ShopBuildProducts(ShopProductsContainer shopProductsContainer);
     public void Reset();
 }
