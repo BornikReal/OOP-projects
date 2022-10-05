@@ -20,4 +20,15 @@ public class ShopElementsDirector
         Builder.ProductsGroupBuildPrice(amount);
         Builder.ProductsGroupBuildShop(shop);
     }
+
+    public void AddEmptyShop(string name)
+    {
+        Builder!.ShopBuildName(name);
+    }
+
+    public void AddReadyShop(string name, ShopProductsContainer shopProductsContainer)
+    {
+        Builder!.ShopBuildName(name);
+        Builder.ShopBuildProducts(shopProductsContainer);
+    }
 }
