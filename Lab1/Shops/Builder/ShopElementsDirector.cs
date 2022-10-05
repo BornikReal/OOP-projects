@@ -7,17 +7,10 @@ public class ShopElementsDirector
 {
     public IShopElementsBuilder? Builder { private get; set; }
 
-    public void AddEmtpyProductGroups(Product product, decimal price)
+    public void AddReadProductGroups(Product product, int amount)
     {
         Builder!.ProductsGroupBuildProduct(product);
-        Builder.ProductsGroupBuildPrice(price);
-    }
-
-    public void AddEmtpyShopProductGroups(Product product, decimal price, Shop shop)
-    {
-        Builder!.ProductsGroupBuildProduct(product);
-        Builder.ProductsGroupBuildPrice(price);
-        Builder.ProductsGroupBuildShop(shop);
+        Builder.ProductsGroupBuildPrice(amount);
     }
 
     public void AddProductGroups(Product product, decimal price, int amount, Shop shop)

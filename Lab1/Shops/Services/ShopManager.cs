@@ -36,7 +36,7 @@ public class ShopManager : IShopManager
         _products.Add(product);
     }
 
-    public ProductsGroup AddProductsToShop(Shop shop, Product product, decimal price, int amount)
+    public ShopProducts AddProductsToShop(Shop shop, Product product, decimal price, int amount)
     {
         if (_shops.Find(s => s == shop) == null)
             throw new Exception();
@@ -49,7 +49,7 @@ public class ShopManager : IShopManager
 
     public void BuyCheapest(Person person, Product product, int amount)
     {
-        ProductsGroup? cur_product = null, buf_product;
+        ShopProducts? cur_product = null, buf_product;
         foreach (Shop shop in _shops)
         {
             buf_product = shop.GetProductsGroup(product);
@@ -66,7 +66,7 @@ public class ShopManager : IShopManager
 
     public void BuyProducts(Person person, Shop shop, List<(Product, int)> products)
     {
-        ProductsGroup? cur_product;
+        ShopProducts? cur_product;
         foreach ((Product, int) cort in products)
         {
             cur_product = shop.GetProductsGroup(cort.Item1);
