@@ -9,6 +9,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="Services\ShopManager.cs.old" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="Services\ShopManager.cs.old" />
+    </ItemGroup>
+
+    <ItemGroup>
         <None Include="..\..\.editorconfig" />
     </ItemGroup>
 
