@@ -1,30 +1,14 @@
-﻿using Shops.Models;
-
-namespace Shops.Products;
+﻿namespace Shops.Products;
 public class Product
 {
-    private readonly GeneratorId _generatorId;
-    public Product(string name, int id = 0)
+    public Product(string name)
     {
         Name = name;
-        _generatorId = new GeneratorId("ProductsId.json");
-        if (id == 0)
-        {
-            Id = _generatorId.Generate();
-        }
-        else if (id >= _generatorId.MinId && id <= _generatorId.MaxId)
-        {
-            _generatorId.UseID(id);
-            Id = id;
-        }
-        else
-        {
-            throw new Exception();
-        }
     }
 
-    public string Name { get; set; }
-    public int Id { get; }
+    public string Name { get; }
+
+    public Guid Id { get; } = Guid.NewGuid();
 
     public bool Equals(Product obj)
     {

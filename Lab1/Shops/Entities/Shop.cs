@@ -1,27 +1,20 @@
-﻿using Shops.Models;
-using Shops.Products;
+﻿using Shops.Products;
 
 namespace Shops.Entities;
 
 public class Shop
 {
-    private readonly List<ProductsGroup> _products;
-    private readonly GeneratorId _generatorId;
+    private readonly List<ProductsGroup> _products = new List<ProductsGroup>();
     public Shop(string name, string address)
     {
         Name = name;
         Adress = address;
-        _products = new List<ProductsGroup>();
-        _generatorId = new GeneratorId("ShopsId.json");
-        Id = _generatorId.Generate();
-        Wallet = 0;
     }
 
     public IReadOnlyList<ProductsGroup> Products => _products;
     public string Name { get; set; }
     public string Adress { get; set; }
-    public decimal Wallet { get; private set; }
-    public int Id { get; }
+    public Guid Id { get; } = Guid.NewGuid();
     public void RemoveProducts(ProductsGroup new_products)
     {
         if (new_products.Shop == this)

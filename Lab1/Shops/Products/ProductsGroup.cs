@@ -4,67 +4,82 @@ namespace Shops.Products;
 
 public class ProductsGroup
 {
-    private decimal _price;
+    private decimal? _singlePrice;
     private Shop? _shop;
-    private int _amount;
+    private int? _amount;
+    private Product? _product;
 
-    public ProductsGroup(Product product, decimal price, int amount)
+    public Product Product
     {
-        Product = product;
-        Amount = amount;
-        Price = price;
+        get => _product!;
+        set
+        {
+            if (_product == null)
+                _product = value;
+            else
+                throw new Exception();
+        }
     }
 
-    public Product Product { get; }
     public int Amount
     {
-        get => _amount;
+        get => (int)_amount!;
         set
         {
-            if (value < 0)
+            if (_amount == null && value >= 0)
+                _amount = value;
+            else
                 throw new Exception();
-            _amount = value;
         }
     }
 
-    public decimal Price
+    public decimal SinglePrice
     {
-        get => _price;
+        get => (decimal)_singlePrice!;
         set
         {
-            if (value < 0)
+            if (_singlePrice == null && value >= 0)
+                _singlePrice = value;
+            else
                 throw new Exception();
-            _price = value;
         }
     }
 
-    public Shop? Shop
+    public Shop Shop
     {
-        get => _shop;
+        get => _shop!;
         set
         {
-            ChangeShop(value);
+            if (_shop == null)
+                _shop = value;
+            else
+                throw new Exception();
         }
+    }
+
+    public void AddProducts(int amount)
+    {
+        if (amount <= 0)
+            throw new Exception();
+        _amount += amount;
+    }
+
+    public void RemoveProducts(int amount)
+    {
+        if (amount <= 0 || _amount - amount < 0)
+            throw new Exception();
+        _amount -= amount;
     }
 
     public decimal GetPrice(int amount = -1)
     {
         if (amount < 0 || amount > Amount)
-            amount = Amount;
-        return Price * amount / 100;
+            return SinglePrice * Amount / 100;
+        return SinglePrice * amount / 100;
     }
 
     public bool Equals(ProductsGroup obj)
     {
-        return Product == obj.Product && Amount == obj.Amount && Price == obj.Price;
-    }
-
-    private void ChangeShop(Shop? new_shop)
-    {
-        if (new_shop != null && new_shop.FindProducts(this) == null)
-            throw new Exception();
-        else if (_shop != null && _shop.FindProducts(this) != null)
-            throw new Exception();
-        _shop = new_shop;
+        return Product == obj.Product && Amount == obj.Amount && SinglePrice == obj.SinglePrice && Shop == obj.Shop;
     }
 }
