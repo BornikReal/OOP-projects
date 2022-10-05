@@ -8,15 +8,13 @@ public class Shop
     private readonly List<ProductsGroup> _products = new List<ProductsGroup>();
     private readonly ShopElementsDirector _elementsDirector = new ShopElementsDirector();
     private readonly ProductsGroupBuilder _productsGroupBuilder = new ProductsGroupBuilder();
-    public Shop(string name, string address)
+    public Shop(string name)
     {
         Name = name;
-        Adress = address;
     }
 
     public IReadOnlyList<ProductsGroup> Products => _products;
     public string Name { get; set; }
-    public string Adress { get; set; }
     public Guid Id { get; } = Guid.NewGuid();
     public void RemoveProducts(Product product)
     {
