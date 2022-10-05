@@ -14,7 +14,7 @@ public class BuyingHandler
 
     public void Buy(Person person, Product product, int amount)
     {
-        ShopProducts? products = _shop.FindProduct(product);
+        ShopProduct? products = _shop.FindProduct(product);
         if (products == null)
             throw new Exception();
         if (person.Wallet < products.GetPrice(amount))

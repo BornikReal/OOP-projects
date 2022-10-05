@@ -7,7 +7,7 @@ public interface IShopManager
 {
     public Shop CreateShop(string name, string address);
     public void RegisterProduct(Product product);
-    public ShopProducts AddProductsToShop(Shop shop, Product product, decimal price, int amount);
+    public ShopProduct AddProductsToShop(Shop shop, Product product, decimal price, int amount);
     public void BuyCheapest(Person person, Product product, int amount);
     public void BuyProducts(Person person, Shop shop, List<(Product, int)> products);
 }

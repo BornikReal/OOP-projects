@@ -1,0 +1,23 @@
+﻿using Shops.Builder;
+using Shops.Entities;
+
+namespace Shops.Products;
+public class ShopProductsContainer : ProductsContainer
+{
+    public void AddProduct(Product product, int price, int amount, Shop shop)
+    {
+        if (FindProduct(product) != null)
+            throw new Exception();
+        ElementsDirector.Builder = ProductsGroupBuilder;
+        ElementsDirector.AddProductGroups(product, price, amount, shop);
+        Products.Add(ProductsGroupBuilder.GetProductsGroup());
+    }
+
+    public void ReplenishProducts(Product product, int amount)
+    {
+        ShopProduct? products = FindProduct(product);
+        if (products == null)
+            throw new Exception();
+        products.AddProducts(amount);
+    }
+}
