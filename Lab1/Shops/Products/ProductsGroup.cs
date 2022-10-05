@@ -45,9 +45,9 @@ public class ProductsGroup
         }
     }
 
-    public Shop Shop
+    public Shop? Shop
     {
-        get => _shop!;
+        get => _shop;
         set
         {
             if (_shop == null)
@@ -73,7 +73,7 @@ public class ProductsGroup
 
     public decimal GetPrice(int amount = -1)
     {
-        if (amount < 0 || amount > Amount)
+        if (amount < 0)
             return SinglePrice * Amount / 100;
         return SinglePrice * amount / 100;
     }

@@ -12,6 +12,6 @@ public class Product
 
     public bool Equals(Product obj)
     {
-        return Id == obj.Id && Name == obj.Name;
+        return Id == obj.Id;
     }
 }

@@ -1,4 +1,5 @@
-﻿using Shops.Products;
+﻿using Shops.Entities;
+using Shops.Products;
 
 namespace Shops.Builder;
 
@@ -19,6 +20,11 @@ public class ProductsGroupBuilder : IShopElementsBuilder
     public void ProductsGroupBuildAmount(int amount)
     {
         _productsGroup.Amount = amount;
+    }
+
+    public void ProductsGroupBuildShop(Shop shop)
+    {
+        _productsGroup.Shop = shop;
     }
 
     public void Reset()
