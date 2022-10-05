@@ -4,7 +4,6 @@ namespace Shops.Products;
 
 public class ProductsGroup
 {
-    private decimal _discount;
     private decimal _price;
     private Shop? _shop;
     private int _amount;
@@ -14,7 +13,6 @@ public class ProductsGroup
         Product = product;
         Amount = amount;
         Price = price;
-        Discount = 0;
     }
 
     public Product Product { get; }
@@ -49,27 +47,16 @@ public class ProductsGroup
         }
     }
 
-    public decimal Discount
-    {
-        get => _discount;
-        set
-        {
-            if (value is <= 0 or >= 100)
-                throw new Exception();
-            _discount = value;
-        }
-    }
-
     public decimal GetPrice(int amount = -1)
     {
         if (amount < 0 || amount > Amount)
             amount = Amount;
-        return Price * amount * (100 - Discount) / 100;
+        return Price * amount / 100;
     }
 
     public bool Equals(ProductsGroup obj)
     {
-        return Product == obj.Product && Amount == obj.Amount && Price == obj.Price && Discount == obj.Discount;
+        return Product == obj.Product && Amount == obj.Amount && Price == obj.Price;
     }
 
     private void ChangeShop(Shop? new_shop)

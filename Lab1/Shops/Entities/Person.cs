@@ -4,7 +4,7 @@ public class Person
 {
     private decimal _wallet;
 
-    public Person(string name, int wallet)
+    public Person(string name, decimal wallet)
     {
         Name = name;
         Wallet = wallet;

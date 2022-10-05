@@ -1,5 +1,4 @@
 ﻿using Shops.Models;
-using System.Diagnostics;
 
 namespace Shops.Products;
 public class Product
