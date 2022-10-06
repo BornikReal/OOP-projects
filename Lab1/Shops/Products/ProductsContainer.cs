@@ -1,12 +1,8 @@
-﻿using Shops.Builder;
-
-namespace Shops.Products;
+﻿namespace Shops.Products;
 
 public abstract class ProductsContainer
 {
     protected List<FullProduct> Products { get; } = new List<FullProduct>();
-    protected ShopElementsDirector ElementsDirector { get; } = new ShopElementsDirector();
-    protected FullProductBuilder ProductsGroupBuilder { get; } = new FullProductBuilder();
 
     public FullProduct? FindProduct(Product product)
     {

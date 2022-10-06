@@ -5,26 +5,15 @@ namespace Shops.Entities;
 
 public class Shop
 {
-    private ShopProductsContainer? _productsContainer;
-    private string? _name;
-    public Shop() { }
-
-    public ShopProductsContainer ProductsContainer
+    public Shop(string name)
     {
-        get => _productsContainer!;
-        set
-        {
-            if (_productsContainer != null)
-                throw new Exception();
-            _productsContainer = value;
-        }
+        Name = name;
+        ProductsContainer = new ShopProductsContainer(this);
     }
 
-    public string Name
-    {
-        get => _name!;
-        set => _name = value;
-    }
+    public ShopProductsContainer ProductsContainer { get; }
+
+    public string Name { get; set; }
 
     public Guid Id { get; } = Guid.NewGuid();
 
@@ -34,7 +23,7 @@ public class Shop
             throw new Exception();
         if (acc.Sellable.Shop != this)
             throw new Exception();
-        acc.Sellable.RemoveProducts(acc.SellAmount);
+        acc.Sellable.Amount -= acc.SellAmount;
     }
 
     public bool Equals(Shop obj)

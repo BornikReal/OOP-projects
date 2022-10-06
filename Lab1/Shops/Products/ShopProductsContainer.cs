@@ -14,9 +14,7 @@ public class ShopProductsContainer : ProductsContainer
     {
         if (FindProduct(product) != null)
             throw new Exception();
-        ElementsDirector.Builder = ProductsGroupBuilder;
-        ElementsDirector.MakeProductGroups(product, price, amount, Shop);
-        Products.Add(ProductsGroupBuilder.GetProductsGroup());
+        Products.Add(new FullProduct(product, amount, price, Shop));
     }
 
     public void ReplenishProducts(Product product, int amount)
@@ -24,6 +22,6 @@ public class ShopProductsContainer : ProductsContainer
         FullProduct? products = FindProduct(product);
         if (products == null)
             throw new Exception();
-        products.AddProducts(amount);
+        products.Amount += amount;
     }
 }

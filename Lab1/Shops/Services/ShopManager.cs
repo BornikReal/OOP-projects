@@ -5,58 +5,35 @@ namespace Shops.Services;
 
 public class ShopManager : IShopManager
 {
-    private List<Shop>? _shops;
-    private List<Product>? _products;
+    private readonly List<Shop> _shops = new List<Shop>();
+    private readonly List<Product> _products = new List<Product>();
 
     public ShopManager() { }
-
-    public List<Shop> InternalShops
-    {
-        private get => _shops!;
-        set
-        {
-            if (_shops != null)
-                throw new Exception();
-            _shops = value;
-        }
-    }
-
-    public List<Product> InternalProducts
-    {
-        private get => _products!;
-        set
-        {
-            if (_products != null)
-                throw new Exception();
-            _products = value;
-        }
-    }
-
     public IReadOnlyList<Shop> Shops => _shops!;
     public IReadOnlyList<Product> Products => _products!;
 
     public bool ContainsShop(Shop shop)
     {
-        return InternalShops.Find(s => s == shop) != null;
+        return _shops.Find(s => s == shop) != null;
     }
 
     public bool ContainsProduct(Product product)
     {
-        return InternalProducts.Find(s => s == product) != null;
+        return _products.Find(s => s == product) != null;
     }
 
     public void RegisterShop(Shop shop)
     {
         if (ContainsShop(shop))
             throw new Exception();
-        InternalShops.Add(shop);
+        _shops.Add(shop);
     }
 
     public void RegisterProduct(Product product)
     {
         if (ContainsProduct(product))
             throw new Exception();
-        InternalProducts.Add(product);
+        _products.Add(product);
     }
 
     public void SetNewPrice(Shop shop, Product product, decimal price)
@@ -78,7 +55,7 @@ public class ShopManager : IShopManager
         if (!ContainsProduct(product))
             throw new Exception();
         FullProduct? cur_product = null, buf_product;
-        foreach (Shop shop in InternalShops)
+        foreach (Shop shop in _shops)
         {
             buf_product = shop.ProductsContainer.FindProduct(product);
             if (buf_product == null || buf_product.Amount < amount)

@@ -6,32 +6,32 @@ public class FullProduct
 {
     private decimal? _singlePrice;
     private Shop? _shop;
-    private int? _amount;
-    private Product? _product;
+    private int _amount;
 
-    public FullProduct() { }
-
-    public Product Product
+    public FullProduct(Product product, int amount)
     {
-        get => _product!;
-        set
-        {
-            if (_product == null)
-                _product = value;
-            else
-                throw new Exception();
-        }
+        Product = product;
+        Amount = amount;
     }
+
+    public FullProduct(Product product, int amount, decimal price, Shop shop)
+    {
+        Product = product;
+        Amount = amount;
+        SinglePrice = price;
+        Shop = shop;
+    }
+
+    public Product Product { get; private set; }
 
     public int Amount
     {
-        get => (int)_amount!;
+        get => _amount;
         set
         {
-            if (_amount == null && value >= 0)
-                _amount = value;
-            else
+            if (value < 0)
                 throw new Exception();
+            _amount = value;
         }
     }
 
@@ -60,28 +60,12 @@ public class FullProduct
 
     public static FullProduct Clone(FullProduct clonable)
     {
-        var obj = new FullProduct
+        var obj = new FullProduct(new Product(clonable.Product.Name), clonable.Amount)
         {
             _singlePrice = clonable.SinglePrice,
             _shop = clonable.Shop,
-            _amount = clonable.Amount,
-            _product = new Product(clonable.Product.Name),
         };
         return obj;
-    }
-
-    public void AddProducts(int amount)
-    {
-        if (amount <= 0)
-            throw new Exception();
-        _amount += amount;
-    }
-
-    public void RemoveProducts(int amount)
-    {
-        if (amount <= 0 || _amount - amount < 0)
-            throw new Exception();
-        _amount -= amount;
     }
 
     public decimal GetPrice(int amount = -1)
