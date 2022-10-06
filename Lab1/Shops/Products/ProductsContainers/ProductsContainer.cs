@@ -1,4 +1,5 @@
-﻿using Shops.Products.ConcreteProduct;
+﻿using Shops.Exception.ProductsContainerException;
+using Shops.Products.ConcreteProduct;
 
 namespace Shops.Products.ProductsContainers;
 
@@ -15,7 +16,7 @@ public abstract class ProductsContainer
     {
         FullProduct? removable = FindProduct(product);
         if (removable == null)
-            throw new Exception();
+            throw new ProductNotFoundException(product);
         Products.Remove(removable);
     }
 }

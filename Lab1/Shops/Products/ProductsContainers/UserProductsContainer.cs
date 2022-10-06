@@ -1,4 +1,5 @@
-﻿using Shops.Products.ConcreteProduct;
+﻿using Shops.Exception.ProductsContainerException;
+using Shops.Products.ConcreteProduct;
 
 namespace Shops.Products.ProductsContainers;
 
@@ -12,7 +13,7 @@ public class UserProductsContainer : ProductsContainer
     public void AddProduct(Product product, int amount)
     {
         if (FindProduct(product) != null)
-            throw new Exception();
+            throw new ProductAlreadyExist(product);
         Products.Add(new FullProduct(product, amount));
     }
 }

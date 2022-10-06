@@ -1,4 +1,5 @@
 ﻿using Shops.Entities;
+using Shops.Exception.ProductsContainerException;
 using Shops.Products.ConcreteProduct;
 
 namespace Shops.Products.ProductsContainers;
@@ -14,7 +15,7 @@ public class ShopProductsContainer : ProductsContainer
     public void AddProduct(Product product, decimal price, int amount)
     {
         if (FindProduct(product) != null)
-            throw new Exception();
+            throw new ProductAlreadyExist(product);
         Products.Add(new FullProduct(product, amount, price, Shop));
     }
 }
