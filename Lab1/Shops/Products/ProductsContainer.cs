@@ -6,7 +6,7 @@ public abstract class ProductsContainer
 {
     protected List<ShopProduct> Products { get; } = new List<ShopProduct>();
     protected ShopElementsDirector ElementsDirector { get; } = new ShopElementsDirector();
-    protected ProductsGroupBuilder ProductsGroupBuilder { get; } = new ProductsGroupBuilder();
+    protected ShopProductBuilder ProductsGroupBuilder { get; } = new ShopProductBuilder();
 
     public ShopProduct? FindProduct(Product product)
     {

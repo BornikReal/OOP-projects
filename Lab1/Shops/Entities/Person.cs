@@ -4,13 +4,24 @@ namespace Shops.Entities;
 
 public class Person
 {
-    public Person(string name, CashAccount wallet)
+    private string? _name;
+    private CashAccount? _account;
+    public Person() { }
+
+    public string Name
     {
-        Name = name;
-        Wallet = wallet;
+        get => _name!;
+        set => _name = value;
     }
 
-    public string Name { get; set; }
-
-    public CashAccount Wallet { get; private set; }
+    public CashAccount Wallet
+    {
+        get => _account!;
+        set
+        {
+            if (_account != null)
+                throw new Exception();
+            _account = value;
+        }
+    }
 }

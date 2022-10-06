@@ -9,7 +9,7 @@ public class ShopProductsContainer : ProductsContainer
         if (FindProduct(product) != null)
             throw new Exception();
         ElementsDirector.Builder = ProductsGroupBuilder;
-        ElementsDirector.AddProductGroups(product, price, amount, shop);
+        ElementsDirector.MakeProductGroups(product, price, amount, shop);
         Products.Add(ProductsGroupBuilder.GetProductsGroup());
     }
 

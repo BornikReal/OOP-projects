@@ -7,7 +7,7 @@ public class UserProductsContainer : ProductsContainer
         if (FindProduct(product) != null)
             throw new Exception();
         ElementsDirector.Builder = ProductsGroupBuilder;
-        ElementsDirector.AddReadProductGroups(product, amount);
+        ElementsDirector.MakeReadProductGroups(product, amount);
         Products.Add(ProductsGroupBuilder.GetProductsGroup());
     }
 }

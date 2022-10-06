@@ -1,9 +1,10 @@
 ﻿using Shops.Entities;
+using Shops.Models;
 using Shops.Products;
 
 namespace Shops.Builder;
 
-public class ProductsGroupBuilder : IShopElementsBuilder
+public class ShopProductBuilder : IShopElementsBuilder
 {
     private ShopProduct _productsGroup = new ShopProduct();
 
@@ -45,6 +46,16 @@ public class ProductsGroupBuilder : IShopElementsBuilder
     }
 
     public void ShopBuildProducts(ShopProductsContainer shopProductsContainer)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void PersonBuildName(string name)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void PersonBuildWallet(CashAccount wallet)
     {
         throw new NotImplementedException();
     }

@@ -4,30 +4,29 @@ using Shops.Products;
 
 namespace Shops.Builder;
 
-public class ShopBuilder : IShopElementsBuilder
+public class PersonBuilder : IShopElementsBuilder
 {
-    private Shop _shop = new Shop();
-
-    public void ShopBuildName(string name)
+    private Person _person = new Person();
+    public void PersonBuildName(string name)
     {
-        _shop.Name = name;
+        _person.Name = name;
     }
 
-    public void ShopBuildProducts(ShopProductsContainer shopProductsContainer)
+    public void PersonBuildWallet(CashAccount wallet)
     {
-        _shop.ProductsContainer = shopProductsContainer;
+        _person.Wallet = wallet;
     }
 
     public void Reset()
     {
-        _shop = new Shop();
+        _person = new Person();
     }
 
-    public Shop GetShop()
+    public Person GetPerson()
     {
-        Shop shop = _shop;
-        _shop = new Shop();
-        return shop;
+        Person person = _person;
+        _person = new Person();
+        return person;
     }
 
     public void ProductsGroupBuildAmount(int amount)
@@ -50,12 +49,12 @@ public class ShopBuilder : IShopElementsBuilder
         throw new NotImplementedException();
     }
 
-    public void PersonBuildName(string name)
+    public void ShopBuildName(string name)
     {
         throw new NotImplementedException();
     }
 
-    public void PersonBuildWallet(CashAccount wallet)
+    public void ShopBuildProducts(ShopProductsContainer shopProductsContainer)
     {
         throw new NotImplementedException();
     }
