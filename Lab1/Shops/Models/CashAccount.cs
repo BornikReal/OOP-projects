@@ -14,12 +14,12 @@ public class CashAccount
 
     public decimal Wallet { get; private set; }
 
-    public ShopProduct? Sellable { get; private set; } = null;
+    public FullProduct? Sellable { get; private set; } = null;
     public int SellAmount { get; private set; } = 0;
 
-    public ShopProduct Buy(Shop shop, Product product, int amount)
+    public FullProduct Buy(Shop shop, Product product, int amount)
     {
-        ShopProduct? products = shop.ProductsContainer.FindProduct(product);
+        FullProduct? products = shop.ProductsContainer.FindProduct(product);
         if (products == null)
             throw new Exception();
         if (Wallet < products.GetPrice(amount))
@@ -29,6 +29,6 @@ public class CashAccount
         shop.Buy(this);
         Sellable = null;
         SellAmount = 0;
-        return ShopProduct.Clone(products);
+        return FullProduct.Clone(products);
     }
 }

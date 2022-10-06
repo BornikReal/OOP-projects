@@ -2,14 +2,14 @@
 
 namespace Shops.Products;
 
-public class ShopProduct
+public class FullProduct
 {
     private decimal? _singlePrice;
     private Shop? _shop;
     private int? _amount;
     private Product? _product;
 
-    public ShopProduct() { }
+    public FullProduct() { }
 
     public Product Product
     {
@@ -40,10 +40,9 @@ public class ShopProduct
         get => (decimal)_singlePrice!;
         set
         {
-            if (_singlePrice == null && value >= 0)
-                _singlePrice = value;
-            else
+            if (value < 0)
                 throw new Exception();
+            _singlePrice = value;
         }
     }
 
@@ -59,9 +58,9 @@ public class ShopProduct
         }
     }
 
-    public static ShopProduct Clone(ShopProduct clonable)
+    public static FullProduct Clone(FullProduct clonable)
     {
-        var obj = new ShopProduct
+        var obj = new FullProduct
         {
             _singlePrice = clonable.SinglePrice,
             _shop = clonable.Shop,
@@ -92,7 +91,7 @@ public class ShopProduct
         return SinglePrice * amount / 100;
     }
 
-    public bool Equals(ShopProduct obj)
+    public bool Equals(FullProduct obj)
     {
         return Product == obj.Product && Amount == obj.Amount && SinglePrice == obj.SinglePrice && Shop == obj.Shop;
     }

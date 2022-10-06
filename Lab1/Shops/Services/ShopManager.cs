@@ -5,49 +5,82 @@ namespace Shops.Services;
 
 public class ShopManager : IShopManager
 {
-    private readonly List<Shop> _shops = new List<Shop>();
-    private readonly List<Person> _pesons = new List<Person>();
-    private readonly List<Product> _products = new List<Product>();
+    private List<Shop>? _shops;
+    private List<Product>? _products;
 
     public ShopManager() { }
 
-    public IReadOnlyList<Shop> Shops => _shops;
-    public IReadOnlyList<Person> Persons => _pesons;
-    public IReadOnlyList<Product> Products => _products;
-
-    public Shop CreateShop(string name, string address)
+    public List<Shop> InternalShops
     {
-        var new_shop = new Shop(name, address);
-        if (_shops.Find(s => s == new_shop) != null)
+        private get => _shops!;
+        set
+        {
+            if (_shops != null)
+                throw new Exception();
+            _shops = value;
+        }
+    }
+
+    public List<Product> InternalProducts
+    {
+        private get => _products!;
+        set
+        {
+            if (_products != null)
+                throw new Exception();
+            _products = value;
+        }
+    }
+
+    public IReadOnlyList<Shop> Shops => _shops!;
+    public IReadOnlyList<Product> Products => _products!;
+
+    public bool ContainsShop(Shop shop)
+    {
+        return InternalShops.Find(s => s == shop) != null;
+    }
+
+    public bool ContainsProduct(Product product)
+    {
+        return InternalProducts.Find(s => s == product) != null;
+    }
+
+    public void RegisterShop(Shop shop)
+    {
+        InternalShops.Add(shop);
+        if (ContainsShop(shop))
             throw new Exception();
-        _shops.Add(new_shop);
-        return new_shop;
     }
 
     public void RegisterProduct(Product product)
     {
-        if (_products.Find(s => s == product) != null)
+        if (ContainsProduct(product))
             throw new Exception();
-        _products.Add(product);
+        InternalProducts.Add(product);
     }
 
-    public ShopProduct AddProductsToShop(Shop shop, Product product, decimal price, int amount)
+    public void SetNewPrice(Shop shop, Product product, decimal price)
     {
-        if (_shops.Find(s => s == shop) == null)
+        if (price < 0)
             throw new Exception();
-        if (_products.Find(s => s == product) == null)
+        if (!ContainsProduct(product))
             throw new Exception();
-        var new_products = new ProductsGroup(product, price, amount);
-        shop.AddProducts(new_products);
-        return new_products;
+        if (!ContainsShop(shop))
+            throw new Exception();
+        FullProduct? res = shop.ProductsContainer.FindProduct(product);
+        if (res == null)
+            throw new Exception();
+        res.SinglePrice = price;
     }
 
     public void BuyCheapest(Person person, Product product, int amount)
     {
-        ShopProduct? cur_product = null, buf_product;
-        foreach (Shop shop in _shops)
+        if (!ContainsProduct(product))
+            throw new Exception();
+        FullProduct? cur_product = null, buf_product;
+        foreach (Shop shop in InternalShops)
         {
-            buf_product = shop.GetProductsGroup(product);
+            buf_product = shop.ProductsContainer.FindProduct(product);
             if (buf_product == null || buf_product.Amount < amount)
                 continue;
             if (cur_product == null || buf_product.GetPrice(amount) < cur_product.GetPrice(amount))
@@ -56,18 +89,18 @@ public class ShopManager : IShopManager
 
         if (cur_product == null)
             throw new Exception();
-        cur_product.Shop!.Buy(person, cur_product, amount);
+        person.Wallet.Buy(cur_product.Shop!, product, amount);
     }
 
-    public void BuyProducts(Person person, Shop shop, List<(Product, int)> products)
+    public void BuyProducts(Person person, Shop shop, UserProductsContainer products)
     {
-        ShopProduct? cur_product;
-        foreach ((Product, int) cort in products)
+        if (!ContainsShop(shop))
+            throw new Exception();
+        foreach (FullProduct cort in products.UserProducts)
         {
-            cur_product = shop.GetProductsGroup(cort.Item1);
-            if (cur_product == null)
+            if (!ContainsProduct(cort.Product))
                 throw new Exception();
-            shop.Buy(person, cur_product, cort.Item2);
+            person.Wallet.Buy(shop, cort.Product, cort.Amount);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Shops.Builder;
 
 public class ShopProductBuilder : IShopElementsBuilder
 {
-    private ShopProduct _productsGroup = new ShopProduct();
+    private FullProduct _productsGroup = new FullProduct();
 
     public void ProductsGroupBuildPrice(decimal price)
     {
@@ -30,13 +30,13 @@ public class ShopProductBuilder : IShopElementsBuilder
 
     public void Reset()
     {
-        _productsGroup = new ShopProduct();
+        _productsGroup = new FullProduct();
     }
 
-    public ShopProduct GetProductsGroup()
+    public FullProduct GetProductsGroup()
     {
-        ShopProduct productsGroup = _productsGroup;
-        _productsGroup = new ShopProduct();
+        FullProduct productsGroup = _productsGroup;
+        _productsGroup = new FullProduct();
         return productsGroup;
     }
 

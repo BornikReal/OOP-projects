@@ -15,7 +15,7 @@ public class ShopProductsContainer : ProductsContainer
 
     public void ReplenishProducts(Product product, int amount)
     {
-        ShopProduct? products = FindProduct(product);
+        FullProduct? products = FindProduct(product);
         if (products == null)
             throw new Exception();
         products.AddProducts(amount);
