@@ -1,11 +1,11 @@
 ﻿using Shops.Entities;
+using Shops.Exception.ProductException;
 
 namespace Shops.Products.ConcreteProduct;
 
 public class FullProduct
 {
     private decimal? _singlePrice;
-    private Shop? _shop;
     private int _amount;
 
     public FullProduct(Product product, int amount)
@@ -30,7 +30,7 @@ public class FullProduct
         set
         {
             if (value < 0)
-                throw new Exception();
+                throw new InvalidProductAmount(value);
             _amount = value;
         }
     }
@@ -41,29 +41,19 @@ public class FullProduct
         set
         {
             if (value < 0)
-                throw new Exception();
+                throw new InvalidPriceException(value);
             _singlePrice = value;
         }
     }
 
-    public Shop? Shop
-    {
-        get => _shop;
-        set
-        {
-            if (_shop == null)
-                _shop = value;
-            else
-                throw new Exception();
-        }
-    }
+    public Shop? Shop { get; private set; }
 
     public static FullProduct Clone(FullProduct clonable)
     {
         var obj = new FullProduct(new Product(clonable.Product.Name), clonable.Amount)
         {
-            _singlePrice = clonable.SinglePrice,
-            _shop = clonable.Shop,
+            SinglePrice = clonable.SinglePrice,
+            Shop = clonable.Shop,
         };
         return obj;
     }
