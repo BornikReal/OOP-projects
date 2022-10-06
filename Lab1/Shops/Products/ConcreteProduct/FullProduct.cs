@@ -1,6 +1,6 @@
 ﻿using Shops.Entities;
 
-namespace Shops.Products;
+namespace Shops.Products.ConcreteProduct;
 
 public class FullProduct
 {

@@ -1,4 +1,6 @@
-﻿namespace Shops.Products;
+﻿using Shops.Products.ConcreteProduct;
+
+namespace Shops.Products.ProductsContainers;
 
 public class UserProductsContainer : ProductsContainer
 {

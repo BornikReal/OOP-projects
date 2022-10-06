@@ -1,5 +1,5 @@
 ﻿using Shops.Entities;
-using Shops.Products;
+using Shops.Products.ConcreteProduct;
 
 namespace Shops.Models;
 

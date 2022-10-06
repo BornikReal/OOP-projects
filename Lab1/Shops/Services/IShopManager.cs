@@ -1,5 +1,6 @@
 ﻿using Shops.Entities;
-using Shops.Products;
+using Shops.Products.ConcreteProduct;
+using Shops.Products.ProductsContainers;
 
 namespace Shops.Services;
 

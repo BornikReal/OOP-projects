@@ -1,4 +1,4 @@
-﻿namespace Shops.Products;
+﻿namespace Shops.Products.ConcreteProduct;
 public class Product
 {
     public Product(string name)

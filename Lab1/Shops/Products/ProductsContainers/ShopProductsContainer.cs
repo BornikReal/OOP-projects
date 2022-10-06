@@ -1,6 +1,7 @@
 ﻿using Shops.Entities;
+using Shops.Products.ConcreteProduct;
 
-namespace Shops.Products;
+namespace Shops.Products.ProductsContainers;
 public class ShopProductsContainer : ProductsContainer
 {
     public ShopProductsContainer(Shop shop)

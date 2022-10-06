@@ -1,6 +1,7 @@
 ﻿using Shops.Entities;
 using Shops.Models;
-using Shops.Products;
+using Shops.Products.ConcreteProduct;
+using Shops.Products.ProductsContainers;
 using Shops.Services;
 using Xunit;
 
