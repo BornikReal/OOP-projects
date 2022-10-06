@@ -1,4 +1,5 @@
-﻿using Shops.Models;
+﻿using Shops.Exception.CashAccountException;
+using Shops.Models;
 using Shops.Products.ProductsContainers;
 
 namespace Shops.Entities;
@@ -19,10 +20,8 @@ public class Shop
 
     public void Buy(CashAccount acc)
     {
-        if (acc.Sellable == null)
-            throw new Exception();
-        if (acc.Sellable.Shop != this)
-            throw new Exception();
+        if (acc.Sellable == null || acc.Sellable.Shop != this)
+            throw new UnauthorizedPurchaseAttemptException();
         acc.Sellable.Amount -= acc.SellAmount;
     }
 
