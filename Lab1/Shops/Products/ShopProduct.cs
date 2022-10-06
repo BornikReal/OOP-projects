@@ -11,14 +11,6 @@ public class ShopProduct
 
     public ShopProduct() { }
 
-    public ShopProduct(ShopProduct clonable)
-    {
-        _singlePrice = clonable.SinglePrice;
-        _shop = clonable.Shop;
-        _amount = clonable.Amount;
-        _product = new Product(clonable.Product.Name);
-    }
-
     public Product Product
     {
         get => _product!;

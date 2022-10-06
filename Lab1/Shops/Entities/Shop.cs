@@ -1,4 +1,5 @@
-﻿using Shops.Products;
+﻿using Shops.Models;
+using Shops.Products;
 
 namespace Shops.Entities;
 
@@ -27,15 +28,13 @@ public class Shop
 
     public Guid Id { get; } = Guid.NewGuid();
 
-    // TODO
-    public void Buy(Person person, Product product, int amount)
+    public void Buy(CashAccount acc)
     {
-        ShopProduct? products = ProductsContainer.FindProduct(product);
-        if (products == null)
+        if (acc.Sellable == null)
             throw new Exception();
-        if (person.Wallet < products.GetPrice(amount))
+        if (acc.Sellable.Shop != this)
             throw new Exception();
-        products.RemoveProducts(amount);
+        acc.Sellable.RemoveProducts(acc.SellAmount);
     }
 
     public bool Equals(Shop obj)
