@@ -31,6 +31,6 @@ public class ShopsTest
         _shopManager.RegisterProduct(product);
         shop.ProductsContainer.AddProduct(product, 10, 2);
         _shopManager.SetNewPrice(shop, product, 20);
-        Assert.Equal(1, 1);
+        Assert.Equal(20, shop.ProductsContainer.FindProduct(product) !.SinglePrice);
     }
 }
