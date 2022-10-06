@@ -27,6 +27,7 @@ public class CashAccount
         Sellable = products;
         SellAmount = amount;
         shop.Buy(this);
+        Wallet -= products.GetPrice(amount);
         Sellable = null;
         SellAmount = 0;
         return FullProduct.Clone(products);

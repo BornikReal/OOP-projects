@@ -71,8 +71,8 @@ public class FullProduct
     public decimal GetPrice(int amount = -1)
     {
         if (amount < 0)
-            return SinglePrice * Amount / 100;
-        return SinglePrice * amount / 100;
+            return SinglePrice * Amount;
+        return SinglePrice * amount;
     }
 
     public bool Equals(FullProduct obj)

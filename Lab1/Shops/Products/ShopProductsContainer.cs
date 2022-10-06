@@ -16,12 +16,4 @@ public class ShopProductsContainer : ProductsContainer
             throw new Exception();
         Products.Add(new FullProduct(product, amount, price, Shop));
     }
-
-    public void ReplenishProducts(Product product, int amount)
-    {
-        FullProduct? products = FindProduct(product);
-        if (products == null)
-            throw new Exception();
-        products.Amount += amount;
-    }
 }

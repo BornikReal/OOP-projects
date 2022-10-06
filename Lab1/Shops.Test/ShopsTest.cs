@@ -44,12 +44,73 @@ public class ShopsTest
         _shopManager.RegisterShop(shop3);
         shop3.ProductsContainer.AddProduct(product, 15, 4);
 
-        var person = new Person("BornikReal", new CashAccount(1000));
+        var person = new Person("Joseph Joestar", new CashAccount(1000));
 
         _shopManager.BuyCheapest(person, product, 3);
 
         Assert.Equal(2, shop1.ProductsContainer.FindProduct(product) !.Amount);
         Assert.Equal(6, shop2.ProductsContainer.FindProduct(product) !.Amount);
         Assert.Equal(1, shop3.ProductsContainer.FindProduct(product) !.Amount);
+        Assert.Equal(955, person.Wallet.Wallet);
+    }
+
+    [Fact]
+    public void RegisterShopAndSeveralProductsAndBuyThem()
+    {
+        var shop = new Shop("LSDstore");
+        _shopManager.RegisterShop(shop);
+
+        var product1 = new Product("Cool pills");
+        _shopManager.RegisterProduct(product1);
+        shop.ProductsContainer.AddProduct(product1, 10, 7);
+
+        var product2 = new Product("Cool powder");
+        _shopManager.RegisterProduct(product2);
+        shop.ProductsContainer.AddProduct(product2, 20, 4);
+
+        var product3 = new Product("Cool mushrooms");
+        _shopManager.RegisterProduct(product3);
+        shop.ProductsContainer.AddProduct(product3, 30, 2);
+
+        var person = new Person("Madoka Kaname", new CashAccount(1337));
+        var shoppingList = new UserProductsContainer();
+        shoppingList.AddProduct(product1, 5);
+        shoppingList.AddProduct(product2, 4);
+        shoppingList.AddProduct(product3, 1);
+        _shopManager.BuyProducts(person, shop, shoppingList);
+
+        Assert.Equal(1177, person.Wallet.Wallet);
+
+        Assert.Equal(2, shop.ProductsContainer.FindProduct(product1) !.Amount);
+        Assert.Equal(0, shop.ProductsContainer.FindProduct(product2) !.Amount);
+        Assert.Equal(1, shop.ProductsContainer.FindProduct(product3) !.Amount);
+    }
+
+    [Fact]
+    public void BuyProductWhenNotEnoughMoney()
+    {
+        var shop = new Shop("LSDstore");
+        _shopManager.RegisterShop(shop);
+
+        var product = new Product("Cool pills");
+        _shopManager.RegisterProduct(product);
+        shop.ProductsContainer.AddProduct(product, 10, 7);
+
+        var person = new Person("Mayuri Shiina", new CashAccount(69));
+        Assert.ThrowsAny<Exception>(() => person.Wallet.Buy(shop, product, 7));
+    }
+
+    [Fact]
+    public void BuyProductWhenNotEnoughProducts()
+    {
+        var shop = new Shop("LSDstore");
+        _shopManager.RegisterShop(shop);
+
+        var product = new Product("Cool pills");
+        _shopManager.RegisterProduct(product);
+        shop.ProductsContainer.AddProduct(product, 10, 7);
+
+        var person = new Person("Lelouch Lamperouge", new CashAccount(228));
+        Assert.ThrowsAny<Exception>(() => person.Wallet.Buy(shop, product, 10));
     }
 }
