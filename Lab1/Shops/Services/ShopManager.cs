@@ -1,4 +1,6 @@
 ﻿using Shops.Entities;
+using Shops.Exception.ProductsContainerException;
+using Shops.Exception.ShopManagerException;
 using Shops.Products.ConcreteProduct;
 using Shops.Products.ProductsContainers;
 
@@ -26,35 +28,33 @@ public class ShopManager : IShopManager
     public void RegisterShop(Shop shop)
     {
         if (ContainsShop(shop))
-            throw new Exception();
+            throw new ShopAlreadyRegisteredException(shop);
         _shops.Add(shop);
     }
 
     public void RegisterProduct(Product product)
     {
         if (ContainsProduct(product))
-            throw new Exception();
+            throw new ProductAlreadyRegisteredException(product);
         _products.Add(product);
     }
 
     public void SetNewPrice(Shop shop, Product product, decimal price)
     {
-        if (price < 0)
-            throw new Exception();
         if (!ContainsProduct(product))
-            throw new Exception();
+            throw new ProductDoesNotRegisteredException(product);
         if (!ContainsShop(shop))
-            throw new Exception();
+            throw new ShopDoesNotRegisteredException(shop);
         FullProduct? res = shop.ProductsContainer.FindProduct(product);
         if (res == null)
-            throw new Exception();
+            throw new ProductNotFoundException(product);
         res.SinglePrice = price;
     }
 
     public void BuyCheapest(Person person, Product product, int amount)
     {
         if (!ContainsProduct(product))
-            throw new Exception();
+            throw new ProductDoesNotRegisteredException(product);
         FullProduct? cur_product = null, buf_product;
         foreach (Shop shop in _shops)
         {
@@ -66,18 +66,18 @@ public class ShopManager : IShopManager
         }
 
         if (cur_product == null)
-            throw new Exception();
+            throw new ProductNotFoundException(product);
         person.Wallet.Buy(cur_product.Shop!, product, amount);
     }
 
     public void BuyProducts(Person person, Shop shop, UserProductsContainer products)
     {
         if (!ContainsShop(shop))
-            throw new Exception();
+            throw new ShopDoesNotRegisteredException(shop);
         foreach (FullProduct cort in products.UserProducts)
         {
             if (!ContainsProduct(cort.Product))
-                throw new Exception();
+                throw new ProductDoesNotRegisteredException(cort.Product);
             person.Wallet.Buy(shop, cort.Product, cort.Amount);
         }
     }

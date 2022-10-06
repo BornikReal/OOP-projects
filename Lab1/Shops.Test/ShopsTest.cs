@@ -1,4 +1,6 @@
 ﻿using Shops.Entities;
+using Shops.Exception.CashAccountException;
+using Shops.Exception.ProductException;
 using Shops.Models;
 using Shops.Products.ConcreteProduct;
 using Shops.Products.ProductsContainers;
@@ -98,7 +100,7 @@ public class ShopsTest
         shop.ProductsContainer.AddProduct(product, 10, 7);
 
         var person = new Person("Mayuri Shiina", new CashAccount(69));
-        Assert.ThrowsAny<Exception>(() => person.Wallet.Buy(shop, product, 7));
+        Assert.ThrowsAny<InvalidWalletValueException>(() => person.Wallet.Buy(shop, product, 7));
     }
 
     [Fact]
@@ -112,6 +114,6 @@ public class ShopsTest
         shop.ProductsContainer.AddProduct(product, 10, 7);
 
         var person = new Person("Lelouch Lamperouge", new CashAccount(228));
-        Assert.ThrowsAny<Exception>(() => person.Wallet.Buy(shop, product, 10));
+        Assert.ThrowsAny<InvalidProductAmount>(() => person.Wallet.Buy(shop, product, 10));
     }
 }
