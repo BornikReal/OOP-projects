@@ -24,7 +24,7 @@ public class ShopManagerBuilder : IShopElementsBuilder
         _shopManager = new ShopManager();
     }
 
-    public ShopManager ShopManager()
+    public ShopManager GetShopManager()
     {
         ShopManager shopManager = _shopManager;
         _shopManager = new ShopManager();
@@ -66,7 +66,7 @@ public class ShopManagerBuilder : IShopElementsBuilder
         throw new NotImplementedException();
     }
 
-    public void ShopBuildProducts(ShopProductsContainer shopProductsContainer)
+    public void ShopBuildProducts(ShopProductsContainer? shopProductsContainer)
     {
         throw new NotImplementedException();
     }

@@ -4,7 +4,7 @@ using Shops.Products;
 
 namespace Shops.Builder;
 
-public class ShopProductBuilder : IShopElementsBuilder
+public class FullProductBuilder : IShopElementsBuilder
 {
     private FullProduct _productsGroup = new FullProduct();
 
@@ -45,7 +45,7 @@ public class ShopProductBuilder : IShopElementsBuilder
         throw new NotImplementedException();
     }
 
-    public void ShopBuildProducts(ShopProductsContainer shopProductsContainer)
+    public void ShopBuildProducts(ShopProductsContainer? shopProductsContainer)
     {
         throw new NotImplementedException();
     }

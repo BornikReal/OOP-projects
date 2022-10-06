@@ -47,9 +47,9 @@ public class ShopManager : IShopManager
 
     public void RegisterShop(Shop shop)
     {
-        InternalShops.Add(shop);
         if (ContainsShop(shop))
             throw new Exception();
+        InternalShops.Add(shop);
     }
 
     public void RegisterProduct(Product product)

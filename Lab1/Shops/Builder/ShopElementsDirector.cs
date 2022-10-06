@@ -25,6 +25,7 @@ public class ShopElementsDirector
     public void MakeEmptyShop(string name)
     {
         Builder!.ShopBuildName(name);
+        Builder.ShopBuildProducts(null);
     }
 
     public void MakeReadyShop(string name, ShopProductsContainer shopProductsContainer)

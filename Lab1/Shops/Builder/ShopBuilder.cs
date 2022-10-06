@@ -13,9 +13,12 @@ public class ShopBuilder : IShopElementsBuilder
         _shop.Name = name;
     }
 
-    public void ShopBuildProducts(ShopProductsContainer shopProductsContainer)
+    public void ShopBuildProducts(ShopProductsContainer? shopProductsContainer)
     {
-        _shop.ProductsContainer = shopProductsContainer;
+        if (shopProductsContainer == null)
+            _shop.ProductsContainer = new ShopProductsContainer(_shop);
+        else
+            _shop.ProductsContainer = shopProductsContainer;
     }
 
     public void Reset()

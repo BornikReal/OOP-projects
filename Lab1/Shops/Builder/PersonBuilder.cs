@@ -54,7 +54,7 @@ public class PersonBuilder : IShopElementsBuilder
         throw new NotImplementedException();
     }
 
-    public void ShopBuildProducts(ShopProductsContainer shopProductsContainer)
+    public void ShopBuildProducts(ShopProductsContainer? shopProductsContainer)
     {
         throw new NotImplementedException();
     }

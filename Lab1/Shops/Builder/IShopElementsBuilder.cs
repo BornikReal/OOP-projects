@@ -11,7 +11,7 @@ public interface IShopElementsBuilder
     void ProductsGroupBuildProduct(Product product);
     void ProductsGroupBuildShop(Shop shop);
     void ShopBuildName(string name);
-    void ShopBuildProducts(ShopProductsContainer shopProductsContainer);
+    void ShopBuildProducts(ShopProductsContainer? shopProductsContainer);
     void PersonBuildName(string name);
     void PersonBuildWallet(CashAccount wallet);
     void ShopManagerBuildShops(List<Shop> shops);
