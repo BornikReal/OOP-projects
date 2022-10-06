@@ -14,5 +14,7 @@ public interface IShopElementsBuilder
     void ShopBuildProducts(ShopProductsContainer shopProductsContainer);
     void PersonBuildName(string name);
     void PersonBuildWallet(CashAccount wallet);
+    void ShopManagerBuildShops(List<Shop> shops);
+    void ShopManagerBuildProducts(List<Product> products);
     public void Reset();
 }

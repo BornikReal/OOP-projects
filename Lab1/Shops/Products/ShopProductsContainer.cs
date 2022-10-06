@@ -1,5 +1,4 @@
-﻿using Shops.Builder;
-using Shops.Entities;
+﻿using Shops.Entities;
 
 namespace Shops.Products;
 public class ShopProductsContainer : ProductsContainer

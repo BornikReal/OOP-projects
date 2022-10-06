@@ -59,4 +59,14 @@ public class ShopProductBuilder : IShopElementsBuilder
     {
         throw new NotImplementedException();
     }
+
+    public void ShopManagerBuildShops(List<Shop> shops)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ShopManagerBuildProducts(List<Product> products)
+    {
+        throw new NotImplementedException();
+    }
 }

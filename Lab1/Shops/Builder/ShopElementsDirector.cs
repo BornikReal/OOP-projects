@@ -44,4 +44,16 @@ public class ShopElementsDirector
         Builder!.PersonBuildName(name);
         Builder.PersonBuildWallet(account);
     }
+
+    public void MakeEmptyShopManager()
+    {
+        Builder!.ShopManagerBuildProducts(new List<Product>());
+        Builder.ShopManagerBuildShops(new List<Shop>());
+    }
+
+    public void MakeFullShopManager(List<Product> products, List<Shop> shops)
+    {
+        Builder!.ShopManagerBuildProducts(products);
+        Builder.ShopManagerBuildShops(shops);
+    }
 }
