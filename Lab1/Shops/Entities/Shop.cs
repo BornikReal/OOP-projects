@@ -1,5 +1,6 @@
-﻿using Shops.Exception.CashAccountException;
-using Shops.Models;
+﻿using Shops.Exception.ProductException;
+using Shops.Exception.ProductsContainerException;
+using Shops.Products.ConcreteProduct;
 using Shops.Products.ProductsContainers;
 
 namespace Shops.Entities;
@@ -18,11 +19,15 @@ public class Shop
 
     public Guid Id { get; } = Guid.NewGuid();
 
-    public void Buy(CashAccount acc)
+    public void Buy(Person person, Product product, int amount)
     {
-        if (acc.Sellable == null || acc.Sellable.Shop != this)
-            throw new UnauthorizedPurchaseAttemptException();
-        acc.Sellable.Amount -= acc.SellAmount;
+        FullProduct? fullProduct = ProductsContainer.FindProduct(product);
+        if (fullProduct == null)
+            throw new ProductNotFoundException(product);
+        if (fullProduct.Amount < amount)
+            throw new InvalidProductAmount(amount);
+        person.Wallet.ProcessPucrchase(fullProduct, amount);
+        fullProduct.Amount -= amount;
     }
 
     public bool Equals(Shop obj)

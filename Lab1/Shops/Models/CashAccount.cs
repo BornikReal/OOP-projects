@@ -24,20 +24,8 @@ public class CashAccount
         }
     }
 
-    public FullProduct? Sellable { get; private set; } = null;
-    public int SellAmount { get; private set; } = 0;
-
-    public FullProduct Buy(Shop shop, Product product, int amount)
+    public void ProcessPucrchase(FullProduct products, int amount)
     {
-        FullProduct? products = shop.ProductsContainer.FindProduct(product);
-        if (products == null)
-            throw new ProductNotFoundException(product);
-        Sellable = products;
-        SellAmount = amount;
-        shop.Buy(this);
         Wallet -= products.GetPrice(amount);
-        Sellable = null;
-        SellAmount = 0;
-        return FullProduct.Clone(products);
     }
 }
