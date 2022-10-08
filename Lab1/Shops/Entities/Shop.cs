@@ -21,7 +21,7 @@ public class Shop
 
     public void Buy(Person person, Product product, int amount)
     {
-        FullProduct? fullProduct = ProductsContainer.FindProduct(product);
+        ShopProduct? fullProduct = ProductsContainer.FindProduct(product);
         if (fullProduct == null)
             throw new ProductNotFoundException(product);
         if (fullProduct.Amount < amount)

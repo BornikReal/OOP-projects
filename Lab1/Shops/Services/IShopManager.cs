@@ -6,11 +6,11 @@ namespace Shops.Services;
 
 public interface IShopManager
 {
-    public bool ContainsShop(Shop shop);
-    public bool ContainsProduct(Product product);
-    public void RegisterShop(Shop shop);
-    public void RegisterProduct(Product product);
-    public void SetNewPrice(Shop shop, Product product, decimal price);
-    public void BuyCheapest(Person person, Product product, int amount);
-    public void BuyProducts(Person person, Shop shop, UserProductsContainer products);
+    bool ContainsShop(Shop shop);
+    bool ContainsProduct(Product product);
+    void RegisterShop(Shop shop);
+    void RegisterProduct(Product product);
+    void SetNewPrice(Shop shop, Product product, decimal price);
+    Shop FindCheapest(Product product, int amount);
+    void BuyProducts(Person person, Shop shop, UserProductsContainer products);
 }

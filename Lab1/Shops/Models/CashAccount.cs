@@ -24,7 +24,7 @@ public class CashAccount
         }
     }
 
-    public void ProcessPucrchase(FullProduct products, int amount)
+    public void ProcessPucrchase(ShopProduct products, int amount)
     {
         Wallet -= products.GetPrice(amount);
     }
