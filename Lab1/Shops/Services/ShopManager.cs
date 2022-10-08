@@ -45,17 +45,17 @@ public class ShopManager : IShopManager
             throw new ProductDoesNotRegisteredException(product);
         if (!ContainsShop(shop))
             throw new ShopDoesNotRegisteredException(shop);
-        FullProduct? res = shop.ProductsContainer.FindProduct(product);
+        ShopProduct? res = shop.ProductsContainer.FindProduct(product);
         if (res == null)
             throw new ProductNotFoundException(product);
         res.SinglePrice = price;
     }
 
-    public void BuyCheapest(Person person, Product product, int amount)
+    public Shop FindCheapest(Product product, int amount)
     {
         if (!ContainsProduct(product))
             throw new ProductDoesNotRegisteredException(product);
-        FullProduct? cur_product = null, buf_product;
+        ShopProduct? cur_product = null, buf_product;
         foreach (Shop shop in _shops)
         {
             buf_product = shop.ProductsContainer.FindProduct(product);
@@ -67,18 +67,18 @@ public class ShopManager : IShopManager
 
         if (cur_product == null)
             throw new ProductNotFoundException(product);
-        person.Wallet.Buy(cur_product.Shop!, product, amount);
+        return cur_product.Shop;
     }
 
     public void BuyProducts(Person person, Shop shop, UserProductsContainer products)
     {
         if (!ContainsShop(shop))
             throw new ShopDoesNotRegisteredException(shop);
-        foreach (FullProduct cort in products.UserProducts)
+        foreach (UserProduct cort in products.UserProducts)
         {
             if (!ContainsProduct(cort.Product))
                 throw new ProductDoesNotRegisteredException(cort.Product);
-            person.Wallet.Buy(shop, cort.Product, cort.Amount);
+            shop.Buy(person, cort.Product, cort.Amount);
         }
     }
 }

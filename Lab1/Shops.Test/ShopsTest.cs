@@ -49,7 +49,7 @@ public class ShopsTest
 
         var person = new Person("Joseph Joestar", new CashAccount(1000));
 
-        _shopManager.BuyCheapest(person, product, 3);
+        _shopManager.FindCheapest(product, 3).Buy(person, product, 3);
 
         Assert.Equal(2, shop1.ProductsContainer.FindProduct(product) !.Amount);
         Assert.Equal(6, shop2.ProductsContainer.FindProduct(product) !.Amount);
@@ -100,7 +100,7 @@ public class ShopsTest
         shop.ProductsContainer.AddProduct(product, 10, 7);
 
         var person = new Person("Mayuri Shiina", new CashAccount(69));
-        Assert.ThrowsAny<InvalidWalletValueException>(() => person.Wallet.Buy(shop, product, 7));
+        Assert.ThrowsAny<InvalidWalletValueException>(() => shop.Buy(person, product, 7));
     }
 
     [Fact]
@@ -114,6 +114,6 @@ public class ShopsTest
         shop.ProductsContainer.AddProduct(product, 10, 7);
 
         var person = new Person("Lelouch Lamperouge", new CashAccount(228));
-        Assert.ThrowsAny<InvalidProductAmount>(() => person.Wallet.Buy(shop, product, 10));
+        Assert.ThrowsAny<InvalidProductAmount>(() => shop.Buy(person, product, 10));
     }
 }
