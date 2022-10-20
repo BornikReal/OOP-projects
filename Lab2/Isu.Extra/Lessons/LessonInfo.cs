@@ -2,7 +2,7 @@
 
 public class LessonInfo
 {
-    public LessonInfo(LessonLocation lessonLocation, bool evenWeek, int dayOfTheWeek, string teacher, DateTime timeStart, DateTime timeEnd)
+    public LessonInfo(LessonLocation lessonLocation, bool evenWeek, Weekend dayOfTheWeek, string teacher, DateTime timeStart, DateTime timeEnd)
     {
         LessonLocation = lessonLocation;
         EvenWeek = evenWeek;
@@ -14,7 +14,7 @@ public class LessonInfo
 
     public LessonLocation LessonLocation { get; }
     public bool EvenWeek { get; }
-    public int DayOfTheWeek { get; }
+    public Weekend DayOfTheWeek { get; }
     public string Teacher { get; }
 
     public DateTime TimeStart { get; }
