@@ -1,4 +1,5 @@
-﻿using Isu.Models.GroupNameParts;
+﻿using Isu.Extra.Exception;
+using Isu.Models.GroupNameParts;
 
 namespace Isu.Extra.CGTA;
 
@@ -14,6 +15,7 @@ public class Megafacultet
     }
 
     public string Name { get; }
+    public IReadOnlyList<CGTACourse> Courses => _courses;
 
     public bool AllowedFaculty(GroupLetter faculty)
     {
@@ -23,7 +25,7 @@ public class Megafacultet
     public CGTACourse AddNewCourse(string courseName)
     {
         if (_courses.Find(s => s.CourseName == courseName) != null)
-            throw new System.Exception();
+            throw new CGTAAlreadyExistException(courseName);
         var newCousrse = new CGTACourse(courseName, this);
         _courses.Add(newCousrse);
         return newCousrse;

@@ -1,4 +1,5 @@
-﻿using Isu.Extra.Models;
+﻿using Isu.Extra.Exception;
+using Isu.Extra.Models;
 
 namespace Isu.Extra.Builders;
 
@@ -11,7 +12,7 @@ public class ScheduleBuilder
         foreach (CertainLesson lesson in _lessons)
         {
             if (CertainLesson.HaveIntersection(newLesson, lesson))
-                throw new System.Exception();
+                throw new LessonsIntersectionException();
         }
 
         _lessons.Add(newLesson);

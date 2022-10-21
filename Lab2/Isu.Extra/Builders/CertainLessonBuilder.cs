@@ -1,4 +1,5 @@
-﻿using Isu.Extra.Models;
+﻿using Isu.Extra.Exception;
+using Isu.Extra.Models;
 using Isu.Extra.Models.LessonParts;
 
 namespace Isu.Extra.Builders;
@@ -19,7 +20,7 @@ public class CertainLessonBuilder
         foreach (LessonInfo info in _infos)
         {
             if (LessonInfo.HaveIntersection(info, newLessonInfo))
-                throw new System.Exception();
+                throw new LessonsIntersectionException();
         }
 
         _infos.Add(newLessonInfo);
@@ -28,7 +29,7 @@ public class CertainLessonBuilder
     public CertainLesson GetCertainLesson()
     {
         if (_lesson == null)
-            throw new System.Exception();
+            throw new CertainLessonCreationException();
         return new CertainLesson(_lesson!, _infos);
     }
 

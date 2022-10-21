@@ -1,4 +1,5 @@
-﻿using Isu.Extra.Models;
+﻿using Isu.Extra.Exception;
+using Isu.Extra.Models;
 
 namespace Isu.Extra.CGTA;
 
@@ -19,7 +20,7 @@ public class CGTACourse
     public CGTAStream AddNewStream(string streamName, int maxSize, Schedule lessons)
     {
         if (_streams.Find(s => s.StreamName == streamName) != null)
-            throw new System.Exception();
+            throw new CGTAAlreadyExistException(streamName);
         var newStream = new CGTAStream(streamName, maxSize, lessons, this);
         _streams.Add(newStream);
         return newStream;

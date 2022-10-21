@@ -1,11 +1,13 @@
-﻿namespace Isu.Extra.Models.LessonParts;
+﻿using Isu.Extra.Exception;
+
+namespace Isu.Extra.Models.LessonParts;
 
 public class LessonInfo
 {
     public LessonInfo(LessonLocation lessonLocation, bool evenWeek, Weekend dayOfTheWeek, string teacher, TimeOnly timeStart, TimeOnly timeEnd)
     {
         if (timeEnd <= timeStart)
-            throw new System.Exception();
+            throw new InvalidTimeException();
         LessonLocation = lessonLocation;
         EvenWeek = evenWeek;
         DayOfTheWeek = dayOfTheWeek;

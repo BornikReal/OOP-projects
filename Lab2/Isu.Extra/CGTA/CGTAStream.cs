@@ -1,4 +1,5 @@
-﻿using Isu.Extra.Models;
+﻿using Isu.Extra.Exception;
+using Isu.Extra.Models;
 using Isu.Extra.SuperEntities;
 
 namespace Isu.Extra.CGTA;
@@ -24,15 +25,15 @@ public class CGTAStream
     public void RemoveStudent(SuperStudent student)
     {
         if (!_students.Remove(student))
-            throw new System.Exception();
+            throw new CGTAStudentException(student.Student.Name);
     }
 
     public void AddStudent(SuperStudent student)
     {
         if (_students.Count >= MaxSize)
-            throw new System.Exception();
+            throw new CGTAStudentException(student.Student.Name);
         if (_students.Contains(student))
-            throw new System.Exception();
+            throw new CGTAStudentException(student.Student.Name);
         _students.Add(student);
     }
 }

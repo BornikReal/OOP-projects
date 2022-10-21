@@ -1,5 +1,6 @@
 ﻿using Isu.Entities;
 using Isu.Extra.CGTA;
+using Isu.Extra.Exception;
 
 namespace Isu.Extra.SuperEntities;
 
@@ -20,17 +21,15 @@ public class SuperStudent
     {
         CGTAStream? remov = _cGTAStreams.Find(s => s == stream);
         if (remov == null)
-            throw new System.Exception();
+            throw new CGTAStudentException(Student.Name);
         remov.RemoveStudent(this);
         _cGTAStreams.Remove(remov);
     }
 
     public void SuscribeCGTA(CGTAStream stream)
     {
-        if (_cGTAStreams.Count == MaxStreams)
-            throw new System.Exception();
         if (!_cGTAStreams.Any(s => ValidateCGTA(stream, s)))
-            throw new System.Exception();
+            throw new CGTAStudentException(Student.Name);
         _cGTAStreams.Add(stream);
     }
 
