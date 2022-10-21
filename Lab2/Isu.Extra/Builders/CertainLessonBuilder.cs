@@ -30,7 +30,7 @@ public class CertainLessonBuilder
     {
         if (_lesson == null)
             throw new CertainLessonCreationException();
-        return new CertainLesson(_lesson!, _infos);
+        return new CertainLesson(_lesson, new List<LessonInfo>(_infos));
     }
 
     public void Reset()

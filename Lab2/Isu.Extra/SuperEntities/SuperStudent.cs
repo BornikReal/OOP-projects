@@ -28,7 +28,7 @@ public class SuperStudent
 
     public void SuscribeCGTA(CGTAStream stream)
     {
-        if (!_cGTAStreams.Any(s => ValidateCGTA(stream, s)))
+        if (_cGTAStreams.Count == MaxStreams || _cGTAStreams.Any(s => !ValidateCGTA(stream, s)))
             throw new CGTAStudentException(Student.Name);
         _cGTAStreams.Add(stream);
     }

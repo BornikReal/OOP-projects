@@ -25,6 +25,6 @@ public class ScheduleBuilder
 
     public Schedule GetLessons()
     {
-        return new Schedule(_lessons);
+        return new Schedule(new List<CertainLesson>(_lessons));
     }
 }

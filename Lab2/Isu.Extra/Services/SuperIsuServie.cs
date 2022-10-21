@@ -45,7 +45,7 @@ public class SuperIsuServie : ISuperIsuServie
 
     public void AddStudentToCGTA(Student student, CGTAStream cGTA)
     {
-        if (_studetnTranslator.ContainsKey(student))
+        if (!_studetnTranslator.ContainsKey(student))
             _studetnTranslator.Add(student, new SuperStudent(student));
         if (Schedule.HaveIntersection(_groupTranslator[student.Group].Schedule, cGTA.Lessons))
             throw new CGTAStudentException(student.Name);
