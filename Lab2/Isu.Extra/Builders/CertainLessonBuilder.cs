@@ -1,4 +1,5 @@
-﻿using Isu.Extra.Lessons;
+﻿using Isu.Extra.Models;
+using Isu.Extra.Models.LessonParts;
 
 namespace Isu.Extra.Builders;
 

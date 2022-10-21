@@ -1,4 +1,6 @@
-﻿namespace Isu.Extra.Lessons;
+﻿using Isu.Extra.Models.LessonParts;
+
+namespace Isu.Extra.Models;
 
 public class CertainLesson
 {

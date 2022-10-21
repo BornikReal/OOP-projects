@@ -1,4 +1,4 @@
-﻿namespace Isu.Extra.Lessons;
+﻿namespace Isu.Extra.Models.LessonParts;
 
 public class LessonInfo
 {
@@ -29,7 +29,7 @@ public class LessonInfo
         if (info2.TimeStart >= info1.TimeStart && info2.TimeStart < info1.TimeEnd)
             return true;
         if (info1.TimeStart >= info2.TimeStart && info1.TimeStart < info2.TimeEnd)
-             return true;
+            return true;
         return false;
     }
 }

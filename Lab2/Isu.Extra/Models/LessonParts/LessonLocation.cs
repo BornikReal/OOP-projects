@@ -1,4 +1,4 @@
-﻿namespace Isu.Extra.Lessons;
+﻿namespace Isu.Extra.Models.LessonParts;
 
 public class LessonLocation
 {

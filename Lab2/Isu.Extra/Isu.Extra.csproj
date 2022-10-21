@@ -25,7 +25,6 @@
 
     <ItemGroup>
       <Folder Include="Exception\" />
-      <Folder Include="Services\" />
     </ItemGroup>
 
 </Project>
