@@ -5,7 +5,7 @@ namespace Isu.Extra.SuperEntities;
 
 public class SuperGroup
 {
-    public SuperGroup(Group group, GroupSchedule schedule)
+    public SuperGroup(Group group, Schedule schedule)
     {
         Group = group;
         Schedule = schedule;
@@ -13,5 +13,5 @@ public class SuperGroup
 
     public Group Group { get; }
 
-    public GroupSchedule Schedule { get; }
+    public Schedule Schedule { get; }
 }

@@ -5,10 +5,10 @@ namespace Isu.Extra.CGTA;
 
 public class CGTAStream
 {
-    private readonly List<ConcreteLesson> _lessons;
+    private readonly List<CertainLesson> _lessons;
     private readonly List<SuperStudent> _students;
 
-    public CGTAStream(int maxSize, List<ConcreteLesson> lessons, List<SuperStudent> students, CGTACourse course, string streamName)
+    public CGTAStream(int maxSize, List<CertainLesson> lessons, List<SuperStudent> students, CGTACourse course, string streamName)
     {
         MaxSize = maxSize;
         _lessons = lessons;
@@ -20,10 +20,10 @@ public class CGTAStream
     public int MaxSize { get; }
     public CGTACourse Course { get; }
     public string StreamName { get; }
-    public IReadOnlyList<ConcreteLesson> Lessons => _lessons;
+    public IReadOnlyList<CertainLesson> Lessons => _lessons;
     public IReadOnlyList<SuperStudent> Students => _students;
 
-    public ConcreteLesson? FindLesson(Lesson lesson)
+    public CertainLesson? FindLesson(Lesson lesson)
     {
         return _lessons.Find(s => s.Lesson == lesson);
     }

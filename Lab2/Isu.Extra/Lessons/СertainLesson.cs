@@ -1,8 +1,8 @@
 ﻿namespace Isu.Extra.Lessons;
 
-public class ConcreteLesson
+public class CertainLesson
 {
-    public ConcreteLesson(Lesson lesson, List<LessonInfo> info)
+    public CertainLesson(Lesson lesson, List<LessonInfo> info)
     {
         Lesson = lesson;
         Info = info;
@@ -11,7 +11,7 @@ public class ConcreteLesson
     public Lesson Lesson { get; }
     public List<LessonInfo> Info { get; }
 
-    public static bool HaveIntersection(ConcreteLesson lesson1, ConcreteLesson lesson2)
+    public static bool HaveIntersection(CertainLesson lesson1, CertainLesson lesson2)
     {
         foreach (LessonInfo info1 in lesson1.Info)
         {
