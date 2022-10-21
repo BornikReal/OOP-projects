@@ -1,18 +1,16 @@
-﻿using Isu.Extra.Lessons;
+﻿using Isu.Extra.Models;
 using Isu.Extra.SuperEntities;
 
 namespace Isu.Extra.CGTA;
 
 public class CGTAStream
 {
-    private readonly List<CertainLesson> _lessons;
-    private readonly List<SuperStudent> _students;
+    private readonly List<SuperStudent> _students = new List<SuperStudent>();
 
-    public CGTAStream(int maxSize, List<CertainLesson> lessons, List<SuperStudent> students, CGTACourse course, string streamName)
+    public CGTAStream(string streamName, int maxSize, Schedule lessons, CGTACourse course)
     {
         MaxSize = maxSize;
-        _lessons = lessons;
-        _students = students;
+        Lessons = lessons;
         Course = course;
         StreamName = streamName;
     }
@@ -20,13 +18,8 @@ public class CGTAStream
     public int MaxSize { get; }
     public CGTACourse Course { get; }
     public string StreamName { get; }
-    public IReadOnlyList<CertainLesson> Lessons => _lessons;
+    public Schedule Lessons { get; }
     public IReadOnlyList<SuperStudent> Students => _students;
-
-    public CertainLesson? FindLesson(Lesson lesson)
-    {
-        return _lessons.Find(s => s.Lesson == lesson);
-    }
 
     public void RemoveStudent(SuperStudent student)
     {

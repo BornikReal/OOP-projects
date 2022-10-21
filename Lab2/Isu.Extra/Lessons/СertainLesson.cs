@@ -9,7 +9,7 @@ public class CertainLesson
     }
 
     public Lesson Lesson { get; }
-    public List<LessonInfo> Info { get; }
+    public List<LessonInfo> Info { get; } = new List<LessonInfo>();
 
     public static bool HaveIntersection(CertainLesson lesson1, CertainLesson lesson2)
     {
@@ -17,15 +17,11 @@ public class CertainLesson
         {
             foreach (LessonInfo info2 in lesson2.Info)
             {
-                if (info1.EvenWeek != info2.EvenWeek || info1.DayOfTheWeek != info2.DayOfTheWeek)
-                    continue;
-                if (info2.TimeStart >= info1.TimeStart && info2.TimeStart <= info1.TimeEnd)
-                    return false;
-                if (info1.TimeStart >= info2.TimeStart && info1.TimeStart <= info2.TimeEnd)
-                    return false;
+                if (LessonInfo.HaveIntersection(info1, info2))
+                    return true;
             }
         }
 
-        return true;
+        return false;
     }
 }
