@@ -7,10 +7,13 @@ public class Megafacultet
     private readonly List<GroupLetter> _faculties;
     private readonly List<CGTACourse> _courses = new List<CGTACourse>();
 
-    public Megafacultet(List<GroupLetter> faculties)
+    public Megafacultet(string name, List<GroupLetter> faculties)
     {
+        Name = name;
         _faculties = faculties;
     }
+
+    public string Name { get; }
 
     public bool AllowedFaculty(GroupLetter faculty)
     {
