@@ -5,46 +5,39 @@ namespace Isu.Extra.SuperEntities;
 
 public class SuperStudent
 {
-    private CGTAStream? _cGTA1;
-    private CGTAStream? _cGTA2;
-    public SuperStudent(Student student, CGTAStream cGTA1, CGTAStream cGTA2)
+    private readonly List<CGTAStream> _cGTAStreams = new List<CGTAStream>();
+
+    public SuperStudent(Student student, int maxStreams = 2)
     {
         Student = student;
-        _cGTA1 = cGTA1;
-        _cGTA2 = cGTA2;
-        if (CGTA1!.Course.Megafacultet != CGTA2!.Course.Megafacultet || CGTA1.Course == CGTA2.Course)
-            throw new System.Exception();
+        MaxStreams = maxStreams;
     }
 
     public Student Student { get; }
+    public int MaxStreams { get; }
 
-    public CGTAStream? CGTA1
+    public void UnsiscribeCGTA(CGTAStream stream)
     {
-        get => _cGTA1;
-        set
-        {
-            if (_cGTA1 == value)
-                return;
-            if (CGTA2!.Course.Megafacultet != value!.Course.Megafacultet || CGTA2.Course == value.Course)
-                throw new System.Exception();
-            _cGTA1!.RemoveStudent(this);
-            value!.AddStudent(this);
-            _cGTA1 = value;
-        }
+        CGTAStream? remov = _cGTAStreams.Find(s => s == stream);
+        if (remov == null)
+            throw new System.Exception();
+        remov.RemoveStudent(this);
+        _cGTAStreams.Remove(remov);
     }
 
-    public CGTAStream? CGTA2
+    public void SuscribeCGTA(CGTAStream stream)
     {
-        get => _cGTA2;
-        set
-        {
-            if (_cGTA2 == value)
-                return;
-            if (CGTA1!.Course.Megafacultet != value!.Course.Megafacultet || CGTA1.Course == value.Course)
-                throw new System.Exception();
-            _cGTA2!.RemoveStudent(this);
-            value!.AddStudent(this);
-            _cGTA2 = value;
-        }
+        if (_cGTAStreams.Count == MaxStreams)
+            throw new System.Exception();
+        if (!_cGTAStreams.Any(s => ValidateCGTA(stream, s)))
+            throw new System.Exception();
+        _cGTAStreams.Add(stream);
+    }
+
+    private static bool ValidateCGTA(CGTAStream cGTA1, CGTAStream cGTA2)
+    {
+        if (cGTA2!.Course.Megafacultet != cGTA1!.Course.Megafacultet || cGTA2.Course == cGTA1.Course)
+            return false;
+        return true;
     }
 }

@@ -13,15 +13,6 @@ public class CertainLesson
 
     public static bool HaveIntersection(CertainLesson lesson1, CertainLesson lesson2)
     {
-        foreach (LessonInfo info1 in lesson1.Info)
-        {
-            foreach (LessonInfo info2 in lesson2.Info)
-            {
-                if (LessonInfo.HaveIntersection(info1, info2))
-                    return true;
-            }
-        }
-
-        return false;
+        return lesson1.Info.Any(l1 => lesson2.Info.Any(l2 => LessonInfo.HaveIntersection(l1, l2)));
     }
 }
