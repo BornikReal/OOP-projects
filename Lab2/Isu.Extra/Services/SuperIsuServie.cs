@@ -31,7 +31,7 @@ public class SuperIsuServie : ISuperIsuServie
         return newMegafaculty;
     }
 
-    public ExtraCourse AddNewCGTACourse(string courseName, Megafacultet megafacultet)
+    public ExtraCourse AddNewExtraCourse(string courseName, Megafacultet megafacultet)
     {
         return megafacultet.AddNewCourse(courseName);
     }
@@ -43,16 +43,14 @@ public class SuperIsuServie : ISuperIsuServie
         _groupTranslator.Add(group, new SuperGroup(group, schedule));
     }
 
-    public void AddStudentToCGTA(Student student, ExtraStream cGTA)
+    public void AddStudentToExtraStudy(Student student, ExtraStream cGTA)
     {
         if (!_studetnTranslator.ContainsKey(student))
-            _studetnTranslator.Add(student, new SuperStudent(student));
-        if (Schedule.HaveIntersection(_groupTranslator[student.Group].Schedule, cGTA.Lessons))
-            throw new CGTAStudentException(student.Name);
+            _studetnTranslator.Add(student, new SuperStudent(student, _groupTranslator[student.Group]));
         _studetnTranslator[student].SuscribeCGTA(cGTA);
     }
 
-    public void RemoveStudentFromCGTA(Student student, ExtraStream cGTA)
+    public void RemoveStudentFromExtraStudy(Student student, ExtraStream cGTA)
     {
         if (!_studetnTranslator.ContainsKey(student))
             throw new CGTAStudentException(student.Name);

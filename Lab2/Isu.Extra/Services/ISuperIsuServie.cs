@@ -8,10 +8,10 @@ namespace Isu.Extra.Services;
 public interface ISuperIsuServie
 {
     Megafacultet AddNewMegafaculty(string name, List<GroupLetter> faculties);
-    ExtraCourse AddNewCGTACourse(string courseName, Megafacultet megafacultet);
+    ExtraCourse AddNewExtraCourse(string courseName, Megafacultet megafacultet);
     void AddScheduleToGroup(Group group, Schedule schedule);
-    void AddStudentToCGTA(Student student, ExtraStream cGTA);
-    void RemoveStudentFromCGTA(Student student, ExtraStream cGTA);
+    void AddStudentToExtraStudy(Student student, ExtraStream cGTA);
+    void RemoveStudentFromExtraStudy(Student student, ExtraStream cGTA);
     IReadOnlyList<ExtraStream> GetStreamList(ExtraCourse course);
     IEnumerable<Student> GetStudentList(ExtraStream stream);
     IEnumerable<Student> GetListUnsiscribedStudent();

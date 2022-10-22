@@ -16,10 +16,10 @@ public class IsuExtraTest
         superIsuServie = new SuperIsuServie();
         superIsuServie.AddNewMegafaculty("TINT", new List<GroupLetter> { new GroupLetter('M') });
         superIsuServie.AddNewMegafaculty("NonameMegafaculty", new List<GroupLetter> { new GroupLetter('Z') });
-        superIsuServie.AddNewCGTACourse("CyberBebra", superIsuServie.Megafacultets[0]);
-        superIsuServie.AddNewCGTACourse("CyberBebra 2: Uprising", superIsuServie.Megafacultets[0]);
-        superIsuServie.AddNewCGTACourse("CyberBebra 3: i am always come back", superIsuServie.Megafacultets[0]);
-        superIsuServie.AddNewCGTACourse("figna kakayto", superIsuServie.Megafacultets[1]);
+        superIsuServie.AddNewExtraCourse("CyberBebra", superIsuServie.Megafacultets[0]);
+        superIsuServie.AddNewExtraCourse("CyberBebra 2: Uprising", superIsuServie.Megafacultets[0]);
+        superIsuServie.AddNewExtraCourse("CyberBebra 3: i am always come back", superIsuServie.Megafacultets[0]);
+        superIsuServie.AddNewExtraCourse("figna kakayto", superIsuServie.Megafacultets[1]);
         superIsuServie.Isu.AddGroup(new Isu.Models.GroupName("M32011"));
         superIsuServie.Isu.AddStudent(superIsuServie.Isu.Groups[0], "BornikReal");
 
@@ -54,8 +54,8 @@ public class IsuExtraTest
                                     .Build();
         superIsuServie.Megafacultets[0].Courses[0].AddNewStream("2", 1, newSchedule2);
 
-        superIsuServie.AddStudentToCGTA(superIsuServie.Isu.Students[0], superIsuServie.Megafacultets[0].Courses[0].Streams[0]);
-        Assert.ThrowsAny<CGTAStudentException>(() => superIsuServie.AddStudentToCGTA(superIsuServie.Isu.Students[0], superIsuServie.Megafacultets[0].Courses[0].Streams[1]));
+        superIsuServie.AddStudentToExtraStudy(superIsuServie.Isu.Students[0], superIsuServie.Megafacultets[0].Courses[0].Streams[0]);
+        Assert.ThrowsAny<CGTAStudentException>(() => superIsuServie.AddStudentToExtraStudy(superIsuServie.Isu.Students[0], superIsuServie.Megafacultets[0].Courses[0].Streams[1]));
     }
 
     [Fact]
@@ -79,8 +79,8 @@ public class IsuExtraTest
                                     .Build();
         superIsuServie.Megafacultets[1].Courses[0].AddNewStream("2", 1, newSchedule2);
 
-        superIsuServie.AddStudentToCGTA(superIsuServie.Isu.Students[0], superIsuServie.Megafacultets[0].Courses[0].Streams[0]);
-        Assert.ThrowsAny<CGTAStudentException>(() => superIsuServie.AddStudentToCGTA(superIsuServie.Isu.Students[0], superIsuServie.Megafacultets[1].Courses[0].Streams[0]));
+        superIsuServie.AddStudentToExtraStudy(superIsuServie.Isu.Students[0], superIsuServie.Megafacultets[0].Courses[0].Streams[0]);
+        Assert.ThrowsAny<CGTAStudentException>(() => superIsuServie.AddStudentToExtraStudy(superIsuServie.Isu.Students[0], superIsuServie.Megafacultets[1].Courses[0].Streams[0]));
     }
 
     [Fact]
@@ -95,7 +95,7 @@ public class IsuExtraTest
                                     .Build();
         superIsuServie.Megafacultets[0].Courses[0].AddNewStream("1", 1, newSchedule);
 
-        Assert.ThrowsAny<CGTAStudentException>(() => superIsuServie.AddStudentToCGTA(superIsuServie.Isu.Students[0], superIsuServie.Megafacultets[0].Courses[0].Streams[0]));
+        Assert.ThrowsAny<CGTAStudentException>(() => superIsuServie.AddStudentToExtraStudy(superIsuServie.Isu.Students[0], superIsuServie.Megafacultets[0].Courses[0].Streams[0]));
     }
 
     [Fact]
@@ -115,7 +115,7 @@ public class IsuExtraTest
             .AddNewInfo(new LessonLocation("Haberj", "320"), false, Weekend.Wednesday, "MegaKanjelev", new TimeOnly(10, 0), new TimeOnly(11, 30))
             .Build();
         Schedule newSchedule2 = Schedule.Builder
-                                    .AddNewLesson(newCertainLesson1)
+                                    .AddNewLesson(newCertainLesson2)
                                     .Build();
         superIsuServie.Megafacultets[0].Courses[1].AddNewStream("1", 1, newSchedule2);
 
@@ -124,12 +124,12 @@ public class IsuExtraTest
             .AddNewInfo(new LessonLocation("Haberj", "320"), false, Weekend.Monday, "MegaKanjelev", new TimeOnly(10, 0), new TimeOnly(11, 30))
             .Build();
         Schedule newSchedule3 = Schedule.Builder
-                                    .AddNewLesson(newCertainLesson1)
+                                    .AddNewLesson(newCertainLesson3)
                                     .Build();
         superIsuServie.Megafacultets[0].Courses[2].AddNewStream("1", 1, newSchedule3);
 
-        superIsuServie.AddStudentToCGTA(superIsuServie.Isu.Students[0], superIsuServie.Megafacultets[0].Courses[0].Streams[0]);
-        superIsuServie.AddStudentToCGTA(superIsuServie.Isu.Students[0], superIsuServie.Megafacultets[0].Courses[1].Streams[0]);
-        Assert.ThrowsAny<CGTAStudentException>(() => superIsuServie.AddStudentToCGTA(superIsuServie.Isu.Students[0], superIsuServie.Megafacultets[0].Courses[2].Streams[0]));
+        superIsuServie.AddStudentToExtraStudy(superIsuServie.Isu.Students[0], superIsuServie.Megafacultets[0].Courses[0].Streams[0]);
+        superIsuServie.AddStudentToExtraStudy(superIsuServie.Isu.Students[0], superIsuServie.Megafacultets[0].Courses[1].Streams[0]);
+        Assert.ThrowsAny<CGTAStudentException>(() => superIsuServie.AddStudentToExtraStudy(superIsuServie.Isu.Students[0], superIsuServie.Megafacultets[0].Courses[2].Streams[0]));
     }
 }
