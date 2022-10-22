@@ -1,41 +1,44 @@
 ﻿using Isu.Entities;
-using Isu.Extra.CGTA;
 using Isu.Extra.Exception;
+using Isu.Extra.ExtraStudy;
+using Isu.Extra.Models;
 
 namespace Isu.Extra.SuperEntities;
 
 public class SuperStudent
 {
-    private readonly List<CGTAStream> _cGTAStreams = new List<CGTAStream>();
+    private readonly List<ExtraStream> _extraStream = new List<ExtraStream>();
 
-    public SuperStudent(Student student, int maxStreams = 2)
+    public SuperStudent(Student student, SuperGroup superGroup, int maxStreams = 2)
     {
         Student = student;
+        SuperGroup = superGroup;
         MaxStreams = maxStreams;
     }
 
     public Student Student { get; }
+    public SuperGroup SuperGroup { get; }
     public int MaxStreams { get; }
 
-    public void UnsiscribeCGTA(CGTAStream stream)
+    public void UnsiscribeCGTA(ExtraStream stream)
     {
-        CGTAStream? remov = _cGTAStreams.Find(s => s == stream);
+        ExtraStream? remov = _extraStream.Find(s => s == stream);
         if (remov == null)
             throw new CGTAStudentException(Student.Name);
         remov.RemoveStudent(this);
-        _cGTAStreams.Remove(remov);
+        _extraStream.Remove(remov);
     }
 
-    public void SuscribeCGTA(CGTAStream stream)
+    public void SuscribeCGTA(ExtraStream stream)
     {
-        if (_cGTAStreams.Count == MaxStreams || _cGTAStreams.Any(s => !ValidateCGTA(stream, s)))
+        if (_extraStream.Count == MaxStreams || stream.Course.Megafacultet.Faculties.Contains(Student.Group.Name.Letter) || _extraStream.Any(s => !ValidateCGTA(stream, s)) || Schedule.HaveIntersection(stream.Lessons, SuperGroup.Schedule))
             throw new CGTAStudentException(Student.Name);
-        _cGTAStreams.Add(stream);
+        _extraStream.Add(stream);
     }
 
-    private static bool ValidateCGTA(CGTAStream cGTA1, CGTAStream cGTA2)
+    private static bool ValidateCGTA(ExtraStream extra1, ExtraStream extra2)
     {
-        if (cGTA2!.Course.Megafacultet != cGTA1!.Course.Megafacultet || cGTA2.Course == cGTA1.Course)
+        if (extra2!.Course.Megafacultet != extra1!.Course.Megafacultet || extra2.Course == extra1.Course || Schedule.HaveIntersection(extra1.Lessons, extra2.Lessons))
             return false;
         return true;
     }

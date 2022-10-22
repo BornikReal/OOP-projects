@@ -1,32 +1,33 @@
 ﻿using Isu.Extra.Exception;
 using Isu.Models.GroupNameParts;
 
-namespace Isu.Extra.CGTA;
+namespace Isu.Extra.ExtraStudy;
 
-public class Megafacultet
+public class Megafaculty
 {
     private readonly List<GroupLetter> _faculties;
-    private readonly List<CGTACourse> _courses = new List<CGTACourse>();
+    private readonly List<ExtraCourse> _courses = new List<ExtraCourse>();
 
-    public Megafacultet(string name, List<GroupLetter> faculties)
+    public Megafaculty(string name, List<GroupLetter> faculties)
     {
         Name = name;
         _faculties = faculties;
     }
 
     public string Name { get; }
-    public IReadOnlyList<CGTACourse> Courses => _courses;
+    public IReadOnlyList<ExtraCourse> Courses => _courses;
+    public IReadOnlyList<GroupLetter> Faculties => _faculties;
 
     public bool AllowedFaculty(GroupLetter faculty)
     {
         return _faculties.Contains(faculty);
     }
 
-    public CGTACourse AddNewCourse(string courseName)
+    public ExtraCourse AddNewCourse(string courseName)
     {
         if (_courses.Find(s => s.CourseName == courseName) != null)
             throw new CGTAAlreadyExistException(courseName);
-        var newCousrse = new CGTACourse(courseName, this);
+        var newCousrse = new ExtraCourse(courseName, this);
         _courses.Add(newCousrse);
         return newCousrse;
     }

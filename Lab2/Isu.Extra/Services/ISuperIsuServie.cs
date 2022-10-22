@@ -1,5 +1,5 @@
 ﻿using Isu.Entities;
-using Isu.Extra.CGTA;
+using Isu.Extra.ExtraStudy;
 using Isu.Extra.Models;
 using Isu.Models.GroupNameParts;
 
@@ -7,12 +7,12 @@ namespace Isu.Extra.Services;
 
 public interface ISuperIsuServie
 {
-    Megafacultet AddNewMegafaculty(string name, List<GroupLetter> faculties);
-    CGTACourse AddNewCGTACourse(string courseName, Megafacultet megafacultet);
+    Megafaculty AddNewMegafaculty(string name, List<GroupLetter> faculties);
+    ExtraCourse AddNewExtraCourse(string courseName, Megafaculty megafaculty);
     void AddScheduleToGroup(Group group, Schedule schedule);
-    void AddStudentToCGTA(Student student, CGTAStream cGTA);
-    void RemoveStudentFromCGTA(Student student, CGTAStream cGTA);
-    IReadOnlyList<CGTAStream> GetStreamList(CGTACourse course);
-    IEnumerable<Student> GetStudentList(CGTAStream stream);
+    void AddStudentToExtraStudy(Student student, ExtraStream cGTA);
+    void RemoveStudentFromExtraStudy(Student student, ExtraStream cGTA);
+    IReadOnlyList<ExtraStream> GetStreamList(ExtraCourse course);
+    IEnumerable<Student> GetStudentList(ExtraStream stream);
     IEnumerable<Student> GetListUnsiscribedStudent();
 }
