@@ -12,28 +12,28 @@ public class SuperIsuServie : ISuperIsuServie
 {
     private readonly Dictionary<Group, SuperGroup> _groupTranslator = new Dictionary<Group, SuperGroup>();
     private readonly Dictionary<Student, SuperStudent> _studetnTranslator = new Dictionary<Student, SuperStudent>();
-    private readonly List<Megafacultet> _megafacultets = new List<Megafacultet>();
+    private readonly List<Megafaculty> _megafaculties = new List<Megafaculty>();
 
     public SuperIsuServie() { }
 
-    public SuperIsuServie(List<Megafacultet> megafacultets)
+    public SuperIsuServie(List<Megafaculty> megafaculties)
     {
-        _megafacultets = megafacultets;
+        _megafaculties = megafaculties;
     }
 
     public IsuService Isu { get; } = new IsuService();
-    public IReadOnlyList<Megafacultet> Megafacultets => _megafacultets;
+    public IReadOnlyList<Megafaculty> Megafaculties => _megafaculties;
 
-    public Megafacultet AddNewMegafaculty(string name, List<GroupLetter> faculties)
+    public Megafaculty AddNewMegafaculty(string name, List<GroupLetter> faculties)
     {
-        var newMegafaculty = new Megafacultet(name, faculties);
-        _megafacultets.Add(newMegafaculty);
+        var newMegafaculty = new Megafaculty(name, faculties);
+        _megafaculties.Add(newMegafaculty);
         return newMegafaculty;
     }
 
-    public ExtraCourse AddNewExtraCourse(string courseName, Megafacultet megafacultet)
+    public ExtraCourse AddNewExtraCourse(string courseName, Megafaculty megafaculty)
     {
-        return megafacultet.AddNewCourse(courseName);
+        return megafaculty.AddNewCourse(courseName);
     }
 
     public void AddScheduleToGroup(Group group, Schedule schedule)

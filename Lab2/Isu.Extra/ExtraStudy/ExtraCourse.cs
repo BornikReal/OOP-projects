@@ -7,14 +7,14 @@ public class ExtraCourse
 {
     private readonly List<ExtraStream> _streams = new List<ExtraStream>();
 
-    public ExtraCourse(string courseName, Megafacultet megafacultet)
+    public ExtraCourse(string courseName, Megafaculty megafacultet)
     {
         CourseName = courseName;
         Megafacultet = megafacultet;
     }
 
     public string CourseName { get; }
-    public Megafacultet Megafacultet { get; }
+    public Megafaculty Megafacultet { get; }
     public IReadOnlyList<ExtraStream> Streams => _streams;
 
     public ExtraStream AddNewStream(string streamName, int maxSize, Schedule lessons)

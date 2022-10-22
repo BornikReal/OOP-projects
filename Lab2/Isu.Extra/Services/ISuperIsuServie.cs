@@ -7,8 +7,8 @@ namespace Isu.Extra.Services;
 
 public interface ISuperIsuServie
 {
-    Megafacultet AddNewMegafaculty(string name, List<GroupLetter> faculties);
-    ExtraCourse AddNewExtraCourse(string courseName, Megafacultet megafacultet);
+    Megafaculty AddNewMegafaculty(string name, List<GroupLetter> faculties);
+    ExtraCourse AddNewExtraCourse(string courseName, Megafaculty megafaculty);
     void AddScheduleToGroup(Group group, Schedule schedule);
     void AddStudentToExtraStudy(Student student, ExtraStream cGTA);
     void RemoveStudentFromExtraStudy(Student student, ExtraStream cGTA);

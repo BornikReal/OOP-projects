@@ -31,7 +31,7 @@ public class SuperStudent
 
     public void SuscribeCGTA(ExtraStream stream)
     {
-        if (_extraStream.Count == MaxStreams || _extraStream.Any(s => !ValidateCGTA(stream, s)) || Schedule.HaveIntersection(stream.Lessons, SuperGroup.Schedule))
+        if (_extraStream.Count == MaxStreams || stream.Course.Megafacultet.Faculties.Contains(Student.Group.Name.Letter) || _extraStream.Any(s => !ValidateCGTA(stream, s)) || Schedule.HaveIntersection(stream.Lessons, SuperGroup.Schedule))
             throw new CGTAStudentException(Student.Name);
         _extraStream.Add(stream);
     }
