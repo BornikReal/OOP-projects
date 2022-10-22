@@ -1,13 +1,13 @@
 ﻿using Isu.Extra.Exception;
 using Isu.Extra.Models;
 
-namespace Isu.Extra.CGTA;
+namespace Isu.Extra.ExtraStudy;
 
-public class CGTACourse
+public class ExtraCourse
 {
-    private readonly List<CGTAStream> _streams = new List<CGTAStream>();
+    private readonly List<ExtraStream> _streams = new List<ExtraStream>();
 
-    public CGTACourse(string courseName, Megafacultet megafacultet)
+    public ExtraCourse(string courseName, Megafacultet megafacultet)
     {
         CourseName = courseName;
         Megafacultet = megafacultet;
@@ -15,13 +15,13 @@ public class CGTACourse
 
     public string CourseName { get; }
     public Megafacultet Megafacultet { get; }
-    public IReadOnlyList<CGTAStream> Streams => _streams;
+    public IReadOnlyList<ExtraStream> Streams => _streams;
 
-    public CGTAStream AddNewStream(string streamName, int maxSize, Schedule lessons)
+    public ExtraStream AddNewStream(string streamName, int maxSize, Schedule lessons)
     {
         if (_streams.Find(s => s.StreamName == streamName) != null)
             throw new CGTAAlreadyExistException(streamName);
-        var newStream = new CGTAStream(streamName, maxSize, lessons, this);
+        var newStream = new ExtraStream(streamName, maxSize, lessons, this);
         _streams.Add(newStream);
         return newStream;
     }

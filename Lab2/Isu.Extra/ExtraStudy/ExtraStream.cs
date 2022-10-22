@@ -2,13 +2,13 @@
 using Isu.Extra.Models;
 using Isu.Extra.SuperEntities;
 
-namespace Isu.Extra.CGTA;
+namespace Isu.Extra.ExtraStudy;
 
-public class CGTAStream
+public class ExtraStream
 {
     private readonly List<SuperStudent> _students = new List<SuperStudent>();
 
-    public CGTAStream(string streamName, int maxSize, Schedule lessons, CGTACourse course)
+    public ExtraStream(string streamName, int maxSize, Schedule lessons, ExtraCourse course)
     {
         MaxSize = maxSize;
         Lessons = lessons;
@@ -17,7 +17,7 @@ public class CGTAStream
     }
 
     public int MaxSize { get; }
-    public CGTACourse Course { get; }
+    public ExtraCourse Course { get; }
     public string StreamName { get; }
     public Schedule Lessons { get; }
     public IReadOnlyList<SuperStudent> Students => _students;
