@@ -2,10 +2,11 @@
 
 public class BackupObject
 {
-    public BackupObject(string fileDescriptor)
+    public BackupObject(string objectPath)
     {
-        FileDescriptor = fileDescriptor;
+        ObjectPath = objectPath;
     }
 
-    public string FileDescriptor { get; }
+    public string ObjectPath { get; }
+    public Guid Id { get; } = Guid.NewGuid();
 }

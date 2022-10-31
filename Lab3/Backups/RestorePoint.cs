@@ -12,4 +12,5 @@ public class RestorePoint
 
     public IReadOnlyList<BackupObject> BackupObjects => _backupObjects;
     public DateTime CreationTime { get; }
+    public Guid Id { get; } = Guid.NewGuid();
 }
