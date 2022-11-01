@@ -2,17 +2,16 @@
 
 public class BackupTask
 {
-    private readonly List<RestorePoint> _restorePoints = new List<RestorePoint>();
     private readonly List<BackupObject> _backupObjects = new List<BackupObject>();
 
-    public BackupTask() { }
-
-    public BackupTask(List<BackupObject> backupObjects)
+    public BackupTask(string name, IRepository repository)
     {
-        _backupObjects = backupObjects;
+        Name = name;
+        Repository = repository;
     }
 
-    public IReadOnlyList<RestorePoint> RestorePoints => _restorePoints;
+    public string Name { get; }
+    public IRepository Repository { get; }
     public IReadOnlyList<BackupObject> BackupObjects => _backupObjects;
 
     public void AddNewTask(BackupObject backupObject)

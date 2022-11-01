@@ -2,7 +2,8 @@
 
 public class RestorePoint
 {
-    private List<BackupObject> _backupObjects;
+    private readonly List<BackupObject> _backupObjects;
+    private readonly List<Storage> _storages = new List<Storage>();
 
     public RestorePoint(List<BackupObject> backupObjects, DateTime creationTime)
     {
@@ -11,6 +12,7 @@ public class RestorePoint
     }
 
     public IReadOnlyList<BackupObject> BackupObjects => _backupObjects;
+    public IReadOnlyList<Storage> Storages => _storages;
     public DateTime CreationTime { get; }
     public Guid Id { get; } = Guid.NewGuid();
 }
