@@ -2,13 +2,15 @@
 
 public class Storage
 {
-    public Storage(BackupObject backupObject, string stotagePath)
+    private readonly List<BackupObject> _backupObjects;
+
+    public Storage(List<BackupObject> backupObjects, string stotagePath)
     {
-        BackupObject = backupObject;
+        _backupObjects = backupObjects;
         StotagePath = stotagePath;
     }
 
-    public BackupObject BackupObject { get; }
+    public IReadOnlyList<BackupObject> BackupObjects => _backupObjects;
     public string StotagePath { get; }
     public Guid Id { get; } = Guid.NewGuid();
 }

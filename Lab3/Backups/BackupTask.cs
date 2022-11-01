@@ -2,8 +2,10 @@
 
 public class BackupTask
 {
-    private List<RestorePoint> _restorePoints = new List<RestorePoint>();
-    private List<BackupObject> _backupObjects;
+    private readonly List<RestorePoint> _restorePoints = new List<RestorePoint>();
+    private readonly List<BackupObject> _backupObjects = new List<BackupObject>();
+
+    public BackupTask() { }
 
     public BackupTask(List<BackupObject> backupObjects)
     {
@@ -12,4 +14,18 @@ public class BackupTask
 
     public IReadOnlyList<RestorePoint> RestorePoints => _restorePoints;
     public IReadOnlyList<BackupObject> BackupObjects => _backupObjects;
+
+    public void AddNewTask(BackupObject backupObject)
+    {
+        if (_backupObjects.Find(s => s == backupObject) != null)
+            throw new Exception();
+        _backupObjects.Add(backupObject);
+    }
+
+    public void RemoveTask(BackupObject backupObject)
+    {
+        if (_backupObjects.Find(s => s == backupObject) == null)
+            throw new Exception();
+        _backupObjects.Remove(backupObject);
+    }
 }
