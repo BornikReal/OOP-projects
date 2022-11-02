@@ -1,19 +1,11 @@
 ﻿namespace Backups;
 
-public class Repository : IRepository
+public class Repository
 {
-    public Repository() { }
-
-    public Backup Backup { get; } = new Backup();
-    public BackupTask? CurTask { get; private set; } = null;
-
-    public void RepositoryAdd(List<BackupObject> backupObjects)
+    public Repository(string path)
     {
-        CurTask = new BackupTask(backupObjects);
+        ArchiveStoragePath = path;
     }
 
-    public Storage RepositoryCommit()
-    {
-        throw new NotImplementedException();
-    }
+    public string ArchiveStoragePath { get; }
 }
