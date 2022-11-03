@@ -2,10 +2,11 @@
 
 namespace Backups.Repository;
 
-public class Repository : IRepository
+public class FileSystemRepository : IRepository, IDisposable
 {
     private readonly string tempDirectory;
-    public Repository(string path)
+    private bool disposed = false;
+    public FileSystemRepository(string path)
     {
         ArchiveStoragePath = path;
         tempDirectory = Path.GetTempPath() + Path.DirectorySeparatorChar + "RepositoryTempDirectory-" + Guid.NewGuid();
@@ -19,24 +20,18 @@ public class Repository : IRepository
         ZipFile.ExtractToDirectory(archiveName, unpackFolderName);
     }
 
-    public void Init()
+    public void Dispose()
     {
-        Directory.CreateDirectory(tempDirectory);
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 
-    public void AddFolderToArchive(string folderName)
+    public void AddEntryToArchive(string entryName)
     {
-        Copy(folderName, tempDirectory + Path.DirectorySeparatorChar + Path.GetFileName(folderName));
-    }
-
-    public void AddFileToArchive(string fileName)
-    {
-        File.Copy(fileName, tempDirectory + Path.DirectorySeparatorChar + Path.GetFileName(fileName));
-    }
-
-    public void Free()
-    {
-        Directory.Delete(tempDirectory, true);
+        if (IsDirectory(entryName))
+            Copy(entryName, tempDirectory + Path.DirectorySeparatorChar + Path.GetFileName(entryName));
+        else
+            File.Copy(entryName, tempDirectory + Path.DirectorySeparatorChar + Path.GetFileName(entryName));
     }
 
     public void Reset()
@@ -49,6 +44,17 @@ public class Repository : IRepository
     {
         ZipFile.CreateFromDirectory(tempDirectory, archiveName);
         Directory.Delete(tempDirectory, true);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposed)
+            return;
+
+        if (disposing)
+            Directory.Delete(tempDirectory, true);
+
+        disposed = true;
     }
 
     private static void Copy(string sourceDirectory, string targetDirectory)
@@ -71,5 +77,20 @@ public class Repository : IRepository
         {
             CopyAll(diSourceSubDir, target.CreateSubdirectory(diSourceSubDir.Name));
         }
+    }
+
+    private static bool IsDirectory(string path)
+    {
+        return File.GetAttributes(path).HasFlag(FileAttributes.Directory);
+    }
+
+    private void AddFolderToArchive(string folderName)
+    {
+        Copy(folderName, tempDirectory + Path.DirectorySeparatorChar + Path.GetFileName(folderName));
+    }
+
+    private void AddFileToArchive(string fileName)
+    {
+        File.Copy(fileName, tempDirectory + Path.DirectorySeparatorChar + Path.GetFileName(fileName));
     }
 }
