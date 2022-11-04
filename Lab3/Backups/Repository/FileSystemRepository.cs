@@ -6,18 +6,20 @@ public class FileSystemRepository : IRepository, IDisposable
 {
     private readonly string tempDirectory;
     private bool disposed = false;
-    public FileSystemRepository(string path)
+    public FileSystemRepository()
     {
-        ArchiveStoragePath = path;
         tempDirectory = Path.GetTempPath() + Path.DirectorySeparatorChar + "RepositoryTempDirectory-" + Guid.NewGuid();
         Directory.CreateDirectory(tempDirectory);
     }
 
-    public string ArchiveStoragePath { get; }
-
     public static void ExtractArchive(string archiveName, string unpackFolderName)
     {
         ZipFile.ExtractToDirectory(archiveName, unpackFolderName);
+    }
+
+    public static bool IsDirectory(string path)
+    {
+        return File.GetAttributes(path).HasFlag(FileAttributes.Directory);
     }
 
     public void Dispose()
@@ -26,12 +28,14 @@ public class FileSystemRepository : IRepository, IDisposable
         GC.SuppressFinalize(this);
     }
 
-    public void AddEntryToArchive(string entryName)
+    public void AddFolderToArchive(string folderName)
     {
-        if (IsDirectory(entryName))
-            Copy(entryName, tempDirectory + Path.DirectorySeparatorChar + Path.GetFileName(entryName));
-        else
-            File.Copy(entryName, tempDirectory + Path.DirectorySeparatorChar + Path.GetFileName(entryName));
+        Copy(folderName, tempDirectory + Path.DirectorySeparatorChar + Path.GetFileName(folderName));
+    }
+
+    public void AddFileToArchive(string fileName)
+    {
+        File.Copy(fileName, tempDirectory + Path.DirectorySeparatorChar + Path.GetFileName(fileName));
     }
 
     public void Reset()
@@ -77,20 +81,5 @@ public class FileSystemRepository : IRepository, IDisposable
         {
             CopyAll(diSourceSubDir, target.CreateSubdirectory(diSourceSubDir.Name));
         }
-    }
-
-    private static bool IsDirectory(string path)
-    {
-        return File.GetAttributes(path).HasFlag(FileAttributes.Directory);
-    }
-
-    private void AddFolderToArchive(string folderName)
-    {
-        Copy(folderName, tempDirectory + Path.DirectorySeparatorChar + Path.GetFileName(folderName));
-    }
-
-    private void AddFileToArchive(string fileName)
-    {
-        File.Copy(fileName, tempDirectory + Path.DirectorySeparatorChar + Path.GetFileName(fileName));
     }
 }
