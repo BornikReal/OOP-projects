@@ -3,5 +3,5 @@
 public interface IAlgorithm
 {
     void CreateBackup();
-    void UnpackBackup();
+    void UnpackBackup(string unpackFolder);
 }
