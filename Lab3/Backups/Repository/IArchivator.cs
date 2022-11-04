@@ -4,6 +4,6 @@ namespace Backups.Repository;
 
 public interface IArchivator
 {
-    void CreateArchive(List<IFileSystemEntity> entities, FileSystemRepository repository);
-    void UnpackArchive(Storage storage, FileSystemRepository repository);
+    void CreateArchive(List<IFileSystemEntity> entities, string fullArchiveName);
+    void UnpackArchive(Storage storage, string fullPathUnpackDirectory);
 }

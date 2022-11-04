@@ -20,39 +20,49 @@ public class FileSystemRepository : IRepository
         return File.Exists(entityPath);
     }
 
-    public FileEntity OpenFile(string filePath)
+    public FileEntity OpenFile(string filePath, bool isOpenStream = true, string prevPath = "")
     {
         if (!IsFile(filePath))
             throw new Exception();
-        return new FileEntity(Path.GetFileName(filePath), filePath, File.Open(filePath, FileMode.Open, FileAccess.ReadWrite));
+        Stream? stream = null;
+        if (isOpenStream)
+            stream = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite);
+        return new FileEntity(prevPath + Path.DirectorySeparatorChar + Path.GetFileName(filePath), filePath, stream);
     }
 
-    public DirectoryEntity OpenDirectory(string dirPath)
+    public DirectoryEntity OpenDirectory(string dirPath, bool isOpenStream = true, string prevPath = "")
     {
         if (!IsDirectory(dirPath))
             throw new Exception();
         var entitiesList = new List<IFileSystemEntity>();
         var dirInfo = new DirectoryInfo(dirPath);
+        string newPrevPath = prevPath + Path.DirectorySeparatorChar + dirInfo.Name;
         foreach (FileInfo file in dirInfo.GetFiles())
         {
-            entitiesList.Add(OpenFile(file.FullName));
+            entitiesList.Add(OpenFile(file.FullName, isOpenStream, newPrevPath));
         }
 
         foreach (DirectoryInfo dir in dirInfo.GetDirectories())
         {
-            entitiesList.Add(OpenDirectory(dir.FullName));
+            entitiesList.Add(OpenDirectory(dir.FullName, isOpenStream, newPrevPath));
         }
 
-        return new DirectoryEntity(Path.GetFileName(dirPath), dirPath, entitiesList);
+        return new DirectoryEntity(prevPath + Path.DirectorySeparatorChar + Path.GetFileName(dirPath), dirPath, entitiesList);
     }
 
-    public IFileSystemEntity OpenEntity(string entityPath)
+    public IFileSystemEntity OpenEntity(string entityPath, bool isOpenStream = true)
     {
         if (IsFile(entityPath))
-            return OpenFile(entityPath);
+            return OpenFile(entityPath, isOpenStream);
         else if (IsDirectory(entityPath))
-            return OpenDirectory(entityPath);
+            return OpenDirectory(entityPath, isOpenStream);
         throw new Exception();
+    }
+
+    public void CreateStorageUnpackDirectory(Storage storage, string fullPathUnpackDirectory)
+    {
+        foreach (IFileSystemEntity entity in storage.Entities)
+            CreateDirectorOrFile(entity, fullPathUnpackDirectory);
     }
 
     public void CloseEntity(IFileSystemEntity entity)
@@ -84,5 +94,19 @@ public class FileSystemRepository : IRepository
             throw new Exception();
         Directory.CreateDirectory(restorePointDirectory);
         return restorePointDirectory;
+    }
+
+    private void CreateDirectorOrFile(IFileSystemEntity entity, string fullPathUnpackDirectory)
+    {
+        if (entity.Entities == null)
+        {
+            File.Create(fullPathUnpackDirectory + Path.DirectorySeparatorChar + entity.Name);
+        }
+        else
+        {
+            Directory.CreateDirectory(fullPathUnpackDirectory + Path.DirectorySeparatorChar + entity.Name);
+            foreach (IFileSystemEntity entityPart in entity.Entities!)
+                CreateDirectorOrFile(entityPart, fullPathUnpackDirectory);
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 public class FileEntity : IFileSystemEntity
 {
-    public FileEntity(string name, string fullPath, Stream stream)
+    public FileEntity(string name, string fullPath, Stream? stream)
     {
         Name = name;
         FullPath = fullPath;

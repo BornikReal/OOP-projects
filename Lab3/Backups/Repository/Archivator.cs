@@ -5,22 +5,42 @@ namespace Backups.Repository;
 
 public class Archivator
 {
-    public void CreateArchive(List<IFileSystemEntity> entities, FileSystemRepository repository, string fullArchiveName)
+    private readonly FileSystemRepository _repository;
+
+    public Archivator(FileSystemRepository repository)
     {
-        FileEntity newArchive = repository.OpenFile(fullArchiveName);
+        _repository = repository;
+    }
+
+    public void CreateArchive(List<IFileSystemEntity> entities, string fullArchiveName)
+    {
+        FileEntity newArchive = _repository.OpenFile(fullArchiveName);
         using (var archive = new ZipArchive(newArchive.Stream!, ZipArchiveMode.Create))
         {
             foreach (IFileSystemEntity entity in entities)
                 AddEntity(entity, archive);
         }
 
-        repository.CloseEntity(newArchive);
+        _repository.CloseEntity(newArchive);
     }
 
-    public void UnpackArchive(Storage storage, FileSystemRepository repository, string fullUnpackDirectory)
+    public void UnpackArchive(Storage storage, string fullPathUnpackDirectory)
     {
-        FileEntity archive = repository.OpenFile(storage.StotagePath);
+        FileEntity archive = _repository.OpenFile(storage.StotagePath);
+        _repository.CreateStorageUnpackDirectory(storage, fullPathUnpackDirectory);
+        using (var archiveEnity = new ZipArchive(archive.Stream!, ZipArchiveMode.Read))
+        {
+            foreach (ZipArchiveEntry entity in archiveEnity.Entries)
+            {
+                using Stream stream = entity.Open();
+                using Stream fileStream = GetStreamFile(storage.Entities, fullPathUnpackDirectory, entity.Name) !;
+                stream.CopyTo(fileStream);
+                stream.Close();
+                fileStream.Close();
+            }
+        }
 
+        _repository.CloseEntity(archive);
     }
 
     private void AddEntity(IFileSystemEntity entity, ZipArchive archive)
@@ -32,10 +52,45 @@ public class Archivator
         }
         else
         {
-            ZipArchiveEntry archiveEntry = archive.CreateEntry(entity.FullPath);
+            ZipArchiveEntry archiveEntry = archive.CreateEntry(entity.Name);
             using Stream stream = archiveEntry.Open();
             entity.Stream!.CopyTo(stream);
             stream.Close();
+        }
+    }
+
+    private Stream? GetStreamFile(IReadOnlyList<IFileSystemEntity> entities, string fullPath, string searchPath)
+    {
+        Stream? stream = null;
+        foreach (IFileSystemEntity entity in entities)
+        {
+            stream = GetStreamFileCocnrete(entity, fullPath, searchPath);
+            if (stream != null)
+                return stream;
+        }
+
+        return stream;
+    }
+
+    private Stream? GetStreamFileCocnrete(IFileSystemEntity entity, string fullPath, string searchPath)
+    {
+        if (entity.Entities != null)
+        {
+            Stream? stream = null;
+            foreach (IFileSystemEntity entityPart in entity.Entities)
+            {
+                stream = GetStreamFileCocnrete(entityPart, fullPath, searchPath);
+                if (stream != null)
+                    return stream;
+            }
+
+            return stream;
+        }
+        else
+        {
+            if (entity.Name == searchPath)
+                return _repository.OpenFile(fullPath + Path.DirectorySeparatorChar + searchPath).Stream;
+            return null;
         }
     }
 }
