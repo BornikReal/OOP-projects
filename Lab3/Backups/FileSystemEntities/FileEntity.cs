@@ -2,6 +2,7 @@
 
 public class FileEntity : IFileSystemEntity
 {
+    private Stream? _stream;
     public FileEntity(string name, string fullPath, Stream? stream)
     {
         Name = name;
@@ -15,5 +16,14 @@ public class FileEntity : IFileSystemEntity
 
     public IEnumerable<IFileSystemEntity>? Entities => null;
 
-    public Stream? Stream { get; }
+    public Stream? Stream
+    {
+        get => _stream;
+        set
+        {
+            if (_stream != null)
+                _stream.Close();
+            _stream = value;
+        }
+    }
 }

@@ -15,8 +15,4 @@ public class Storage
     public IReadOnlyList<IFileSystemEntity> Entities => _entities;
     public string StotagePath { get; }
     public Guid Id { get; } = Guid.NewGuid();
-    public IFileSystemEntity? FindEntity(string name)
-    {
-        return _entities.Find(s => s.Name == name);
-    }
 }

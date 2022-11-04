@@ -1,7 +1,9 @@
-﻿namespace Backups.Algorithms;
+﻿using Backups.Repository;
+
+namespace Backups.Algorithms;
 
 public interface IAlgorithm
 {
-    void CreateBackup();
-    void UnpackBackup(string unpackFolder);
+    List<Storage> CreateBackup(List<BackupObject> backupObjects, IArchivator archivator, string restorPointPath);
+    void UnpackBackup(IArchivator archivator, List<Storage> storages, string unpackFolder);
 }
