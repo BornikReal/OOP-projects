@@ -5,29 +5,30 @@ namespace Backups.Repository;
 
 public class Archivator
 {
-    private readonly FileSystemRepository _repository;
-
     public Archivator(FileSystemRepository repository)
     {
-        _repository = repository;
+        Repository = repository;
     }
+
+    public FileSystemRepository Repository { get; }
+    public string Archiveextension { get; } = ".zip";
 
     public void CreateArchive(List<IFileSystemEntity> entities, string fullArchiveName)
     {
-        FileEntity newArchive = _repository.OpenFile(fullArchiveName);
+        FileEntity newArchive = Repository.OpenFile(fullArchiveName);
         using (var archive = new ZipArchive(newArchive.Stream!, ZipArchiveMode.Create))
         {
             foreach (IFileSystemEntity entity in entities)
                 AddEntity(entity, archive);
         }
 
-        _repository.CloseEntity(newArchive);
+        Repository.CloseEntity(newArchive);
     }
 
     public void UnpackArchive(Storage storage, string fullPathUnpackDirectory)
     {
-        FileEntity archive = _repository.OpenFile(storage.StotagePath);
-        _repository.CreateStorageUnpackDirectory(storage, fullPathUnpackDirectory);
+        FileEntity archive = Repository.OpenFile(storage.StotagePath);
+        Repository.CreateStorageUnpackDirectory(storage, fullPathUnpackDirectory);
         using (var archiveEnity = new ZipArchive(archive.Stream!, ZipArchiveMode.Read))
         {
             foreach (ZipArchiveEntry entity in archiveEnity.Entries)
@@ -40,7 +41,7 @@ public class Archivator
             }
         }
 
-        _repository.CloseEntity(archive);
+        Repository.CloseEntity(archive);
     }
 
     private void AddEntity(IFileSystemEntity entity, ZipArchive archive)
@@ -89,7 +90,7 @@ public class Archivator
         else
         {
             if (entity.Name == searchPath)
-                return _repository.OpenFile(fullPath + Path.DirectorySeparatorChar + searchPath).Stream;
+                return Repository.OpenFile(fullPath + Path.DirectorySeparatorChar + searchPath).Stream;
             return null;
         }
     }

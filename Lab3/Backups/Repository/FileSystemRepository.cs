@@ -69,7 +69,7 @@ public class FileSystemRepository : IRepository
     {
         if (entity.Stream != null)
         {
-            entity.Stream.Close();
+            ((FileEntity)entity).Stream = null;
         }
         else
         {
