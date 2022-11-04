@@ -19,6 +19,7 @@ public class SingleStorageAlgorithm : IAlgorithm
             new Storage(entities, storageName),
         };
         archivator.CreateArchive(entities, storageName);
+        entities.ForEach(s => archivator.Repository.CloseEntity(s));
         return storages;
     }
 
