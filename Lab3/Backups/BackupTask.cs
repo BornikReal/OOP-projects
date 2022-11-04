@@ -12,6 +12,7 @@ public class BackupTask
     public string Name { get; }
     public Backup Backup { get; } = new Backup();
     public IReadOnlyList<BackupObject> BackupObjects => _backupObjects;
+    public Guid Id { get; } = Guid.NewGuid();
 
     public void AddNewTask(BackupObject backupObject)
     {

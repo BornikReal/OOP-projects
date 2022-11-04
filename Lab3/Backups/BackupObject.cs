@@ -8,5 +8,4 @@ public class BackupObject
     }
 
     public string ObjectPath { get; }
-    public Guid Id { get; } = Guid.NewGuid();
 }
