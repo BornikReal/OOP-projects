@@ -1,6 +1,6 @@
 ﻿namespace Backups.FileSystemEntities;
 
-public class FileEntity : IFileSystemEntity
+public class FileEntity : IFileEntity
 {
     private Stream? _stream;
     public FileEntity(string name, string fullPath, Stream? stream)
@@ -13,8 +13,6 @@ public class FileEntity : IFileSystemEntity
     public string Name { get; }
 
     public string FullPath { get; }
-
-    public IEnumerable<IFileSystemEntity>? Entities => null;
 
     public Stream? Stream
     {

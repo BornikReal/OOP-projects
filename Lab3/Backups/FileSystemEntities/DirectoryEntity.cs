@@ -1,5 +1,5 @@
 ﻿namespace Backups.FileSystemEntities;
-public class DirectoryEntity : IFileSystemEntity
+public class DirectoryEntity : IDirectoryEntity
 {
     public DirectoryEntity(string name, string fullPath, IEnumerable<IFileSystemEntity> entities)
     {
@@ -12,7 +12,5 @@ public class DirectoryEntity : IFileSystemEntity
 
     public string FullPath { get; }
 
-    public IEnumerable<IFileSystemEntity>? Entities { get; }
-
-    public Stream? Stream => null;
+    public IEnumerable<IFileSystemEntity> Entities { get; }
 }
