@@ -11,7 +11,7 @@ public class ZipArchivator : IArchivator
     public void CreateArchive(List<IFileSystemEntity> entities, Stream archiveStream)
     {
         using var archive = new ZipArchive(archiveStream, ZipArchiveMode.Create);
-        var visitor = new CocnreteVisitor(archive);
+        var visitor = new CocnreteVisitor1(archive);
         foreach (IFileSystemEntity entity in entities)
             entity.Accept(visitor);
     }

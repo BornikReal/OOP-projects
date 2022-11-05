@@ -3,11 +3,11 @@ using Backups.FileSystemEntities;
 
 namespace Backups.Visitors;
 
-public class CocnreteVisitor : IVisitor
+public class CocnreteVisitor1 : IVisitor
 {
     private readonly Stack<ZipArchive> _zipArchives = new Stack<ZipArchive>();
 
-    public CocnreteVisitor(ZipArchive archive)
+    public CocnreteVisitor1(ZipArchive archive)
     {
         _zipArchives.Push(archive);
     }
