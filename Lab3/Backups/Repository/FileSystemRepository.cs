@@ -11,12 +11,12 @@ public class FileSystemRepository : IRepository
 
     public string RepositoryPath { get; }
 
-    public static bool IsDirectory(string entityPath)
+    public bool IsDirectory(string entityPath)
     {
         return Directory.Exists(entityPath);
     }
 
-    public static bool IsFile(string entityPath)
+    public bool IsFile(string entityPath)
     {
         return File.Exists(entityPath);
     }
