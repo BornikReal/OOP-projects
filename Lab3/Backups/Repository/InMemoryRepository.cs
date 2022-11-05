@@ -5,7 +5,7 @@ using Zio.FileSystems;
 
 namespace Backups.Repository;
 
-public class InMemoryRepository : IDisposable
+public class InMemoryRepository : IRepository, IDisposable
 {
     public InMemoryRepository(string repPath)
     {
@@ -27,43 +27,39 @@ public class InMemoryRepository : IDisposable
         return RepositoryFileSystem.DirectoryExists((UPath)entityPath);
     }
 
-    public IFileSystemEntity OpenEntity(string entityPath, bool isOpenStream = true)
+    public IFileSystemEntity OpenEntity(string entityPath)
     {
         if (IsFile(entityPath))
-            return OpenFile(entityPath, isOpenStream);
+            return OpenFile(entityPath);
         else if (IsDirectory(entityPath))
-            return OpenDirectory(entityPath, isOpenStream);
+            return OpenDirectory(entityPath);
         throw new Exception();
     }
 
-    public FileEntity OpenFile(string filePath, bool isOpenStream = true, string prevPath = "")
+    public FileEntity OpenFile(string filePath)
     {
         if (!IsFile(filePath))
             throw new Exception();
-        Stream? stream = null;
-        if (isOpenStream)
-            stream = RepositoryFileSystem.OpenFile((UPath)filePath, FileMode.Open, FileAccess.ReadWrite);
-        return new FileEntity(prevPath + RepositoryFileSystem.GetFileEntry((UPath)filePath).Name, filePath, () => stream!);
+        return new FileEntity(RepositoryFileSystem.GetFileEntry((UPath)filePath).Name, filePath, () => RepositoryFileSystem.OpenFile((UPath)filePath, FileMode.Open, FileAccess.Read));
     }
 
-    public DirectoryEntity OpenDirectory(string dirPath, bool isOpenStream = true, string prevPath = "")
+    public DirectoryEntity OpenDirectory(string dirPath)
     {
         if (!IsDirectory(dirPath))
             throw new Exception();
         var entitiesList = new List<IFileSystemEntity>();
         DirectoryEntry dirInfo = RepositoryFileSystem.GetDirectoryEntry((UPath)dirPath);
-        string newPrevPath = prevPath + dirInfo.Name;
         foreach (FileEntry file in dirInfo.EnumerateFiles())
         {
-            entitiesList.Add(OpenFile(file.FullName, isOpenStream, newPrevPath + @"\"));
+            entitiesList.Add(OpenFile(file.FullName));
         }
 
         foreach (DirectoryEntry dir in dirInfo.EnumerateDirectories())
         {
-            entitiesList.Add(OpenDirectory(dir.FullName, isOpenStream, newPrevPath + @"\"));
+            entitiesList.Add(OpenDirectory(dir.FullName));
         }
 
-        return new DirectoryEntity(newPrevPath, dirPath, entitiesList);
+        return new DirectoryEntity(dirInfo.Name, dirPath, entitiesList);
     }
 
     public string CreateBackupTaskDirectory(BackupTask backupTask)
