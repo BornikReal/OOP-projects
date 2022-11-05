@@ -34,10 +34,4 @@ public class BackupTask
             throw new Exception();
         _backupObjects.Remove(backupObject);
     }
-
-    public void CreateRestorePoint()
-    {
-        string restorPointPath = "RestorePoint-" + Guid.NewGuid();
-        Backup.AddRestorePoint(new RestorePoint(new List<BackupObject>(_backupObjects), Algorithm.CreateBackup(_backupObjects, Archivator, restorPointPath), DateTime.Now));
-    }
 }

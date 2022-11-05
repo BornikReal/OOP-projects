@@ -21,8 +21,9 @@ public class SplitStorageAlgorithm : IAlgorithm
                 repository.OpenEntity(backupObject.ObjectPath),
             };
             storages.Add(new Storage(entities, storageName));
-            archivator.CreateArchive(entities, repository.OpenEntity(storageName).Stream!);
-            repository.CloseEntity(entities[0]);
+
+            // archivator.CreateArchive(entities, repository.OpenEntity(storageName).Stream!);
+            // repository.CloseEntity(entities[0]);
         }
 
         return storages;

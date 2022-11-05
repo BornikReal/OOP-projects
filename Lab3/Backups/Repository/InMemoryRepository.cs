@@ -1,12 +1,11 @@
 ﻿using Backups.FileSystemEntities;
 using Backups.Models;
-using Backups.Storages;
 using Zio;
 using Zio.FileSystems;
 
 namespace Backups.Repository;
 
-public class InMemoryRepository : IRepository, IDisposable
+public class InMemoryRepository : IDisposable
 {
     public InMemoryRepository(string repPath)
     {
@@ -44,7 +43,7 @@ public class InMemoryRepository : IRepository, IDisposable
         Stream? stream = null;
         if (isOpenStream)
             stream = RepositoryFileSystem.OpenFile((UPath)filePath, FileMode.Open, FileAccess.ReadWrite);
-        return new FileEntity(prevPath + RepositoryFileSystem.GetFileEntry((UPath)filePath).Name, filePath, stream);
+        return new FileEntity(prevPath + RepositoryFileSystem.GetFileEntry((UPath)filePath).Name, filePath, () => stream!);
     }
 
     public DirectoryEntity OpenDirectory(string dirPath, bool isOpenStream = true, string prevPath = "")
@@ -67,19 +66,6 @@ public class InMemoryRepository : IRepository, IDisposable
         return new DirectoryEntity(newPrevPath, dirPath, entitiesList);
     }
 
-    public void CloseEntity(IFileSystemEntity entity)
-    {
-        if (entity.Stream != null)
-        {
-            ((FileEntity)entity).Stream = null;
-        }
-        else
-        {
-            foreach (IFileSystemEntity entityPart in entity.Entities!)
-                CloseEntity(entityPart);
-        }
-    }
-
     public string CreateBackupTaskDirectory(BackupTask backupTask)
     {
         string backupTaskDirectory = RepositoryPath + @"\" + "BackupTask-" + backupTask.Id;
@@ -98,29 +84,9 @@ public class InMemoryRepository : IRepository, IDisposable
         return restorePointDirectory;
     }
 
-    public void InitStorageDirectory(Storage storage, string fullPathUnpackDirectory)
-    {
-        foreach (IFileSystemEntity entity in storage.Entities)
-            CreateDirectorOrFile(entity, fullPathUnpackDirectory);
-    }
-
     public void Dispose()
     {
         RepositoryFileSystem.Dispose();
         GC.SuppressFinalize(this);
-    }
-
-    private void CreateDirectorOrFile(IFileSystemEntity entity, string fullPathUnpackDirectory)
-    {
-        if (entity.Entities == null)
-        {
-            File.Create(fullPathUnpackDirectory + @"\" + entity.Name);
-        }
-        else
-        {
-            RepositoryFileSystem.CreateDirectory(fullPathUnpackDirectory + @"\" + entity.Name);
-            foreach (IFileSystemEntity entityPart in entity.Entities!)
-                CreateDirectorOrFile(entityPart, fullPathUnpackDirectory);
-        }
     }
 }

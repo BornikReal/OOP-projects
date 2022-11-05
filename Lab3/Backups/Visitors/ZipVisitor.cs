@@ -17,17 +17,16 @@ public class ZipVisitor : IVisitor
     public void Visit(IFileEntity fileEnity)
     {
         using Stream stream = _zipArchives.Peek().CreateEntry(fileEnity.Name).Open();
-        Stream stream1 = fileEnity.FuncStream();
+        using Stream stream1 = fileEnity.FuncStream();
         stream1.CopyTo(stream);
-        stream1.Close();
     }
 
     public void Visit(IDirectoryEntity directoryEnity)
     {
-        using Stream stream = _zipArchives.Peek().CreateEntry(directoryEnity.Name).Open();
+        using Stream stream = _zipArchives.Peek().CreateEntry(directoryEnity.Name + ".zip").Open();
         _zipArchives.Push(new ZipArchive(stream, ZipArchiveMode.Create));
         foreach (IFileSystemEntity entity in directoryEnity.Entities)
             entity.Accept(this);
-        _zipArchives.Pop();
+        _zipArchives.Pop().Dispose();
     }
 }
