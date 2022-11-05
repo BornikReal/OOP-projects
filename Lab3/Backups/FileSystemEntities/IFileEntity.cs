@@ -2,5 +2,5 @@
 
 public interface IFileEntity : IFileSystemEntity
 {
-    Stream? Stream { get; }
+    Func<Stream> FuncStream { get; }
 }

@@ -22,14 +22,11 @@ public class FileSystemRepository : IRepository
         return File.Exists(entityPath);
     }
 
-    public FileEntity OpenFile(string filePath, bool isOpenStream = false)
+    public FileEntity OpenFile(string filePath)
     {
         if (!IsFile(filePath))
             throw new Exception();
-        Stream? stream = null;
-        if (isOpenStream)
-            stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
-        return new FileEntity(Path.GetFileName(filePath), filePath, stream);
+        return new FileEntity(Path.GetFileName(filePath), filePath, () => File.OpenRead(filePath));
     }
 
     public DirectoryEntity OpenDirectory(string dirPath)
@@ -50,7 +47,7 @@ public class FileSystemRepository : IRepository
     public IFileSystemEntity OpenEntity(string entityPath)
     {
         if (IsFile(entityPath))
-            return OpenFile(entityPath, true);
+            return OpenFile(entityPath);
         else if (IsDirectory(entityPath))
             return OpenDirectory(entityPath);
         throw new Exception();

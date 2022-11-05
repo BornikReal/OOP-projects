@@ -17,7 +17,9 @@ public class ZipVisitor : IVisitor
     public void Visit(IFileEntity fileEnity)
     {
         using Stream stream = _zipArchives.Peek().CreateEntry(fileEnity.Name).Open();
-        fileEnity.Stream!.CopyTo(stream);
+        Stream stream1 = fileEnity.FuncStream();
+        stream1.CopyTo(stream);
+        stream1.Close();
     }
 
     public void Visit(IDirectoryEntity directoryEnity)
