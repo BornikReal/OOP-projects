@@ -1,7 +1,7 @@
 ﻿using Backups.Algorithms;
 using Backups.Archivator;
 
-namespace Backups;
+namespace Backups.Models;
 
 public class BackupTask
 {

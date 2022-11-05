@@ -1,6 +1,6 @@
 ﻿using Backups.FileSystemEntities;
 
-namespace Backups;
+namespace Backups.Storages;
 
 public class Storage
 {

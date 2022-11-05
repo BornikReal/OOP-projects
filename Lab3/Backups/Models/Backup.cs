@@ -1,4 +1,4 @@
-﻿namespace Backups;
+﻿namespace Backups.Models;
 
 public class Backup
 {

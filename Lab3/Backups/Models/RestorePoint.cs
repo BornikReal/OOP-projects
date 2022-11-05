@@ -1,4 +1,6 @@
-﻿namespace Backups;
+﻿using Backups.Storages;
+
+namespace Backups.Models;
 
 public class RestorePoint
 {
