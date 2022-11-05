@@ -1,30 +1,29 @@
 ﻿using System.IO.Compression;
 using Backups.FileSystemEntities;
+using Backups.ZipObjects;
 
 namespace Backups.Visitors;
 
-public class CocnreteVisitor1 : IVisitor
+public class ZipVisitor : IVisitor
 {
     private readonly Stack<ZipArchive> _zipArchives = new Stack<ZipArchive>();
+    private readonly Stack<List<IZipObject>> zipObjects = new Stack<List<IZipObject>>();
 
-    public CocnreteVisitor1(ZipArchive archive)
+    public ZipVisitor(ZipArchive archive)
     {
         _zipArchives.Push(archive);
     }
 
     public void Visit(IFileEntity fileEnity)
     {
-        ZipArchive archive = _zipArchives.Peek();
-        using Stream stream = archive.CreateEntry(fileEnity.Name).Open();
+        using Stream stream = _zipArchives.Peek().CreateEntry(fileEnity.Name).Open();
         fileEnity.Stream!.CopyTo(stream);
     }
 
     public void Visit(IDirectoryEntity directoryEnity)
     {
-        ZipArchive archive = _zipArchives.Peek();
-        ZipArchiveEntry entry = archive.CreateEntry(directoryEnity.Name);
-        using Stream stream = entry.Open();
-        _zipArchives.Push(new ZipArchive(stream));
+        using Stream stream = _zipArchives.Peek().CreateEntry(directoryEnity.Name).Open();
+        _zipArchives.Push(new ZipArchive(stream, ZipArchiveMode.Create));
         foreach (IFileSystemEntity entity in directoryEnity.Entities)
             entity.Accept(this);
         _zipArchives.Pop();
