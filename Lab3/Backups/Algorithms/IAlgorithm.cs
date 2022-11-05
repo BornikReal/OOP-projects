@@ -1,9 +1,10 @@
 ﻿using Backups.Archivator;
+using Backups.Repository;
 
 namespace Backups.Algorithms;
 
 public interface IAlgorithm
 {
-    List<Storage> CreateBackup(List<BackupObject> backupObjects, IArchivator archivator, string restorPointPath);
-    void UnpackBackup(IArchivator archivator, List<Storage> storages, string unpackFolder);
+    List<Storage> CreateBackup(List<BackupObject> backupObjects, string restorPointPath, IRepository repository, IArchivator archivator);
+    void UnpackBackup(List<Storage> storages, string unpackFolder, IRepository repository, IArchivator archivator);
 }
