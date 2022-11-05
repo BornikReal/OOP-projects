@@ -1,4 +1,6 @@
-﻿namespace Backups.FileSystemEntities;
+﻿using Backups.Visitors;
+
+namespace Backups.FileSystemEntities;
 
 public class FileEntity : IFileEntity
 {
@@ -23,5 +25,10 @@ public class FileEntity : IFileEntity
                 _stream.Close();
             _stream = value;
         }
+    }
+
+    public void Accept(IVisitor visitor)
+    {
+        visitor.Visit(this);
     }
 }
