@@ -6,5 +6,4 @@ public interface IArchivator
 {
     public string Archiveextension { get; }
     void CreateArchive(List<IFileSystemEntity> entities, Stream archiveStream);
-    void UnpackArchive(Storage storage, Stream archiveStream);
 }

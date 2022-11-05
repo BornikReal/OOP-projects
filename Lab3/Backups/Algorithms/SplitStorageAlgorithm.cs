@@ -1,11 +1,12 @@
 ﻿using Backups.Archivator;
 using Backups.FileSystemEntities;
+using Backups.Repository;
 
 namespace Backups.Algorithms;
 
 public class SplitStorageAlgorithm : IAlgorithm
 {
-    public List<Storage> CreateBackup(List<BackupObject> backupObjects, IArchivator archivator, string restorPointPath)
+    public List<Storage> CreateBackup(List<BackupObject> backupObjects, string restorPointPath, IRepository repository, IArchivator archivator)
     {
         var storages = new List<Storage>();
         List<IFileSystemEntity> entities;
@@ -15,18 +16,13 @@ public class SplitStorageAlgorithm : IAlgorithm
             storageName = restorPointPath + Path.DirectorySeparatorChar + "Storage-" + Guid.NewGuid() + archivator.Archiveextension;
             entities = new List<IFileSystemEntity>
             {
-                archivator.Repository.OpenEntity(backupObject.ObjectPath),
+                repository.OpenEntity(backupObject.ObjectPath),
             };
             storages.Add(new Storage(entities, storageName));
-            archivator.CreateArchive(entities, storageName);
-            archivator.Repository.CloseEntity(entities[0]);
+            archivator.CreateArchive(entities, repository.OpenEntity(storageName).Stream!);
+            repository.CloseEntity(entities[0]);
         }
 
         return storages;
-    }
-
-    public void UnpackBackup(IArchivator archivator, List<Storage> storages, string unpackFolder)
-    {
-        storages.ForEach(s => archivator.UnpackArchive(s, unpackFolder));
     }
 }

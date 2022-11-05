@@ -23,11 +23,4 @@ public class SingleStorageAlgorithm : IAlgorithm
         entities.ForEach(s => repository.CloseEntity(s));
         return storages;
     }
-
-    public void UnpackBackup(List<Storage> storages, string unpackFolder, IRepository repository, IArchivator archivator)
-    {
-        if (storages.Count != 1)
-            throw new Exception();
-        archivator.UnpackArchive(storages[0], repository.OpenEntity());
-    }
 }
