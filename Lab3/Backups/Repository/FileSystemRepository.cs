@@ -4,11 +4,12 @@ namespace Backups.Repository;
 
 public class FileSystemRepository : IRepository
 {
-    private readonly string _rootPath;
-    public FileSystemRepository(string rootPath)
+    public FileSystemRepository(string repPath)
     {
-        _rootPath = rootPath;
+        RepositoryPath = repPath;
     }
+
+    public string RepositoryPath { get; }
 
     public static bool IsDirectory(string entityPath)
     {
@@ -59,12 +60,6 @@ public class FileSystemRepository : IRepository
         throw new Exception();
     }
 
-    public void CreateStorageUnpackDirectory(Storage storage, string fullPathUnpackDirectory)
-    {
-        foreach (IFileSystemEntity entity in storage.Entities)
-            CreateDirectorOrFile(entity, fullPathUnpackDirectory);
-    }
-
     public void CloseEntity(IFileSystemEntity entity)
     {
         if (entity.Stream != null)
@@ -80,7 +75,7 @@ public class FileSystemRepository : IRepository
 
     public string CreateBackupTaskDirectory(BackupTask backupTask)
     {
-        string backupTaskDirectory = _rootPath + Path.DirectorySeparatorChar + "BackupTask-" + backupTask.Id;
+        string backupTaskDirectory = RepositoryPath + Path.DirectorySeparatorChar + "BackupTask-" + backupTask.Id;
         if (IsDirectory(backupTaskDirectory))
             throw new Exception();
         Directory.CreateDirectory(backupTaskDirectory);
@@ -89,18 +84,24 @@ public class FileSystemRepository : IRepository
 
     public string CreateRestorePointDirectory(RestorePoint restorePoint)
     {
-        string restorePointDirectory = _rootPath + Path.DirectorySeparatorChar + "RestorePoint-" + restorePoint.Id;
+        string restorePointDirectory = RepositoryPath + Path.DirectorySeparatorChar + "RestorePoint-" + restorePoint.Id;
         if (IsDirectory(restorePointDirectory))
             throw new Exception();
         Directory.CreateDirectory(restorePointDirectory);
         return restorePointDirectory;
     }
 
+    public void InitStorageDirectory(Storage storage, string fullPathUnpackDirectory)
+    {
+        foreach (IFileSystemEntity entity in storage.Entities)
+            CreateDirectorOrFile(entity, fullPathUnpackDirectory);
+    }
+
     private void CreateDirectorOrFile(IFileSystemEntity entity, string fullPathUnpackDirectory)
     {
         if (entity.Entities == null)
         {
-            File.Create(fullPathUnpackDirectory + Path.DirectorySeparatorChar + entity.Name);
+            ((FileEntity)entity).Stream = File.Open(fullPathUnpackDirectory + Path.DirectorySeparatorChar + entity.Name, FileMode.Open, FileAccess.ReadWrite);
         }
         else
         {
