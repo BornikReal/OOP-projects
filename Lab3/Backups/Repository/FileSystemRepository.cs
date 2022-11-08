@@ -1,4 +1,5 @@
 ﻿using Backups.FileSystemEntities;
+using Backups.FileSystemEntities.Interfaces;
 using Backups.Models;
 
 namespace Backups.Repository;

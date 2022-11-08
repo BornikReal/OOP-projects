@@ -1,5 +1,5 @@
 ﻿using System.IO.Compression;
-using Backups.FileSystemEntities;
+using Backups.FileSystemEntities.Interfaces;
 using Backups.ZipObjects;
 
 namespace Backups.Visitors;

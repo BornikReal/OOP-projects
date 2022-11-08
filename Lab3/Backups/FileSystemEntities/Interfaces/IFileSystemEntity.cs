@@ -1,6 +1,6 @@
 ﻿using Backups.Visitors;
 
-namespace Backups.FileSystemEntities;
+namespace Backups.FileSystemEntities.Interfaces;
 
 public interface IFileSystemEntity
 {

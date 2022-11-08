@@ -1,5 +1,5 @@
 ﻿using Backups.Archivator;
-using Backups.FileSystemEntities;
+using Backups.FileSystemEntities.Interfaces;
 using Backups.Models;
 using Backups.Repository;
 using Backups.Storages;

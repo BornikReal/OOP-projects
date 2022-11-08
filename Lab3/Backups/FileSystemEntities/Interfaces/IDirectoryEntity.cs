@@ -1,4 +1,4 @@
-﻿namespace Backups.FileSystemEntities;
+﻿namespace Backups.FileSystemEntities.Interfaces;
 
 public interface IDirectoryEntity : IFileSystemEntity
 {

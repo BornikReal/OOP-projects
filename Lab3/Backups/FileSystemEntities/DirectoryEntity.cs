@@ -1,4 +1,5 @@
-﻿using Backups.Visitors;
+﻿using Backups.FileSystemEntities.Interfaces;
+using Backups.Visitors;
 
 namespace Backups.FileSystemEntities;
 public class DirectoryEntity : IDirectoryEntity
