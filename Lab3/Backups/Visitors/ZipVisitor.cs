@@ -25,7 +25,7 @@ public class ZipVisitor : IVisitor
     {
         using Stream stream = _zipArchives.Peek().CreateEntry(directoryEnity.Name + ".zip").Open();
         _zipArchives.Push(new ZipArchive(stream, ZipArchiveMode.Create));
-        foreach (IFileSystemEntity entity in directoryEnity.Entities)
+        foreach (IFileSystemEntity entity in directoryEnity.Entities())
             entity.Accept(this);
         _zipArchives.Pop().Dispose();
     }
