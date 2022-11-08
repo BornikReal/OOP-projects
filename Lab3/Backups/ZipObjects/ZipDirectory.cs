@@ -6,14 +6,16 @@ namespace Backups.ZipObjects;
 
 public class ZipDirectory : IZipObject
 {
-    public ZipDirectory(string name, IEnumerable<IZipObject> zipObjects)
+    public ZipDirectory(string name, IEnumerable<IZipObject> zipObjects, ZipDirectory? parent)
     {
         Name = name;
         ZipObjects = zipObjects;
+        Parent = parent;
     }
 
     public string Name { get; }
     public IEnumerable<IZipObject> ZipObjects { get; }
+    public ZipDirectory? Parent { get; }
 
     public IFileSystemEntity CreateEntity(ZipArchiveEntry archiveEntry)
     {

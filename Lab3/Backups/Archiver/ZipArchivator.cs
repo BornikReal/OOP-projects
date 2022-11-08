@@ -2,7 +2,7 @@
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Visitors;
 
-namespace Backups.Archivator;
+namespace Backups.Archiver;
 
 public class ZipArchivator : IArchivator
 {

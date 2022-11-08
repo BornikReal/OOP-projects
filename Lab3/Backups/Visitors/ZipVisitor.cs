@@ -7,11 +7,12 @@ namespace Backups.Visitors;
 public class ZipVisitor : IVisitor
 {
     private readonly Stack<ZipArchive> _zipArchives = new Stack<ZipArchive>();
-    private readonly Stack<List<IZipObject>> zipObjects = new Stack<List<IZipObject>>();
+    private readonly Stack<List<IZipObject>> _zipObjects = new Stack<List<IZipObject>>();
 
     public ZipVisitor(ZipArchive archive)
     {
         _zipArchives.Push(archive);
+        _zipObjects.Push(new List<IZipObject>());
     }
 
     public void Visit(IFileEntity fileEnity)
@@ -19,6 +20,7 @@ public class ZipVisitor : IVisitor
         using Stream stream = _zipArchives.Peek().CreateEntry(fileEnity.Name).Open();
         using Stream stream1 = fileEnity.FuncStream();
         stream1.CopyTo(stream);
+        _zipObjects.Peek().Add(new ZipObjects.ZipFile(fileEnity.Name));
     }
 
     public void Visit(IDirectoryEntity directoryEnity)
@@ -28,5 +30,8 @@ public class ZipVisitor : IVisitor
         foreach (IFileSystemEntity entity in directoryEnity.Entities())
             entity.Accept(this);
         _zipArchives.Pop().Dispose();
+        List<IZipObject> objects = _zipObjects.Pop();
+        _zipObjects.Push(new List<IZipObject>());
+        _zipObjects.Peek().Add(new ZipDirectory(directoryEnity.Name, objects));
     }
 }

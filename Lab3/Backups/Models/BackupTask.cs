@@ -1,5 +1,5 @@
 ﻿using Backups.Algorithms;
-using Backups.Archivator;
+using Backups.Archiver;
 
 namespace Backups.Models;
 

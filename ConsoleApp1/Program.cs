@@ -1,4 +1,4 @@
-﻿using Backups.Archivator;
+﻿using Backups.Archiver;
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Repository;
 

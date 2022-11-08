@@ -1,6 +1,6 @@
 ﻿using Backups.FileSystemEntities.Interfaces;
 
-namespace Backups.Archivator;
+namespace Backups.Archiver;
 
 public interface IArchivator
 {
