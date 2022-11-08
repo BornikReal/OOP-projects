@@ -5,5 +5,6 @@ namespace Backups.ZipObjects;
 
 public interface IZipObject
 {
-    IFileSystemEntity Create(ZipArchiveEntry zipArchiveEntry);
+    string Name { get; }
+    IFileSystemEntity CreateEntity(ZipArchiveEntry archiveEntry);
 }

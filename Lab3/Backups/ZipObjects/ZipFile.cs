@@ -5,7 +5,14 @@ namespace Backups.ZipObjects;
 
 public class ZipFile : IZipObject
 {
-    public IFileSystemEntity Create(ZipArchiveEntry zipArchiveEntry)
+    public ZipFile(string name)
+    {
+        Name = name;
+    }
+
+    public string Name { get; }
+
+    public IFileSystemEntity CreateEntity(ZipArchiveEntry archiveEntry)
     {
         throw new NotImplementedException();
     }
