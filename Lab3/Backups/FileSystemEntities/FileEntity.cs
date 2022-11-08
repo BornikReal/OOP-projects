@@ -4,16 +4,13 @@ namespace Backups.FileSystemEntities;
 
 public class FileEntity : IFileEntity
 {
-    public FileEntity(string name, string fullPath, Func<Stream> funcStream)
+    public FileEntity(string name, Func<Stream> funcStream)
     {
         Name = name;
-        FullPath = fullPath;
         FuncStream = funcStream;
     }
 
     public string Name { get; }
-
-    public string FullPath { get; }
 
     public Func<Stream> FuncStream { get; }
 

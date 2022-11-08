@@ -3,18 +3,15 @@
 namespace Backups.FileSystemEntities;
 public class DirectoryEntity : IDirectoryEntity
 {
-    public DirectoryEntity(string name, string fullPath, IEnumerable<IFileSystemEntity> entities)
+    public DirectoryEntity(string name, Func<IEnumerable<IFileSystemEntity>> entities)
     {
         Name = name;
-        FullPath = fullPath;
         Entities = entities;
     }
 
     public string Name { get; }
 
-    public string FullPath { get; }
-
-    public IEnumerable<IFileSystemEntity> Entities { get; }
+    public Func<IEnumerable<IFileSystemEntity>> Entities { get; }
 
     public void Accept(IVisitor visitor)
     {

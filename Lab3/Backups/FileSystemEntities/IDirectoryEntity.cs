@@ -2,5 +2,5 @@
 
 public interface IDirectoryEntity : IFileSystemEntity
 {
-    IEnumerable<IFileSystemEntity> Entities { get; }
+    Func<IEnumerable<IFileSystemEntity>> Entities { get; }
 }

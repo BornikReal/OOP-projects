@@ -26,22 +26,14 @@ public class FileSystemRepository : IRepository
     {
         if (!IsFile(filePath))
             throw new Exception();
-        return new FileEntity(Path.GetFileName(filePath), filePath, () => File.OpenRead(filePath));
+        return new FileEntity(Path.GetFileName(filePath), () => File.OpenRead(filePath));
     }
 
     public DirectoryEntity OpenDirectory(string dirPath)
     {
         if (!IsDirectory(dirPath))
             throw new Exception();
-        var entitiesList = new List<IFileSystemEntity>();
-        var dirInfo = new DirectoryInfo(dirPath);
-        foreach (FileInfo file in dirInfo.GetFiles())
-            entitiesList.Add(OpenFile(file.FullName));
-
-        foreach (DirectoryInfo dir in dirInfo.GetDirectories())
-            entitiesList.Add(OpenDirectory(dir.FullName));
-
-        return new DirectoryEntity(Path.GetFileName(dirPath), dirPath, entitiesList);
+        return new DirectoryEntity(Path.GetFileName(dirPath), () => GetListEnitites(dirPath));
     }
 
     public IFileSystemEntity OpenEntity(string entityPath)
@@ -69,5 +61,18 @@ public class FileSystemRepository : IRepository
             throw new Exception();
         Directory.CreateDirectory(restorePointDirectory);
         return restorePointDirectory;
+    }
+
+    private IEnumerable<IFileSystemEntity> GetListEnitites(string dirPath)
+    {
+        var entitiesList = new List<IFileSystemEntity>();
+        var dirInfo = new DirectoryInfo(dirPath);
+        foreach (FileInfo file in dirInfo.GetFiles())
+            entitiesList.Add(OpenFile(file.FullName));
+
+        foreach (DirectoryInfo dir in dirInfo.GetDirectories())
+            entitiesList.Add(OpenDirectory(dir.FullName));
+
+        return entitiesList;
     }
 }

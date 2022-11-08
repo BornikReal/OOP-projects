@@ -40,7 +40,7 @@ public class InMemoryRepository : IRepository, IDisposable
     {
         if (!IsFile(filePath))
             throw new Exception();
-        return new FileEntity(RepositoryFileSystem.GetFileEntry((UPath)filePath).Name, filePath, () => RepositoryFileSystem.OpenFile((UPath)filePath, FileMode.Open, FileAccess.Read));
+        return new FileEntity(RepositoryFileSystem.GetFileEntry((UPath)filePath).Name, () => RepositoryFileSystem.OpenFile((UPath)filePath, FileMode.Open, FileAccess.Read));
     }
 
     public DirectoryEntity OpenDirectory(string dirPath)
@@ -59,7 +59,7 @@ public class InMemoryRepository : IRepository, IDisposable
             entitiesList.Add(OpenDirectory(dir.FullName));
         }
 
-        return new DirectoryEntity(dirInfo.Name, dirPath, entitiesList);
+        return new DirectoryEntity(dirInfo.Name, () => GetListEnitites(dirPath));
     }
 
     public string CreateBackupTaskDirectory(BackupTask backupTask)
@@ -84,5 +84,22 @@ public class InMemoryRepository : IRepository, IDisposable
     {
         RepositoryFileSystem.Dispose();
         GC.SuppressFinalize(this);
+    }
+
+    private IEnumerable<IFileSystemEntity> GetListEnitites(string dirPath)
+    {
+        var entitiesList = new List<IFileSystemEntity>();
+        DirectoryEntry dirInfo = RepositoryFileSystem.GetDirectoryEntry((UPath)dirPath);
+        foreach (FileEntry file in dirInfo.EnumerateFiles())
+        {
+            entitiesList.Add(OpenFile(file.FullName));
+        }
+
+        foreach (DirectoryEntry dir in dirInfo.EnumerateDirectories())
+        {
+            entitiesList.Add(OpenDirectory(dir.FullName));
+        }
+
+        return entitiesList;
     }
 }
