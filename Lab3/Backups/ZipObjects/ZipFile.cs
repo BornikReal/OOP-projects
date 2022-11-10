@@ -6,18 +6,15 @@ namespace Backups.ZipObjects;
 
 public class ZipFile : IZipObject
 {
-    public ZipFile(string name, ZipDirectory? parent)
+    public ZipFile(string name)
     {
         Name = name;
-        Parent = parent;
     }
 
     public string Name { get; }
 
-    public ZipDirectory? Parent { get; }
-
-    public IFileSystemEntity CreateEntity(ZipArchiveEntry archiveEntry)
+    public IFileSystemEntity CreateEntity(Func<ZipArchiveEntry> archiveEntry)
     {
-        return new FileEntity(Name, () => archiveEntry.Open());
+        return new FileEntity(Name, () => archiveEntry().Open());
     }
 }
