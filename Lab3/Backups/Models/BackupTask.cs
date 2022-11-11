@@ -1,5 +1,6 @@
 ﻿using Backups.Algorithms;
 using Backups.Archiver;
+using Backups.Exceptions;
 using Backups.Repository;
 using Backups.Storages;
 
@@ -27,14 +28,14 @@ public class BackupTask : IBackupTask
     public void AddNewTask(BackupObject backupObject)
     {
         if (_backupObjects.Find(s => s == backupObject) != null)
-            throw new Exception();
+            throw new BackupTaskModificationException();
         _backupObjects.Add(backupObject);
     }
 
     public void RemoveTask(BackupObject backupObject)
     {
         if (_backupObjects.Find(s => s == backupObject) == null)
-            throw new Exception();
+            throw new BackupTaskModificationException();
         _backupObjects.Remove(backupObject);
     }
 

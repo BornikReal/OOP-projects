@@ -1,5 +1,6 @@
 ﻿using Backups.Algorithms;
 using Backups.Archiver;
+using Backups.Exceptions;
 using Backups.FileSystemEntities;
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Models;
@@ -30,14 +31,14 @@ public class RealRepository : IRepository
     public FileEntity OpenFile(string filePath)
     {
         if (!IsFile(filePath))
-            throw new Exception();
+            throw new RepositoryOpenException();
         return new FileEntity(Path.GetFileName(FullPath(filePath)), () => File.OpenRead(FullPath(filePath)));
     }
 
     public DirectoryEntity OpenDirectory(string dirPath)
     {
         if (!IsDirectory(dirPath))
-            throw new Exception();
+            throw new RepositoryOpenException();
         return new DirectoryEntity(Path.GetFileName(FullPath(dirPath)), () => GetListEnitites(FullPath(dirPath)));
     }
 
@@ -47,7 +48,7 @@ public class RealRepository : IRepository
             return OpenFile(entityPath);
         else if (IsDirectory(entityPath))
             return OpenDirectory(entityPath);
-        throw new Exception();
+        throw new RepositoryOpenException();
     }
 
     public Stream CreateFile(string filePath) => File.Create(FullPath(filePath));

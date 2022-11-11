@@ -1,5 +1,6 @@
 ﻿using Backups.Algorithms;
 using Backups.Archiver;
+using Backups.Exceptions;
 using Backups.FileSystemEntities;
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Models;
@@ -53,20 +54,20 @@ public class InMemoryRepository : IRepository, IDisposable
             return OpenFile(entityPath);
         else if (IsDirectory(entityPath))
             return OpenDirectory(entityPath);
-        throw new Exception();
+        throw new RepositoryOpenException();
     }
 
     public FileEntity OpenFile(string filePath)
     {
         if (!IsFile(filePath))
-            throw new Exception();
+            throw new RepositoryOpenException();
         return new FileEntity(RepositoryFileSystem.GetFileEntry((UPath)FullPath(filePath)).Name, () => RepositoryFileSystem.OpenFile((UPath)FullPath(filePath), FileMode.Open, FileAccess.Read));
     }
 
     public DirectoryEntity OpenDirectory(string dirPath)
     {
         if (!IsDirectory(dirPath))
-            throw new Exception();
+            throw new RepositoryOpenException();
         DirectoryEntry dirInfo = RepositoryFileSystem.GetDirectoryEntry((UPath)FullPath(dirPath));
         return new DirectoryEntity(dirInfo.Name, () => GetListEnitites(dirPath));
     }

@@ -1,4 +1,6 @@
-﻿namespace Backups.Models;
+﻿using Backups.Exceptions;
+
+namespace Backups.Models;
 
 public class Backup
 {
@@ -11,7 +13,7 @@ public class Backup
     public void AddRestorePoint(RestorePoint restorePoint)
     {
         if (_restorePoints.Find(s => s == restorePoint) != null)
-            throw new Exception();
+            throw new RestorePointAlreadyExistException();
         _restorePoints.Add(restorePoint);
     }
 }
