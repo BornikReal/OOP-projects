@@ -2,7 +2,7 @@
 
 namespace Backups.Models;
 
-public class Backup
+public class Backup : IBackup
 {
     private readonly List<RestorePoint> _restorePoints = new List<RestorePoint>();
 
