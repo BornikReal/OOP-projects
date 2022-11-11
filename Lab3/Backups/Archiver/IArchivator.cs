@@ -7,5 +7,5 @@ namespace Backups.Archiver;
 public interface IArchivator
 {
     public string ArchiveExtension { get; }
-    ZipStorage CreateArchive(List<IFileSystemEntity> entities, IRepository repository);
+    IStorage CreateArchive(List<IFileSystemEntity> entities, string archivePath, IRepository repository);
 }
