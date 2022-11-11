@@ -15,7 +15,7 @@ public class SplitStorageAlgorithm : IAlgorithm
         string storageName;
         foreach (BackupObject backupObject in backupObjects)
         {
-            storageName = restorPointPath + Path.DirectorySeparatorChar + "Storage-" + Guid.NewGuid() + archivator.Archiveextension;
+            storageName = restorPointPath + Path.DirectorySeparatorChar + "Storage-" + Guid.NewGuid() + archivator.ArchiveExtension;
             entities = new List<IFileSystemEntity>
             {
                 repository.OpenEntity(backupObject.ObjectPath),

@@ -16,7 +16,7 @@ public class SingleStorageAlgorithm : IAlgorithm
             entities.Add(repository.OpenEntity(backupObject.ObjectPath));
         }
 
-        string storageName = restorPointPath + Path.DirectorySeparatorChar + "Storage-" + Guid.NewGuid() + archivator.Archiveextension;
+        string storageName = restorPointPath + Path.DirectorySeparatorChar + "Storage-" + Guid.NewGuid() + archivator.ArchiveExtension;
         var storages = new List<Storage>
         {
             new Storage(entities, storageName),

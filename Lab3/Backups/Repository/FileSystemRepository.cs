@@ -1,6 +1,5 @@
 ﻿using Backups.FileSystemEntities;
 using Backups.FileSystemEntities.Interfaces;
-using Backups.Models;
 
 namespace Backups.Repository;
 
@@ -47,23 +46,7 @@ public class FileSystemRepository : IRepository
         throw new Exception();
     }
 
-    public string CreateBackupTaskDirectory(BackupTask backupTask)
-    {
-        string backupTaskDirectory = FullPath("BackupTask-" + backupTask.Id);
-        if (IsDirectory(backupTaskDirectory))
-            throw new Exception();
-        Directory.CreateDirectory(FullPath(backupTaskDirectory));
-        return backupTaskDirectory;
-    }
-
-    public string CreateRestorePointDirectory(RestorePoint restorePoint)
-    {
-        string restorePointDirectory = FullPath("RestorePoint-" + restorePoint.Id);
-        if (IsDirectory(restorePointDirectory))
-            throw new Exception();
-        Directory.CreateDirectory(FullPath(restorePointDirectory));
-        return restorePointDirectory;
-    }
+    public Stream CreateFile(string filePath) => File.Create(FullPath(filePath));
 
     private IEnumerable<IFileSystemEntity> GetListEnitites(string dirPath)
     {

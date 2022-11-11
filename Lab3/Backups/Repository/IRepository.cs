@@ -1,6 +1,5 @@
 ﻿using Backups.FileSystemEntities;
 using Backups.FileSystemEntities.Interfaces;
-using Backups.Models;
 
 namespace Backups.Repository;
 
@@ -12,6 +11,5 @@ public interface IRepository
     FileEntity OpenFile(string filePath);
     DirectoryEntity OpenDirectory(string dirPath);
     IFileSystemEntity OpenEntity(string entityPath);
-    string CreateBackupTaskDirectory(BackupTask backupTask);
-    string CreateRestorePointDirectory(RestorePoint restorePoint);
+    Stream CreateFile(string filePath);
 }

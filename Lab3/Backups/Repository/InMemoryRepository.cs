@@ -1,6 +1,5 @@
 ﻿using Backups.FileSystemEntities;
 using Backups.FileSystemEntities.Interfaces;
-using Backups.Models;
 using Zio;
 using Zio.FileSystems;
 
@@ -18,6 +17,7 @@ public class InMemoryRepository : IRepository, IDisposable
     public string RepositoryPath { get; }
     public MemoryFileSystem RepositoryFileSystem { get; }
     public string FullPath(string enityPath) => RepositoryPath + @"\" + enityPath;
+    public Stream CreateFile(string filePath) => RepositoryFileSystem.OpenFile((UPath)FullPath(filePath), FileMode.Create, FileAccess.Write);
 
     public bool IsDirectory(string entityPath)
     {
@@ -51,24 +51,6 @@ public class InMemoryRepository : IRepository, IDisposable
             throw new Exception();
         DirectoryEntry dirInfo = RepositoryFileSystem.GetDirectoryEntry((UPath)FullPath(dirPath));
         return new DirectoryEntity(dirInfo.Name, () => GetListEnitites(dirPath));
-    }
-
-    public string CreateBackupTaskDirectory(BackupTask backupTask)
-    {
-        string backupTaskDirectory = FullPath("BackupTask-" + backupTask.Id);
-        if (IsDirectory(backupTaskDirectory))
-            throw new Exception();
-        RepositoryFileSystem.CreateDirectory((UPath)FullPath(backupTaskDirectory));
-        return backupTaskDirectory;
-    }
-
-    public string CreateRestorePointDirectory(RestorePoint restorePoint)
-    {
-        string restorePointDirectory = FullPath("RestorePoint-" + restorePoint.Id);
-        if (IsDirectory(restorePointDirectory))
-            throw new Exception();
-        RepositoryFileSystem.CreateDirectory((UPath)FullPath(restorePointDirectory));
-        return restorePointDirectory;
     }
 
     public void Dispose()
