@@ -15,6 +15,7 @@ public class InMemoryRepository : IRepository, IDisposable
     }
 
     public string RepositoryPath { get; }
+    public string PathSeparator { get; } = @"\";
     public MemoryFileSystem RepositoryFileSystem { get; }
     public string FullPath(string enityPath) => RepositoryPath + @"\" + enityPath;
     public Stream CreateFile(string filePath) => RepositoryFileSystem.OpenFile((UPath)FullPath(filePath), FileMode.Create, FileAccess.Write);

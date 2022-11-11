@@ -2,7 +2,7 @@
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Repository;
 
-var rep = new FileSystemRepository("aboba");
+var rep = new RealRepository("aboba");
 IFileSystemEntity systemEntity = rep.OpenEntity("C:\\Users\\cooln\\source\\repos\\OOP\\ConsoleApp1\\pack");
 var entities = new List<IFileSystemEntity>
 {

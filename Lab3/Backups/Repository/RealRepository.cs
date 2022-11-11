@@ -3,14 +3,15 @@ using Backups.FileSystemEntities.Interfaces;
 
 namespace Backups.Repository;
 
-public class FileSystemRepository : IRepository
+public class RealRepository : IRepository
 {
-    public FileSystemRepository(string repPath)
+    public RealRepository(string repPath)
     {
         RepositoryPath = repPath;
     }
 
     public string RepositoryPath { get; }
+    public string PathSeparator { get; } = Path.DirectorySeparatorChar.ToString();
     public string FullPath(string enityPath) => Path.Combine(RepositoryPath, enityPath);
 
     public bool IsDirectory(string entityPath)

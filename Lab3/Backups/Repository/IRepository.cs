@@ -6,6 +6,7 @@ namespace Backups.Repository;
 public interface IRepository
 {
     public string RepositoryPath { get; }
+    public string PathSeparator { get; }
     bool IsDirectory(string entityPath);
     bool IsFile(string entityPath);
     FileEntity OpenFile(string filePath);
