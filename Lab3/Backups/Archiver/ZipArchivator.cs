@@ -14,7 +14,7 @@ public class ZipArchivator : IArchivator
     public ZipStorage CreateArchive(List<IFileSystemEntity> entities, IRepository repository)
     {
         string archiveName = "ZipStorage-" + Guid.NewGuid().ToString() + ArchiveExtension;
-        Stream stream = repository.CreateFile(archiveName);
+        using Stream stream = repository.CreateFile(archiveName);
         using var archive = new ZipArchive(stream, ZipArchiveMode.Create);
         var visitor = new ZipVisitor(archive);
         foreach (IFileSystemEntity entity in entities)
