@@ -4,18 +4,18 @@ namespace Backups.Storages;
 
 public class SplitStorage
 {
-    public SplitStorage(IEnumerable<ZipStorage> storages)
+    public SplitStorage(IEnumerable<IStorage> storages)
     {
         Storages = storages;
     }
 
-    public IEnumerable<ZipStorage> Storages { get; }
+    public IEnumerable<IStorage> Storages { get; }
 
     public IEnumerable<IFileSystemEntity> GetEntities()
     {
         var entities = new List<IFileSystemEntity>();
-        foreach (ZipStorage zipStorage in Storages)
-            entities.AddRange(zipStorage.GetEntities());
+        foreach (IStorage storage in Storages)
+            entities.AddRange(storage.GetEntities());
         return entities;
     }
 }
