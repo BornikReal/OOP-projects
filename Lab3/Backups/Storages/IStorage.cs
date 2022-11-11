@@ -1,8 +1,8 @@
-﻿using Backups.FileSystemEntities.Interfaces;
+﻿using Backups.Interlayer;
 
 namespace Backups.Storages;
 
 public interface IStorage
 {
-    IEnumerable<IFileSystemEntity> GetEntities();
+    IRepoDisposable GetEntities();
 }

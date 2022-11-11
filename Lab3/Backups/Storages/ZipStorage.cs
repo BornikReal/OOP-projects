@@ -1,5 +1,6 @@
 ﻿using System.IO.Compression;
 using Backups.FileSystemEntities.Interfaces;
+using Backups.Interlayer;
 using Backups.Repository;
 using Backups.ZipObjects;
 
@@ -18,7 +19,7 @@ public class ZipStorage : IStorage
     public string Path { get; }
     public ZipDirectory ZipDirectory { get; }
 
-    public IEnumerable<IFileSystemEntity> GetEntities()
+    public IRepoDisposable GetEntities()
     {
         var entities = new List<IFileSystemEntity>();
         var archve = new ZipArchive(Repository.OpenFile(Path).FuncStream());
@@ -27,6 +28,6 @@ public class ZipStorage : IStorage
             entities.Add(zipObject.CreateEntity(archve.Entries.FirstOrDefault(x => x.Name == zipObject.Name) !));
         }
 
-        return entities;
+        return new RepoInterlayer(ZipDirectory.ZipObjects, archve);
     }
 }

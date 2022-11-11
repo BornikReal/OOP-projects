@@ -1,8 +1,8 @@
-﻿using Backups.FileSystemEntities.Interfaces;
+﻿using Backups.Interlayer;
 
 namespace Backups.Storages;
 
-public class SplitStorage
+public class SplitStorage : IStorage
 {
     public SplitStorage(IEnumerable<IStorage> storages)
     {
@@ -11,11 +11,8 @@ public class SplitStorage
 
     public IEnumerable<IStorage> Storages { get; }
 
-    public IEnumerable<IFileSystemEntity> GetEntities()
+    public IRepoDisposable GetEntities()
     {
-        var entities = new List<IFileSystemEntity>();
-        foreach (IStorage storage in Storages)
-            entities.AddRange(storage.GetEntities());
-        return entities;
+        return new RepoInterlayerAdapter(Storages.Select(s => s.GetEntities()));
     }
 }
