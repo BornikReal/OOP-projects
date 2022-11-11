@@ -40,7 +40,7 @@ public class BackupTask
 
     public string Start()
     {
-        string restorePointPath = BackupTaskPath + Repository.PathSeparator + "RestorePoint-" + Guid.NewGuid();
+        string restorePointPath = Repository.CreateRestorePointDirectory(this);
         IStorage storage = Algorithm.CreateBackup(_backupObjects, restorePointPath, Repository, Archivator);
         Backup.AddRestorePoint(new RestorePoint(_backupObjects, storage, restorePointPath, DateTime.Now));
         return restorePointPath;
