@@ -8,7 +8,7 @@ namespace Backups.Algorithms;
 
 public class SingleStorageAlgorithm : IAlgorithm
 {
-    public List<Storage> CreateBackup(List<BackupObject> backupObjects, string restorPointPath, IRepository repository, IArchivator archivator)
+    public IStorage CreateBackup(List<BackupObject> backupObjects, string restorPointPath, IRepository repository, IArchivator archiver)
     {
         var entities = new List<IFileSystemEntity>();
         foreach (BackupObject backupObject in backupObjects)
@@ -16,14 +16,6 @@ public class SingleStorageAlgorithm : IAlgorithm
             entities.Add(repository.OpenEntity(backupObject.ObjectPath));
         }
 
-        string storageName = restorPointPath + Path.DirectorySeparatorChar + "Storage-" + Guid.NewGuid() + archivator.ArchiveExtension;
-        var storages = new List<Storage>
-        {
-            new Storage(entities, storageName),
-        };
-
-        // archivator.CreateArchive(entities, repository.OpenEntity(storageName).Stream!);
-        // entities.ForEach(s => repository.CloseEntity(s));
-        return storages;
+        return archiver.CreateArchive(entities, restorPointPath, repository);
     }
 }
