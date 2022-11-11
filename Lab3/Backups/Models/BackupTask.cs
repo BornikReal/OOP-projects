@@ -5,7 +5,7 @@ using Backups.Storages;
 
 namespace Backups.Models;
 
-public class BackupTask
+public class BackupTask : IBackupTask
 {
     private readonly List<BackupObject> _backupObjects = new List<BackupObject>();
 

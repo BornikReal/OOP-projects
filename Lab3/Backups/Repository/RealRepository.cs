@@ -52,14 +52,14 @@ public class RealRepository : IRepository
 
     public Stream CreateFile(string filePath) => File.Create(FullPath(filePath));
 
-    public BackupTask CreateBackupTask(IAlgorithm algorithm, IArchivator archivator)
+    public IBackupTask CreateBackupTask(IAlgorithm algorithm, IArchivator archivator)
     {
         string backupTaskPath = "BackupTask-" + Guid.NewGuid();
         Directory.CreateDirectory(FullPath(backupTaskPath));
         return new BackupTask(backupTaskPath, this, algorithm, archivator);
     }
 
-    public string CreateRestorePointDirectory(BackupTask backupTask)
+    public string CreateRestorePointDirectory(IBackupTask backupTask)
     {
         string restorePointPath = backupTask.BackupTaskPath + Path.DirectorySeparatorChar + "RestorePoint-" + Guid.NewGuid();
         Directory.CreateDirectory(FullPath(restorePointPath));
