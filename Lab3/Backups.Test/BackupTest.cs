@@ -19,8 +19,8 @@ public class BackupTest
         var backupObjects = new List<BackupObject>() { new BackupObject("test1", repo), new BackupObject("test3.txt", repo) };
         elonTask.AddNewTask(backupObjects[0]);
         elonTask.AddNewTask(backupObjects[1]);
-        elonTask.Start();
+        Assert.Equal(2, repo.OpenDirectory(elonTask.Start()).Entities().Count());
         elonTask.RemoveTask(backupObjects[1]);
-        elonTask.Start();
+        Assert.Single(repo.OpenDirectory(elonTask.Start()).Entities());
     }
 }
