@@ -16,6 +16,7 @@ public interface IRepository
     DirectoryEntity OpenDirectory(string dirPath);
     IFileSystemEntity OpenEntity(string entityPath);
     Stream CreateFile(string filePath);
+    void CreateDirectory(string dirPath);
     IBackupTask CreateBackupTask(IAlgorithm algorithm, IArchivator archivator);
     string CreateRestorePointDirectory(IBackupTask backupTask);
 }

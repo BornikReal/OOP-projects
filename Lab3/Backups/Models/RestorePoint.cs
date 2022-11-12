@@ -18,4 +18,9 @@ public class RestorePoint
     public IStorage Storages { get; }
     public DateTime CreationTime { get; }
     public string RestorePointPath { get; }
+
+    public bool Equals(RestorePoint other)
+    {
+        return _backupObjects.SequenceEqual(other._backupObjects) && CreationTime.Equals(other.CreationTime) && RestorePointPath == other.RestorePointPath;
+    }
 }

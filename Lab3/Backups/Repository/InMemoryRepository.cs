@@ -22,29 +22,30 @@ public class InMemoryRepository : IRepository, IDisposable
     public string PathSeparator { get; } = @"\";
     public MemoryFileSystem RepositoryFileSystem { get; }
     public string FullPath(string enityPath) => RepositoryPath + @"\" + enityPath;
-    public Stream CreateFile(string filePath) => RepositoryFileSystem.OpenFile((UPath)FullPath(filePath), FileMode.Create, FileAccess.Write);
+    public Stream CreateFile(string filePath) => RepositoryFileSystem.CreateFile((UPath)FullPath(filePath));
+    public void CreateDirectory(string dirPath) => RepositoryFileSystem.CreateDirectory((UPath)FullPath(dirPath));
 
     public bool IsDirectory(string entityPath)
     {
-        return RepositoryFileSystem.FileExists((UPath)FullPath(entityPath));
+        return RepositoryFileSystem.DirectoryExists((UPath)FullPath(entityPath));
     }
 
     public bool IsFile(string entityPath)
     {
-        return RepositoryFileSystem.DirectoryExists((UPath)FullPath(entityPath));
+        return RepositoryFileSystem.FileExists((UPath)FullPath(entityPath));
     }
 
     public IBackupTask CreateBackupTask(IAlgorithm algorithm, IArchivator archivator)
     {
         string backupTaskPath = "BackupTask-" + Guid.NewGuid();
-        Directory.CreateDirectory(FullPath(backupTaskPath));
+        CreateDirectory(backupTaskPath);
         return new BackupTask(backupTaskPath, this, algorithm, archivator);
     }
 
     public string CreateRestorePointDirectory(IBackupTask backupTask)
     {
         string restorePointPath = backupTask.BackupTaskPath + Path.DirectorySeparatorChar + "RestorePoint-" + Guid.NewGuid();
-        Directory.CreateDirectory(FullPath(restorePointPath));
+        CreateDirectory(restorePointPath);
         return restorePointPath;
     }
 
@@ -84,12 +85,12 @@ public class InMemoryRepository : IRepository, IDisposable
         DirectoryEntry dirInfo = RepositoryFileSystem.GetDirectoryEntry((UPath)FullPath(dirPath));
         foreach (FileEntry file in dirInfo.EnumerateFiles())
         {
-            entitiesList.Add(OpenFile(file.FullName.Replace(RepositoryPath + @"\", string.Empty)));
+            entitiesList.Add(OpenFile(dirPath + @"\" + file.Name));
         }
 
         foreach (DirectoryEntry dir in dirInfo.EnumerateDirectories())
         {
-            entitiesList.Add(OpenDirectory(dir.FullName.Replace(RepositoryPath + @"\", string.Empty)));
+            entitiesList.Add(OpenDirectory(dirPath + @"\" + dir.Name));
         }
 
         return entitiesList;

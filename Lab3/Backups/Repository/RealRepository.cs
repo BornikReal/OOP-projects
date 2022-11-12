@@ -52,18 +52,19 @@ public class RealRepository : IRepository
     }
 
     public Stream CreateFile(string filePath) => File.Create(FullPath(filePath));
+    public void CreateDirectory(string dirPath) => Directory.CreateDirectory(FullPath(dirPath));
 
     public IBackupTask CreateBackupTask(IAlgorithm algorithm, IArchivator archivator)
     {
         string backupTaskPath = "BackupTask-" + Guid.NewGuid();
-        Directory.CreateDirectory(FullPath(backupTaskPath));
+        CreateDirectory(backupTaskPath);
         return new BackupTask(backupTaskPath, this, algorithm, archivator);
     }
 
     public string CreateRestorePointDirectory(IBackupTask backupTask)
     {
         string restorePointPath = backupTask.BackupTaskPath + Path.DirectorySeparatorChar + "RestorePoint-" + Guid.NewGuid();
-        Directory.CreateDirectory(FullPath(restorePointPath));
+        CreateDirectory(restorePointPath);
         return restorePointPath;
     }
 
@@ -72,10 +73,10 @@ public class RealRepository : IRepository
         var entitiesList = new List<IFileSystemEntity>();
         var dirInfo = new DirectoryInfo(FullPath(dirPath));
         foreach (FileInfo file in dirInfo.GetFiles())
-            entitiesList.Add(OpenFile(file.FullName.Replace(RepositoryPath + Path.DirectorySeparatorChar, string.Empty)));
+            entitiesList.Add(OpenFile(dirPath + @"\" + file.Name));
 
         foreach (DirectoryInfo dir in dirInfo.GetDirectories())
-            entitiesList.Add(OpenDirectory(dir.FullName.Replace(RepositoryPath + Path.DirectorySeparatorChar, string.Empty)));
+            entitiesList.Add(OpenDirectory(dirPath + @"\" + dir.Name));
 
         return entitiesList;
     }
