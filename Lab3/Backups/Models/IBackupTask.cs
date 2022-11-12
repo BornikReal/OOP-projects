@@ -15,5 +15,5 @@ public interface IBackupTask
 
     void AddNewTask(BackupObject backupObject);
     void RemoveTask(BackupObject backupObject);
-    string Start();
+    RestorePoint Start();
 }

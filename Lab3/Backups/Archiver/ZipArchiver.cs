@@ -12,11 +12,13 @@ public class ZipArchiver : IArchivator
     public IStorage CreateArchive(List<IFileSystemEntity> entities, string archivePath, IRepository repository)
     {
         string archiveName = "ZipStorage-" + Guid.NewGuid().ToString() + ".zip";
-        using Stream stream = repository.CreateFile(archivePath + repository.PathSeparator + archiveName);
-        using var archive = new ZipArchive(stream, ZipArchiveMode.Create);
+        Stream stream = repository.CreateFile(archivePath + repository.PathSeparator + archiveName);
+        var archive = new ZipArchive(stream, ZipArchiveMode.Create);
         var visitor = new ZipVisitor(archive);
         foreach (IFileSystemEntity entity in entities)
             entity.Accept(visitor);
-        return new ZipStorage(repository, archivePath + archiveName, new ZipDirectory(archiveName, visitor.GetZipObjects()));
+        archive.Dispose();
+        stream.Close();
+        return new ZipStorage(repository, archivePath + repository.PathSeparator + archiveName, new ZipDirectory(archiveName, visitor.GetZipObjects()));
     }
 }

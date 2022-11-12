@@ -13,6 +13,9 @@ public class SplitStorage : IStorage
 
     public IRepoDisposable GetEntities()
     {
-        return new RepoInterlayerAdapter(Storages.Select(s => s.GetEntities()));
+        var repDispos = new List<IRepoDisposable>();
+        foreach (IStorage storage in Storages)
+            repDispos.Add(storage.GetEntities());
+        return new RepoInterlayerAdapter(repDispos);
     }
 }

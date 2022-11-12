@@ -39,11 +39,12 @@ public class BackupTask : IBackupTask
         _backupObjects.Remove(backupObject);
     }
 
-    public string Start()
+    public RestorePoint Start()
     {
         string restorePointPath = Repository.CreateRestorePointDirectory(this);
         IStorage storage = Algorithm.CreateBackup(_backupObjects, restorePointPath, Repository, Archivator);
-        Backup.AddRestorePoint(new RestorePoint(_backupObjects, storage, restorePointPath, DateTime.Now));
-        return restorePointPath;
+        var restorePoint = new RestorePoint(_backupObjects, storage, restorePointPath, DateTime.Now);
+        Backup.AddRestorePoint(restorePoint);
+        return restorePoint;
     }
 }

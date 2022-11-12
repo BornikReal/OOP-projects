@@ -34,6 +34,6 @@ public class ZipVisitor : IVisitor
         _zipArchives.Pop().Dispose();
         List<IZipObject> objects = _zipObjects.Pop();
         _zipObjects.Push(new List<IZipObject>());
-        _zipObjects.Peek().Add(new ZipDirectory(directoryEnity.Name, objects));
+        _zipObjects.Peek().Add(new ZipDirectory(directoryEnity.Name + ".zip", objects));
     }
 }

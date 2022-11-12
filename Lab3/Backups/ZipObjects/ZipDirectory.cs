@@ -22,7 +22,7 @@ public class ZipDirectory : IZipObject
             var archive = new ZipArchive(archiveEntry.Open(), ZipArchiveMode.Read);
             var entities = new List<IFileSystemEntity>();
             foreach (ZipArchiveEntry entry in archive.Entries)
-                entities.Add(ZipObjects.FirstOrDefault(x => x.Name == entry.Name) !.CreateEntity(archiveEntry));
+                entities.Add(ZipObjects.First(x => x.Name == entry.Name).CreateEntity(entry));
             return entities;
         }
 
