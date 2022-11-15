@@ -28,14 +28,14 @@ public class RealRepository : IRepository
         return File.Exists(FullPath(entityPath));
     }
 
-    public FileEntity OpenFile(string filePath)
+    public IFileEntity OpenFile(string filePath)
     {
         if (!IsFile(filePath))
             throw new RepositoryOpenException();
         return new FileEntity(Path.GetFileName(FullPath(filePath)), () => File.OpenRead(FullPath(filePath)));
     }
 
-    public DirectoryEntity OpenDirectory(string dirPath)
+    public IDirectoryEntity OpenDirectory(string dirPath)
     {
         if (!IsDirectory(dirPath))
             throw new RepositoryOpenException();

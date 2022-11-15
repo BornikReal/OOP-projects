@@ -58,14 +58,14 @@ public class InMemoryRepository : IRepository, IDisposable
         throw new RepositoryOpenException();
     }
 
-    public FileEntity OpenFile(string filePath)
+    public IFileEntity OpenFile(string filePath)
     {
         if (!IsFile(filePath))
             throw new RepositoryOpenException();
         return new FileEntity(RepositoryFileSystem.GetFileEntry((UPath)FullPath(filePath)).Name, () => RepositoryFileSystem.OpenFile((UPath)FullPath(filePath), FileMode.Open, FileAccess.Read));
     }
 
-    public DirectoryEntity OpenDirectory(string dirPath)
+    public IDirectoryEntity OpenDirectory(string dirPath)
     {
         if (!IsDirectory(dirPath))
             throw new RepositoryOpenException();
