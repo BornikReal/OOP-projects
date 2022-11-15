@@ -11,9 +11,9 @@ namespace Backups.Repository;
 
 public class InMemoryRepository : IRepository, IDisposable
 {
-    public InMemoryRepository(string repPath)
+    public InMemoryRepository(string repositoryPath)
     {
-        RepositoryPath = $@"\mnt\c\{repPath}";
+        RepositoryPath = $@"\mnt\c\{repositoryPath}";
         RepositoryFileSystem = new MemoryFileSystem();
         RepositoryFileSystem.CreateDirectory((UPath)RepositoryPath);
     }

@@ -9,9 +9,9 @@ namespace Backups.Repository;
 
 public class RealRepository : IRepository
 {
-    public RealRepository(string repPath)
+    public RealRepository(string repositoryPath)
     {
-        RepositoryPath = repPath;
+        RepositoryPath = repositoryPath;
     }
 
     public string RepositoryPath { get; }
