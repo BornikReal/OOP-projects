@@ -2,6 +2,7 @@
 using Backups.Algorithms;
 using Backups.Archiver;
 using Backups.FileSystemEntities;
+using Backups.FileSystemEntities.Interfaces;
 using Backups.Interlayer;
 using Backups.Models;
 using Backups.Repository;
@@ -28,7 +29,7 @@ public class BackupTest
         elonTask.AddNewTask(backupObjects[0]);
         elonTask.AddNewTask(backupObjects[1]);
         RestorePoint restorePoint1 = elonTask.Start();
-        Assert.Equal(2, repo.OpenDirectory(restorePoint1.RestorePointPath).Entities().Count());
+        Assert.Equal(2, ((IDirectoryEntity)repo.OpenEntity(restorePoint1.RestorePointPath)).Entities().Count());
         IRepoDisposable repDis1 = restorePoint1.Storage.GetEntities();
         var entities1 = repDis1.Entities.ToList();
         Stream stream3 = ((FileEntity)entities1[1]).FuncStream();
@@ -38,7 +39,7 @@ public class BackupTest
 
         elonTask.RemoveTask(backupObjects[1]);
         RestorePoint restorePoint2 = elonTask.Start();
-        Assert.Single(repo.OpenDirectory(restorePoint2.RestorePointPath).Entities());
+        Assert.Single(((IDirectoryEntity)repo.OpenEntity(restorePoint2.RestorePointPath)).Entities());
         IRepoDisposable repDis2 = restorePoint2.Storage.GetEntities();
         var entities2 = repDis2.Entities.ToList();
         Stream stream4 = ((FileEntity)((DirectoryEntity)entities2[0]).Entities().ToList()[0]).FuncStream();
