@@ -9,16 +9,17 @@ namespace Backups.Archiver;
 
 public class ZipArchiver : IArchivator
 {
-    public IStorage CreateArchive(List<IFileSystemEntity> entities, string archivePath, IRepository repository)
+    public IStorage CreateArchive(IEnumerable<IFileSystemEntity> entities, string archivePath, IRepository repository)
     {
-        string archiveName = "ZipStorage-" + Guid.NewGuid().ToString() + ".zip";
-        Stream stream = repository.CreateFile(archivePath + repository.PathSeparator + archiveName);
+        string archiveName = $"ZipStorage-{Guid.NewGuid()}.zip";
+        string newArchivePath = $"{archivePath}{repository.PathSeparator}{archiveName}";
+        Stream stream = repository.CreateFile(newArchivePath);
         var archive = new ZipArchive(stream, ZipArchiveMode.Create);
-        var visitor = new ZipVisitor(archive);
+        var visitor = new ZipArchiveVisitor(archive);
         foreach (IFileSystemEntity entity in entities)
             entity.Accept(visitor);
         archive.Dispose();
         stream.Close();
-        return new ZipStorage(repository, archivePath + repository.PathSeparator + archiveName, new ZipDirectory(archiveName, visitor.GetZipObjects()));
+        return new ZipStorage(repository, newArchivePath, new ZipDirectory(archiveName, visitor.GetZipObjects()));
     }
 }

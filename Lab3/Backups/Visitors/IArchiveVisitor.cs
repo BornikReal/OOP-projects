@@ -2,7 +2,7 @@
 
 namespace Backups.Visitors;
 
-public interface IVisitor
+public interface IArchiveVisitor
 {
     void Visit(IFileEntity fileEnity);
     void Visit(IDirectoryEntity directoryEnity);

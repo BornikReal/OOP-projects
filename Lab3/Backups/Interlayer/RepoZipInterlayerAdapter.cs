@@ -2,11 +2,11 @@
 
 namespace Backups.Interlayer;
 
-public class RepoInterlayerAdapter : IRepoDisposable
+public class RepoZipInterlayerAdapter : IRepoDisposable
 {
     private readonly IEnumerable<IRepoDisposable> _interlayers;
 
-    public RepoInterlayerAdapter(IEnumerable<IRepoDisposable> interlayers)
+    public RepoZipInterlayerAdapter(IEnumerable<IRepoDisposable> interlayers)
     {
         _interlayers = interlayers;
     }

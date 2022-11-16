@@ -6,7 +6,7 @@ namespace Backups.Models;
 
 public interface IBackupTask
 {
-    public Backup Backup { get; }
+    public IBackup Backup { get; }
     public string BackupTaskPath { get; }
     public IReadOnlyList<BackupObject> BackupObjects { get; }
     public IRepository Repository { get; }

@@ -13,9 +13,4 @@ public class BackupObject
     public string ObjectPath { get; }
 
     public IRepository Repository { get; }
-
-    public bool Equals(BackupObject other)
-    {
-        return ObjectPath == other.ObjectPath;
-    }
 }

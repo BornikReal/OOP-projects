@@ -20,6 +20,6 @@ public class ZipStorage : IStorage
 
     public IRepoDisposable GetEntities()
     {
-        return new RepoInterlayer(ZipDirectory.ZipObjects, new ZipArchive(Repository.OpenFile(Path).FuncStream()));
+        return new RepoZipInterlayer(ZipDirectory.ZipObjects, new ZipArchive(Repository.OpenFile(Path).FuncStream()));
     }
 }

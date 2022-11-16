@@ -6,5 +6,5 @@ namespace Backups.Archiver;
 
 public interface IArchivator
 {
-    IStorage CreateArchive(List<IFileSystemEntity> entities, string archivePath, IRepository repository);
+    IStorage CreateArchive(IEnumerable<IFileSystemEntity> entities, string archivePath, IRepository repository);
 }

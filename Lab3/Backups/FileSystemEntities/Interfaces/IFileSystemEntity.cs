@@ -6,5 +6,5 @@ public interface IFileSystemEntity
 {
     string Name { get; }
 
-    void Accept(IVisitor visitor);
+    void Accept(IArchiveVisitor visitor);
 }

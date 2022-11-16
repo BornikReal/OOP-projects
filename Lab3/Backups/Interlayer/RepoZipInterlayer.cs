@@ -4,12 +4,12 @@ using Backups.ZipObjects;
 
 namespace Backups.Interlayer;
 
-public class RepoInterlayer : IRepoDisposable
+public class RepoZipInterlayer : IRepoDisposable
 {
     private readonly List<IFileSystemEntity> _entities = new List<IFileSystemEntity>();
     private readonly ZipArchive _archive;
 
-    public RepoInterlayer(IEnumerable<IZipObject> zipObjects, ZipArchive archive)
+    public RepoZipInterlayer(IEnumerable<IZipObject> zipObjects, ZipArchive archive)
     {
         _archive = archive;
         foreach (IZipObject zipObject in zipObjects)

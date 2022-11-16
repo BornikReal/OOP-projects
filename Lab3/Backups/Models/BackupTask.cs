@@ -10,15 +10,19 @@ public class BackupTask : IBackupTask
 {
     private readonly List<BackupObject> _backupObjects = new List<BackupObject>();
 
-    public BackupTask(string backupTaskPath, IRepository repository, IAlgorithm algorithm, IArchivator archivator)
+    public BackupTask(string backupTaskPath, IRepository repository, IAlgorithm algorithm, IArchivator archivator, IBackup? backup = null)
     {
         Repository = repository;
         Algorithm = algorithm;
         Archivator = archivator;
         BackupTaskPath = backupTaskPath;
+        if (backup == null)
+            Backup = new Backup();
+        else
+            Backup = backup;
     }
 
-    public Backup Backup { get; } = new Backup();
+    public IBackup Backup { get; }
     public string BackupTaskPath { get; }
     public IReadOnlyList<BackupObject> BackupObjects => _backupObjects;
     public IRepository Repository { get; }

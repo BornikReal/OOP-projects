@@ -7,5 +7,5 @@ namespace Backups.Algorithms;
 
 public interface IAlgorithm
 {
-    IStorage CreateBackup(List<BackupObject> backupObjects, string restorPointPath, IRepository repository, IArchivator archiver);
+    IStorage CreateBackup(IReadOnlyCollection<BackupObject> backupObjects, string restorPointPath, IRepository repository, IArchivator archiver);
 }
