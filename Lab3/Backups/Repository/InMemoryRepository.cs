@@ -1,9 +1,6 @@
-﻿using Backups.Algorithms;
-using Backups.Archiver;
-using Backups.Exceptions;
+﻿using Backups.Exceptions;
 using Backups.FileSystemEntities;
 using Backups.FileSystemEntities.Interfaces;
-using Backups.Models;
 using Zio;
 using Zio.FileSystems;
 
@@ -33,20 +30,6 @@ public class InMemoryRepository : IRepository, IDisposable
     public bool IsFile(string entityPath)
     {
         return RepositoryFileSystem.FileExists((UPath)FullPath(entityPath));
-    }
-
-    public IBackupTask CreateBackupTask(IAlgorithm algorithm, IArchivator archivator)
-    {
-        string backupTaskPath = "BackupTask-" + Guid.NewGuid();
-        CreateDirectory(backupTaskPath);
-        return new BackupTask(backupTaskPath, this, algorithm, archivator);
-    }
-
-    public string CreateRestorePointDirectory(IBackupTask backupTask)
-    {
-        string restorePointPath = backupTask.BackupTaskPath + Path.DirectorySeparatorChar + "RestorePoint-" + Guid.NewGuid();
-        CreateDirectory(restorePointPath);
-        return restorePointPath;
     }
 
     public IFileSystemEntity OpenEntity(string entityPath)

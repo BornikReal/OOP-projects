@@ -1,9 +1,6 @@
-﻿using Backups.Algorithms;
-using Backups.Archiver;
-using Backups.Exceptions;
+﻿using Backups.Exceptions;
 using Backups.FileSystemEntities;
 using Backups.FileSystemEntities.Interfaces;
-using Backups.Models;
 
 namespace Backups.Repository;
 
@@ -53,20 +50,6 @@ public class RealRepository : IRepository
 
     public Stream CreateFile(string filePath) => File.Create(FullPath(filePath));
     public void CreateDirectory(string dirPath) => Directory.CreateDirectory(FullPath(dirPath));
-
-    public IBackupTask CreateBackupTask(IAlgorithm algorithm, IArchivator archivator)
-    {
-        string backupTaskPath = "BackupTask-" + Guid.NewGuid();
-        CreateDirectory(backupTaskPath);
-        return new BackupTask(backupTaskPath, this, algorithm, archivator);
-    }
-
-    public string CreateRestorePointDirectory(IBackupTask backupTask)
-    {
-        string restorePointPath = backupTask.BackupTaskPath + Path.DirectorySeparatorChar + "RestorePoint-" + Guid.NewGuid();
-        CreateDirectory(restorePointPath);
-        return restorePointPath;
-    }
 
     private IEnumerable<IFileSystemEntity> GetListEnitites(string dirPath)
     {
