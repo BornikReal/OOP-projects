@@ -8,7 +8,7 @@ using System.Diagnostics;
 using System.Text;
 
 var repo = new RealRepository("C:\\Users\\cooln\\source\\repos\\OOP\\ConsoleApp1\\repo");
-var elonTask = new BackupTask(repo, new SplitStorageAlgorithm(), new ZipArchiver());
+var elonTask = new BackupTask(repo, new SplitStorageAlgorithm(new ZipArchiver()));
 repo.CreateDirectory("test1");
 
 Stream stream1 = repo.CreateFile(@"test1\test2.txt");

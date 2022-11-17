@@ -1,5 +1,4 @@
 ﻿using Backups.Algorithms;
-using Backups.Archiver;
 using Backups.Exceptions;
 using Backups.Repository;
 using Backups.Storages;
@@ -9,26 +8,24 @@ namespace Backups.Models;
 public class BackupTask : IBackupTask
 {
     private readonly List<BackupObject> _backupObjects = new List<BackupObject>();
+    private readonly IBackup _backup;
 
-    public BackupTask(IRepository repository, IAlgorithm algorithm, IArchivator archivator, IBackup? backup = null)
+    public BackupTask(IRepository repository, IAlgorithm algorithm, IBackup? backup = null)
     {
         Repository = repository;
         Algorithm = algorithm;
-        Archivator = archivator;
         BackupTaskPath = $"BackupTask-{Guid.NewGuid()}";
         if (backup == null)
-            Backup = new Backup();
+            _backup = new Backup();
         else
-            Backup = backup;
+            _backup = backup;
         Repository.CreateDirectory(BackupTaskPath);
     }
 
-    public IBackup Backup { get; }
     public string BackupTaskPath { get; }
     public IReadOnlyList<BackupObject> BackupObjects => _backupObjects;
     public IRepository Repository { get; }
     public IAlgorithm Algorithm { get; }
-    public IArchivator Archivator { get; }
 
     public void AddNewTask(BackupObject backupObject)
     {
@@ -48,9 +45,9 @@ public class BackupTask : IBackupTask
     {
         string restorePointPath = $"{BackupTaskPath}{Repository.PathSeparator}RestorePoint-{Guid.NewGuid()}";
         Repository.CreateDirectory(restorePointPath);
-        IStorage storage = Algorithm.CreateBackup(_backupObjects, restorePointPath, Repository, Archivator);
+        IStorage storage = Algorithm.CreateBackup(_backupObjects, restorePointPath, Repository);
         var restorePoint = new RestorePoint(_backupObjects, storage, restorePointPath, DateTime.Now);
-        Backup.AddRestorePoint(restorePoint);
+        _backup.AddRestorePoint(restorePoint);
         return restorePoint;
     }
 }

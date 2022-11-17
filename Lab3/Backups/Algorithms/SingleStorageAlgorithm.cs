@@ -8,9 +8,15 @@ namespace Backups.Algorithms;
 
 public class SingleStorageAlgorithm : IAlgorithm
 {
-    public IStorage CreateBackup(IReadOnlyCollection<BackupObject> backupObjects, string restorPointPath, IRepository repository, IArchivator archiver)
+    private readonly IArchivator _archiver;
+    public SingleStorageAlgorithm(IArchivator archiver)
+    {
+        _archiver = archiver;
+    }
+
+    public IStorage CreateBackup(IReadOnlyCollection<BackupObject> backupObjects, string restorPointPath, IRepository repository)
     {
         IEnumerable<IFileSystemEntity> entities = backupObjects.Select(backupObject => repository.OpenEntity(backupObject.ObjectPath));
-        return archiver.CreateArchive(entities, restorPointPath, repository);
+        return _archiver.CreateArchive(entities, restorPointPath, repository);
     }
 }

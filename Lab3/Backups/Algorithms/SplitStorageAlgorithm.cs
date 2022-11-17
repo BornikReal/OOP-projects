@@ -8,7 +8,13 @@ namespace Backups.Algorithms;
 
 public class SplitStorageAlgorithm : IAlgorithm
 {
-    public IStorage CreateBackup(IReadOnlyCollection<BackupObject> backupObjects, string restorPointPath, IRepository repository, IArchivator archiver)
+    private readonly IArchivator _archiver;
+    public SplitStorageAlgorithm(IArchivator archiver)
+    {
+        _archiver = archiver;
+    }
+
+    public IStorage CreateBackup(IReadOnlyCollection<BackupObject> backupObjects, string restorPointPath, IRepository repository)
     {
         var storages = new List<IStorage>();
         foreach (BackupObject backupObject in backupObjects)
@@ -18,7 +24,7 @@ public class SplitStorageAlgorithm : IAlgorithm
                 repository.OpenEntity(backupObject.ObjectPath),
             };
 
-            storages.Add(archiver.CreateArchive(entities, restorPointPath, repository));
+            storages.Add(_archiver.CreateArchive(entities, restorPointPath, repository));
         }
 
         return new SplitStorage(storages);
