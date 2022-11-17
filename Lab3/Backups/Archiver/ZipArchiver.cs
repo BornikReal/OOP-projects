@@ -7,7 +7,7 @@ using Backups.ZipObjects;
 
 namespace Backups.Archiver;
 
-public class ZipArchiver : IArchivator
+public class ZipArchiver : IArchiver
 {
     public IStorage CreateArchive(IEnumerable<IFileSystemEntity> entities, string archivePath, IRepository repository)
     {

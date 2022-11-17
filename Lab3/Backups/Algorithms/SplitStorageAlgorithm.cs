@@ -5,10 +5,11 @@ using Backups.Storages;
 
 namespace Backups.Algorithms;
 
-public class SplitStorageAlgorithm : IAlgorithm
+public class SplitStorageAlgorithm<TArchiver> : IAlgorithm
+    where TArchiver : IArchiver
 {
-    private readonly IArchivator _archiver;
-    public SplitStorageAlgorithm(IArchivator archiver)
+    private readonly TArchiver _archiver;
+    public SplitStorageAlgorithm(TArchiver archiver)
     {
         _archiver = archiver;
     }

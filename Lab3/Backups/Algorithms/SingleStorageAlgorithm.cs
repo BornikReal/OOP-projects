@@ -5,10 +5,11 @@ using Backups.Storages;
 
 namespace Backups.Algorithms;
 
-public class SingleStorageAlgorithm : IAlgorithm
+public class SingleStorageAlgorithm<TArchiver> : IAlgorithm
+    where TArchiver : IArchiver
 {
-    private readonly IArchivator _archiver;
-    public SingleStorageAlgorithm(IArchivator archiver)
+    private readonly TArchiver _archiver;
+    public SingleStorageAlgorithm(TArchiver archiver)
     {
         _archiver = archiver;
     }

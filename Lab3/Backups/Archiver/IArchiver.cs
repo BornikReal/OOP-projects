@@ -4,7 +4,7 @@ using Backups.Storages;
 
 namespace Backups.Archiver;
 
-public interface IArchivator
+public interface IArchiver
 {
     IStorage CreateArchive(IEnumerable<IFileSystemEntity> entities, string archivePath, IRepository repository);
 }
