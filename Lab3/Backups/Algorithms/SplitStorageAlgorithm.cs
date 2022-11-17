@@ -1,6 +1,5 @@
 ﻿using Backups.Archiver;
 using Backups.FileSystemEntities.Interfaces;
-using Backups.Models;
 using Backups.Repository;
 using Backups.Storages;
 
@@ -14,17 +13,17 @@ public class SplitStorageAlgorithm : IAlgorithm
         _archiver = archiver;
     }
 
-    public IStorage CreateBackup(IReadOnlyCollection<BackupObject> backupObjects, string restorPointPath, IRepository repository)
+    public IStorage CreateBackup(IEnumerable<IFileSystemEntity> entities, string restorPointPath, IRepository repository)
     {
         var storages = new List<IStorage>();
-        foreach (BackupObject backupObject in backupObjects)
+        foreach (IFileSystemEntity entity in entities)
         {
-            var entities = new List<IFileSystemEntity>
+            var newEntities = new List<IFileSystemEntity>
             {
-                repository.OpenEntity(backupObject.ObjectPath),
+                entity,
             };
 
-            storages.Add(_archiver.CreateArchive(entities, restorPointPath, repository));
+            storages.Add(_archiver.CreateArchive(newEntities, restorPointPath, repository));
         }
 
         return new SplitStorage(storages);

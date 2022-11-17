@@ -7,7 +7,7 @@ using Backups.Repository;
 using System.Diagnostics;
 using System.Text;
 
-var repo = new RealRepository("C:\\Users\\cooln\\source\\repos\\OOP\\ConsoleApp1\\repo");
+var repo = new RealRepository("C:\\Users\\cooln\\source\\repos\\OOP\\Backups.ConsoleTest\\repo");
 var elonTask = new BackupTask(repo, new SplitStorageAlgorithm(new ZipArchiver()));
 repo.CreateDirectory("test1");
 
