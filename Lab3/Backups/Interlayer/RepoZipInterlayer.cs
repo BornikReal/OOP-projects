@@ -14,10 +14,7 @@ public class RepoZipInterlayer : IRepoDisposable
         _archive = archive;
         foreach (IZipObject obj in zipObjects)
         {
-            if (obj.GetType() == typeof(ZipDirectory))
-                _entities.Add(obj.CreateEntity(archive.Entries.First(x => x.Name == $"{obj.Name}.zip")));
-            else
-                _entities.Add(obj.CreateEntity(archive.Entries.First(x => x.Name == obj.Name)));
+            _entities.Add(obj.CreateEntity(archive.Entries.First(x => x.Name == obj.Name)));
         }
     }
 

@@ -18,14 +18,7 @@ public class SplitStorageAlgorithm<TArchiver> : IAlgorithm
     {
         var storages = new List<IStorage>();
         foreach (IFileSystemEntity entity in entities)
-        {
-            var newEntities = new List<IFileSystemEntity>
-            {
-                entity,
-            };
-
-            storages.Add(_archiver.CreateArchive(newEntities, restorPointPath, repository));
-        }
+            storages.Add(_archiver.CreateArchive(new List<IFileSystemEntity> { entity }, restorPointPath, repository));
 
         return new SplitStorage(storages);
     }

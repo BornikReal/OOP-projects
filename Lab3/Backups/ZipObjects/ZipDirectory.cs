@@ -23,15 +23,12 @@ public class ZipDirectory : IZipObject
             var entities = new List<IFileSystemEntity>();
             foreach (IZipObject obj in ZipObjects)
             {
-                if (obj.GetType() == typeof(ZipDirectory))
-                    entities.Add(obj.CreateEntity(archive.Entries.First(x => x.Name == $"{obj.Name}.zip")));
-                else
-                    entities.Add(obj.CreateEntity(archive.Entries.First(x => x.Name == obj.Name)));
+                entities.Add(obj.CreateEntity(archive.Entries.First(x => x.Name == obj.Name)));
             }
 
             return entities;
         }
 
-        return new DirectoryEntity(Name, Func);
+        return new DirectoryEntity(Name[..^4], Func);
     }
 }
