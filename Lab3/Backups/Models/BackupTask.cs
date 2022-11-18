@@ -51,7 +51,7 @@ public class BackupTask : IBackupTask
         string restorePointPath = $"{BackupTaskPath}{Repository.PathSeparator}RestorePoint-{Guid.NewGuid()}";
         Repository.CreateDirectory(restorePointPath);
         IStorage storage = Algorithm.CreateBackup(_backupObjects.Select(s => Repository.OpenEntity(s.ObjectPath)), restorePointPath, Repository);
-        var restorePoint = new RestorePoint(_backupObjects, storage, restorePointPath, timeReal);
+        var restorePoint = new RestorePoint(new List<BackupObject>(_backupObjects), storage, restorePointPath, timeReal);
         _backup.AddRestorePoint(restorePoint);
         return restorePoint;
     }
