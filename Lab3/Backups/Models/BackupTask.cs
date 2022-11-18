@@ -41,12 +41,17 @@ public class BackupTask : IBackupTask
         _backupObjects.Remove(backupObject);
     }
 
-    public RestorePoint Start()
+    public RestorePoint Start(DateTime? time = null)
     {
+        DateTime timeReal;
+        if (time == null)
+            timeReal = DateTime.Now;
+        else
+            timeReal = (DateTime)time;
         string restorePointPath = $"{BackupTaskPath}{Repository.PathSeparator}RestorePoint-{Guid.NewGuid()}";
         Repository.CreateDirectory(restorePointPath);
         IStorage storage = Algorithm.CreateBackup(_backupObjects.Select(s => Repository.OpenEntity(s.ObjectPath)), restorePointPath, Repository);
-        var restorePoint = new RestorePoint(_backupObjects, storage, restorePointPath, DateTime.Now);
+        var restorePoint = new RestorePoint(_backupObjects, storage, restorePointPath, timeReal);
         _backup.AddRestorePoint(restorePoint);
         return restorePoint;
     }
