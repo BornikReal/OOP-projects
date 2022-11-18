@@ -21,8 +21,14 @@ public class ZipDirectory : IZipObject
         {
             var archive = new ZipArchive(archiveEntry.Open(), ZipArchiveMode.Read);
             var entities = new List<IFileSystemEntity>();
-            foreach (ZipArchiveEntry entry in archive.Entries)
-                entities.Add(ZipObjects.First(x => x.Name == entry.Name).CreateEntity(entry));
+            foreach (IZipObject obj in ZipObjects)
+            {
+                if (obj.GetType() == typeof(ZipDirectory))
+                    entities.Add(obj.CreateEntity(archive.Entries.First(x => x.Name == $"{obj.Name}.zip")));
+                else
+                    entities.Add(obj.CreateEntity(archive.Entries.First(x => x.Name == obj.Name)));
+            }
+
             return entities;
         }
 
