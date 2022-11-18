@@ -6,15 +6,15 @@ public class RestorePoint
 {
     private readonly List<BackupObject> _backupObjects;
 
-    public RestorePoint(List<BackupObject> backupObjects, IStorage storage, string restorePointPath, DateTime creationTime)
+    public RestorePoint(IEnumerable<BackupObject> backupObjects, IStorage storage, string restorePointPath, DateTime creationTime)
     {
-        _backupObjects = backupObjects;
+        _backupObjects = new List<BackupObject>(backupObjects);
         Storage = storage;
         CreationTime = creationTime;
         RestorePointPath = restorePointPath;
     }
 
-    public IReadOnlyList<BackupObject> BackupObjects => _backupObjects;
+    public IEnumerable<BackupObject> BackupObjects => _backupObjects;
     public IStorage Storage { get; }
     public DateTime CreationTime { get; }
     public string RestorePointPath { get; }

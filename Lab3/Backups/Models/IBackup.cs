@@ -2,6 +2,6 @@
 
 public interface IBackup
 {
-    public IReadOnlyList<RestorePoint> RestorePoints { get; }
+    public IEnumerable<RestorePoint> RestorePoints { get; }
     void AddRestorePoint(RestorePoint restorePoint);
 }

@@ -8,7 +8,7 @@ public class Backup : IBackup
 
     public Backup() { }
 
-    public IReadOnlyList<RestorePoint> RestorePoints => _restorePoints;
+    public IEnumerable<RestorePoint> RestorePoints => _restorePoints;
 
     public void AddRestorePoint(RestorePoint restorePoint)
     {
