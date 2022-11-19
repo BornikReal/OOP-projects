@@ -1,8 +1,13 @@
-﻿using Backups.Repository;
+﻿using Backups.FileSystemEntities.Interfaces;
+using Backups.Repository;
 
 namespace Backups.Extra.Wrappers;
 
 public interface IRepositorySuper : IRepository
 {
     void DeleteEntity(string path);
+    bool IsDirectory(string entityPath);
+    bool IsFile(string entityPath);
+    IFileEntity OpenFile(string filePath);
+    IDirectoryEntity OpenDirectory(string dirPath);
 }

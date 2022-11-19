@@ -11,6 +11,7 @@ using Backups.FileSystemEntities;
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Interlayer;
 using Backups.Models;
+using Backups.Strategy;
 using Xunit;
 
 namespace Backups.Extra.Test;
@@ -22,7 +23,7 @@ public class ConsoleTestExtra
     {
         var repository = new InMemoryRepositorySuper("repo");
         var logger = new ConsoleLogger(true);
-        var backupTask = new BackupTaskSuper(repository, new SplitStorageAlgorithmVisitor(new ZipArchiver()), logger);
+        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, new SplitStorageAlgorithmVisitor(new ZipArchiver()), logger);
         repository.CreateDirectory("test1");
         Stream stream1 = repository.CreateFile(@"test1\test2.txt");
         stream1.Write(Encoding.UTF8.GetBytes("Hello, World!"));
@@ -59,7 +60,7 @@ public class ConsoleTestExtra
     {
         var repository = new InMemoryRepositorySuper("repo");
         var logger = new ConsoleLogger(true);
-        var backupTask = new BackupTaskSuper(repository, new SplitStorageAlgorithmVisitor(new ZipArchiver()), logger);
+        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, new SplitStorageAlgorithmVisitor(new ZipArchiver()), logger);
         repository.CreateDirectory("test1");
         Stream stream1 = repository.CreateFile(@"test1\test2.txt");
         stream1.Write(Encoding.UTF8.GetBytes("Hello, World!"));
@@ -85,7 +86,7 @@ public class ConsoleTestExtra
     {
         var repository = new InMemoryRepositorySuper("repo");
         var logger = new ConsoleLogger(true);
-        var backupTask = new BackupTaskSuper(repository, new SingleStorageAlgorithmVisitor(new ZipArchiver()), logger);
+        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, new SingleStorageAlgorithmVisitor(new ZipArchiver()), logger);
         repository.CreateDirectory("test1");
         Stream stream1 = repository.CreateFile(@"test1\test2.txt");
         stream1.Write(Encoding.UTF8.GetBytes("Hello, World!"));
@@ -113,7 +114,7 @@ public class ConsoleTestExtra
     {
         var repository = new InMemoryRepositorySuper("repo");
         var logger = new ConsoleLogger(true);
-        var backupTask = new BackupTaskSuper(repository, new SplitStorageAlgorithmVisitor(new ZipArchiver()), logger);
+        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, new SplitStorageAlgorithmVisitor(new ZipArchiver()), logger);
         repository.CreateDirectory("test1");
         Stream stream1 = repository.CreateFile(@"test1\test2.txt");
         stream1.Write(Encoding.UTF8.GetBytes("Hello, World!"));
@@ -141,7 +142,7 @@ public class ConsoleTestExtra
     {
         var repository = new InMemoryRepositorySuper("repo");
         var logger = new ConsoleLogger(true);
-        var backupTask = new BackupTaskSuper(repository, new SplitStorageAlgorithmVisitor(new ZipArchiver()), logger);
+        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, new SplitStorageAlgorithmVisitor(new ZipArchiver()), logger);
         repository.CreateDirectory("test1");
         Stream stream1 = repository.CreateFile(@"test1\test2.txt");
         stream1.Write(Encoding.UTF8.GetBytes("Hello, World!"));
@@ -165,7 +166,7 @@ public class ConsoleTestExtra
     {
         var repository = new InMemoryRepositorySuper("repo");
         var logger = new ConsoleLogger(true);
-        var backupTask = new BackupTaskSuper(repository, new SplitStorageAlgorithmVisitor(new ZipArchiver()), logger);
+        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, new SplitStorageAlgorithmVisitor(new ZipArchiver()), logger);
         repository.CreateDirectory("test1");
         Stream stream1 = repository.CreateFile(@"test1\test2.txt");
         stream1.Write(Encoding.UTF8.GetBytes("Hello, World!"));

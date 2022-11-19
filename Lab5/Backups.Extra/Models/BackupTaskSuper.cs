@@ -10,6 +10,7 @@ using Backups.FileSystemEntities.Interfaces;
 using Backups.Interlayer;
 using Backups.Models;
 using Backups.Storages;
+using Backups.Strategy;
 
 namespace Backups.Extra.Models;
 
@@ -19,7 +20,7 @@ public class BackupTaskSuper : IBackupTaskSuper
     private readonly ILogger _logger;
     private IBackupSuper _backup;
 
-    public BackupTaskSuper(IRepositorySuper repository, IAlgorithmSuper algorithm, ILogger logger, IBackupSuper? backup = null)
+    public BackupTaskSuper(ITimeStrategy strategy, IRepositorySuper repository, IAlgorithmSuper algorithm, ILogger logger, IBackupSuper? backup = null)
     {
         Repository = repository;
         Algorithm = algorithm;
@@ -30,8 +31,10 @@ public class BackupTaskSuper : IBackupTaskSuper
             _backup = backup;
         Repository.CreateDirectory(BackupTaskPath);
         _logger = logger;
+        TimeStrategy = strategy;
     }
 
+    public ITimeStrategy TimeStrategy { get; set; }
     public string BackupTaskPath { get; }
     public IReadOnlyList<BackupObject> BackupObjects => _backupObjects;
     public IEnumerable<RestorePoint> RestorePoints => new List<RestorePoint>(_backup.RestorePoints);
@@ -54,18 +57,13 @@ public class BackupTaskSuper : IBackupTaskSuper
         _logger.Log($"Removed object {backupObject.ObjectPath} to task");
     }
 
-    public RestorePoint Start(DateTime? time = null)
+    public RestorePoint Start()
     {
-        DateTime timeReal;
-        if (time == null)
-            timeReal = DateTime.Now;
-        else
-            timeReal = (DateTime)time;
         _logger.Log($"Start backuping with {Algorithm.GetType()}");
         string restorePointPath = $"{BackupTaskPath}{Repository.PathSeparator}RestorePoint-{Guid.NewGuid()}";
         Repository.CreateDirectory(restorePointPath);
         IStorage storage = Algorithm.CreateBackup(_backupObjects.Select(s => Repository.OpenEntity(s.ObjectPath)), restorePointPath, Repository);
-        var restorePoint = new RestorePoint(new List<BackupObject>(_backupObjects), storage, restorePointPath, timeReal);
+        var restorePoint = new RestorePoint(new List<BackupObject>(_backupObjects), storage, restorePointPath, TimeStrategy.SetTime());
         _backup.AddRestorePoint(restorePoint);
         _logger.Log(Algorithm.ToString() !);
         _logger.Log($"Create restore point on path {restorePointPath}");

@@ -21,6 +21,6 @@ public class SingleStorageAlgorithm : IAlgorithm
 
     public override string ToString()
     {
-        return "Single Storage Algorithm";
+        return $"Single Storage Algorithm with {_archiver}";
     }
 }
