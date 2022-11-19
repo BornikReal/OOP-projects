@@ -6,6 +6,7 @@ using Backups.FileSystemEntities.Interfaces;
 using Backups.Interlayer;
 using Backups.Models;
 using Backups.Repository;
+using Backups.Strategy;
 using Xunit;
 
 namespace Backups.Test;
@@ -16,7 +17,7 @@ public class BackupTest
     public void UnitTest()
     {
         var repo = new InMemoryRepository("repo");
-        var elonTask = new BackupTask(repo, new SplitStorageAlgorithm(new ZipArchiver()));
+        var elonTask = new BackupTask(new NowTimeStrategy(), repo, new SplitStorageAlgorithm(new ZipArchiver()));
         repo.CreateDirectory("test1");
         Stream stream1 = repo.CreateFile(@"test1\test2.txt");
         stream1.Write(Encoding.UTF8.GetBytes("Hello, World!"));

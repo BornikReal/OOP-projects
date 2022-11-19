@@ -20,13 +20,7 @@ public class ZipDirectory : IZipObject
         IEnumerable<IFileSystemEntity> Func()
         {
             var archive = new ZipArchive(archiveEntry.Open(), ZipArchiveMode.Read);
-            var entities = new List<IFileSystemEntity>();
-            foreach (IZipObject obj in ZipObjects)
-            {
-                entities.Add(obj.CreateEntity(archive.Entries.First(x => x.Name == obj.Name)));
-            }
-
-            return entities;
+            return ZipObjects.Select(zipObject => zipObject.CreateEntity(archive.Entries.First(x => x.Name == zipObject.Name)));
         }
 
         return new DirectoryEntity(Name[..^4], Func);

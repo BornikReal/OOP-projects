@@ -9,7 +9,6 @@ namespace Backups.Archiver;
 
 public class ZipArchiver : IArchiver
 {
-    private string _loggerString = string.Empty;
     public IStorage CreateArchive(IEnumerable<IFileSystemEntity> entities, string archivePath, IRepository repository)
     {
         string archiveName = $"ZipStorage-{Guid.NewGuid()}.zip";
@@ -21,12 +20,11 @@ public class ZipArchiver : IArchiver
             entity.Accept(visitor);
         archive.Dispose();
         stream.Close();
-        _loggerString = $"Zip storage {newArchivePath} was successfully created!";
         return new ZipStorage(repository, newArchivePath, new ZipDirectory(archiveName, visitor.GetZipObjects()));
     }
 
     public override string ToString()
     {
-        return _loggerString;
+        return "Zip Archiver";
     }
 }

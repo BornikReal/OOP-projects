@@ -4,11 +4,12 @@ using Backups.FileSystemEntities;
 using Backups.Interlayer;
 using Backups.Models;
 using Backups.Repository;
+using Backups.Strategy;
 using System.Diagnostics;
 using System.Text;
 
 var repo = new RealRepository("C:\\Users\\cooln\\source\\repos\\OOP\\Backups.ConsoleTest\\repo");
-var elonTask = new BackupTask(repo, new SplitStorageAlgorithm(new ZipArchiver()));
+var elonTask = new BackupTask(new NowTimeStrategy(), repo, new SplitStorageAlgorithm(new ZipArchiver()));
 repo.CreateDirectory("test1");
 
 Stream stream1 = repo.CreateFile(@"test1\test2.txt");
