@@ -53,14 +53,9 @@ public class RealRepository : IRepository
 
     private IEnumerable<IFileSystemEntity> GetListEnitites(string dirPath)
     {
-        var entitiesList = new List<IFileSystemEntity>();
         var dirInfo = new DirectoryInfo(FullPath(dirPath));
-        foreach (FileInfo file in dirInfo.GetFiles())
-            entitiesList.Add(OpenFile(dirPath + @"\" + file.Name));
-
-        foreach (DirectoryInfo dir in dirInfo.GetDirectories())
-            entitiesList.Add(OpenDirectory(dirPath + @"\" + dir.Name));
-
+        var entitiesList = dirInfo.GetFiles().Select(file => OpenEntity($"{dirPath}{PathSeparator}{file.Name}")).ToList();
+        entitiesList.AddRange(dirInfo.GetDirectories().Select(dir => OpenEntity($"{dirPath}{PathSeparator}{dir.Name}")));
         return entitiesList;
     }
 }

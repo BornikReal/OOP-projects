@@ -6,16 +6,13 @@ namespace Backups.Interlayer;
 
 public class RepoZipInterlayer : IRepoDisposable
 {
-    private readonly List<IFileSystemEntity> _entities = new List<IFileSystemEntity>();
+    private readonly List<IFileSystemEntity> _entities;
     private readonly ZipArchive _archive;
 
     public RepoZipInterlayer(IEnumerable<IZipObject> zipObjects, ZipArchive archive)
     {
         _archive = archive;
-        foreach (IZipObject obj in zipObjects)
-        {
-            _entities.Add(obj.CreateEntity(archive.Entries.First(x => x.Name == obj.Name)));
-        }
+        _entities = zipObjects.Select(zipObject => zipObject.CreateEntity(archive.Entries.First(x => x.Name == zipObject.Name))).ToList();
     }
 
     public IEnumerable<IFileSystemEntity> Entities => _entities;
