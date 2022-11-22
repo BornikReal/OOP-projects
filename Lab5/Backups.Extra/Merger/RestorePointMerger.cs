@@ -21,13 +21,14 @@ public class RestorePointMerger : IMerger
         RestorePoint point;
         var newPoints = points.ToList();
         var disp = new List<IRepoDisposable>();
-        IEnumerable<IFileSystemEntity> enities = new List<IFileSystemEntity>();
+        var comparer = new FileSystemEntitiesComparer();
+        var enities = new List<IFileSystemEntity>().Distinct(comparer).ToList();
         IEnumerable<BackupObject> backupObjects = new List<BackupObject>();
         while (newPoints.Any())
         {
             point = newPoints.MaxBy(t => t.CreationTime) !;
             disp.Add(point.Storage.GetEntities());
-            enities = enities.Union(disp.Last().Entities);
+            enities = enities.Union(disp.Last().Entities.Distinct(comparer).ToList()).ToList();
             backupObjects = backupObjects.Union(point.BackupObjects);
             newPoints.Remove(point);
         }
