@@ -5,15 +5,7 @@ namespace Backups.Extra.Models;
 
 public class BackupSuper : IBackupSuper
 {
-    private readonly List<RestorePoint> _restorePoints;
-
-    public BackupSuper(IEnumerable<RestorePoint>? points = null)
-    {
-        if (points == null)
-            _restorePoints = new List<RestorePoint>();
-        else
-            _restorePoints = new List<RestorePoint>(points);
-    }
+    private readonly List<RestorePoint> _restorePoints = new List<RestorePoint>();
 
     public IEnumerable<RestorePoint> RestorePoints => _restorePoints;
 

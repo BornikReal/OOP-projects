@@ -1,12 +1,12 @@
-﻿using Backups.Exceptions;
-using Backups.Extra.AlgorithmSuper;
+﻿using Backups.Algorithms;
+using Backups.Exceptions;
 using Backups.Extra.Cleaner;
 using Backups.Extra.Deleter;
 using Backups.Extra.LoggingEntities;
 using Backups.Extra.Merger;
+using Backups.Extra.RepositorySuper;
 using Backups.Extra.SaveStrategy;
 using Backups.Extra.Visitors;
-using Backups.Extra.Wrappers;
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Interlayer;
 using Backups.Models;
@@ -19,9 +19,9 @@ public class BackupTaskSuper : IBackupTaskSuper
 {
     private readonly List<BackupObject> _backupObjects = new List<BackupObject>();
     private readonly ILogger _logger;
-    private IBackupSuper _backup;
+    private readonly IBackupSuper _backup;
 
-    public BackupTaskSuper(ITimeStrategy strategy, IRepositorySuper repository, IAlgorithmSuper algorithm, ILogger logger, IBackupSuper? backup = null)
+    public BackupTaskSuper(ITimeStrategy strategy, IRepositorySuper repository, IAlgorithm algorithm, ILogger logger, IBackupSuper? backup = null)
     {
         Repository = repository;
         Algorithm = algorithm;
@@ -40,7 +40,7 @@ public class BackupTaskSuper : IBackupTaskSuper
     public IReadOnlyList<BackupObject> BackupObjects => _backupObjects;
     public IEnumerable<RestorePoint> RestorePoints => new List<RestorePoint>(_backup.RestorePoints);
     public IRepositorySuper Repository { get; }
-    public IAlgorithmSuper Algorithm { get; }
+    public IAlgorithm Algorithm { get; }
 
     public void AddNewTask(BackupObject backupObject)
     {
@@ -77,7 +77,8 @@ public class BackupTaskSuper : IBackupTaskSuper
         IEnumerable<RestorePoint> points = cleaner.Clean(_backup.RestorePoints);
         if (points.Count() == _backup.RestorePoints.Count() && points.Any())
             throw new Exception();
-        _backup = new BackupSuper(_backup.RestorePoints.Except(points));
+        foreach (RestorePoint point in points)
+            _backup.RemoveRestorePoint(point);
         deleter.DeleteRestorePoint(points);
         _logger.Log(deleter.ToString() !);
     }

@@ -1,7 +1,7 @@
 ﻿using Backups.FileSystemEntities.Interfaces;
 using Backups.Repository;
 
-namespace Backups.Extra.Wrappers;
+namespace Backups.Extra.RepositorySuper;
 
 public interface IRepositorySuper : IRepository
 {

@@ -1,8 +1,10 @@
-﻿using Backups.Extra.AlgorithmSuper;
+﻿using Backups.Algorithms;
 using Backups.Extra.Deleter;
-using Backups.Extra.Visitors;
-using Backups.Extra.Wrappers;
+using Backups.Extra.RepositorySuper;
+using Backups.FileSystemEntities.Interfaces;
+using Backups.Interlayer;
 using Backups.Models;
+using Backups.Storages;
 
 namespace Backups.Extra.Merger;
 
@@ -14,11 +16,31 @@ public class RestorePointMerger : IMerger
         _deleter = deleter;
     }
 
-    public RestorePoint Merge(IEnumerable<RestorePoint> points, IAlgorithmSuper algorithm, IRepositorySuper repositorySuper, string restorePointPath)
+    public RestorePoint Merge(IEnumerable<RestorePoint> points, IAlgorithm algorithm, IRepositorySuper repository, string restorePointPath)
     {
-        var visitor = new AlgorithmVisitor(points, repositorySuper, restorePointPath);
-        algorithm.Accept(visitor);
-        _deleter.DeleteRestorePoint(visitor.DeletablePoints!);
-        return visitor.Result!;
+        RestorePoint point;
+        var newPoints = points.ToList();
+        var disp = new List<IRepoDisposable>();
+        IEnumerable<IFileSystemEntity> enities = new List<IFileSystemEntity>();
+        IEnumerable<BackupObject> backupObjects = new List<BackupObject>();
+        while (newPoints.Any())
+        {
+            point = newPoints.MaxBy(t => t.CreationTime) !;
+            disp.Add(point.Storage.GetEntities());
+            enities = enities.Union(disp.Last().Entities);
+            backupObjects = backupObjects.Union(point.BackupObjects);
+            newPoints.Remove(point);
+        }
+
+        repository.CreateDirectory(restorePointPath);
+        IStorage newStorage = algorithm.CreateBackup(enities, restorePointPath, repository);
+        point = new RestorePoint(backupObjects, newStorage, restorePointPath, DateTime.Now);
+        foreach (IRepoDisposable disposable in disp)
+        {
+            disposable.Dispose();
+        }
+
+        _deleter.DeleteRestorePoint(points);
+        return point;
     }
 }

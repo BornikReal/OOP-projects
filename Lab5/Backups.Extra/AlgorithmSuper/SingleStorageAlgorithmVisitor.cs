@@ -1,14 +1,13 @@
 ﻿using Backups.Algorithms;
 using Backups.Archiver;
 using Backups.Extra.LoggingEntities;
-using Backups.Extra.Visitors;
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Repository;
 using Backups.Storages;
 
 namespace Backups.Extra.AlgorithmSuper;
 
-public class SingleStorageAlgorithmVisitor : IAlgorithmSuper
+public class SingleStorageAlgorithmVisitor : IAlgorithm
 {
     private readonly SingleStorageAlgorithm _algorithm;
 
@@ -19,11 +18,6 @@ public class SingleStorageAlgorithmVisitor : IAlgorithmSuper
     }
 
     public ILogger Logger { get; set; }
-
-    public void Accept(IAlgorithmVisitor visitor)
-    {
-        visitor.Visit(this);
-    }
 
     public IStorage CreateBackup(IEnumerable<IFileSystemEntity> entities, string restorPointPath, IRepository repository)
     {
