@@ -5,6 +5,7 @@ using Backups.Extra.Deleter;
 using Backups.Extra.LoggingEntities;
 using Backups.Extra.Merger;
 using Backups.Extra.RestorePointVisitors;
+using Backups.Extra.SaveStrategy;
 using Backups.Extra.Wrappers;
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Interlayer;
@@ -92,39 +93,15 @@ public class BackupTaskSuper : IBackupTaskSuper
         _logger.Log("Finish merging");
     }
 
-    public void RestoreBackupToOriginalLocation(RestorePoint restorePoint)
+    public void RestoreBackup(RestorePoint restorePoint, ISaveStrategy saveStrategy)
     {
-        _logger.Log($"Start restoring backup to original location on path {restorePoint.RestorePointPath}");
+        _logger.Log($"Start restoring backup with {saveStrategy} on path {restorePoint.RestorePointPath}");
         var restorer = new RestorePointVisitor();
         IRepoDisposable interlayer = restorePoint.Storage.GetEntities();
         foreach (IFileSystemEntity entity in interlayer.Entities)
         {
             BackupObject backupObject = _backupObjects.Find(s => s.ObjectPath[(s.ObjectPath.LastIndexOf(Repository.PathSeparator) + 1) ..] == entity.Name) !;
-            restorer.SavingPath = $"{backupObject.ObjectPath}";
-            if (backupObject.Repository as IRepositorySuper != null)
-                restorer.Repository = (IRepositorySuper)backupObject.Repository;
-            else
-                throw new Exception();
-            entity.Accept(restorer);
-        }
-
-        interlayer.Dispose();
-        _logger.Log("Finish restoring");
-    }
-
-    public void RestoreBackupToDifferentLocation(RestorePoint restorePoint, string savingPath, IRepositorySuper repository)
-    {
-        _logger.Log($"Start restoring backup to different location on path {restorePoint.RestorePointPath}");
-        var restorer = new RestorePointVisitor
-        {
-            Repository = repository,
-        };
-        IRepoDisposable interlayer = restorePoint.Storage.GetEntities();
-        foreach (IFileSystemEntity entity in interlayer.Entities)
-        {
-            BackupObject backupObject = _backupObjects.Find(s => s.ObjectPath[(s.ObjectPath.LastIndexOf(Repository.PathSeparator) + 1) ..] == entity.Name) !;
-            restorer.SavingPath = $"{savingPath}{Repository.PathSeparator}{backupObject.ObjectPath[(backupObject.ObjectPath.LastIndexOf(Repository.PathSeparator) + 1) ..]}";
-            entity.Accept(restorer);
+            saveStrategy.SetNewSaveData(backupObject, entity, restorer);
         }
 
         interlayer.Dispose();

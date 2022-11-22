@@ -7,6 +7,7 @@ using Backups.Extra.LoggingEntities;
 using Backups.Extra.Merger;
 using Backups.Extra.Models;
 using Backups.Extra.RepositorySuper;
+using Backups.Extra.SaveStrategy;
 using Backups.FileSystemEntities;
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Interlayer;
@@ -156,7 +157,7 @@ public class ConsoleTestExtra
 
         RestorePoint restorePoint = backupTask.Start();
 
-        backupTask.RestoreBackupToDifferentLocation(restorePoint, "unpack", repository);
+        backupTask.RestoreBackup(restorePoint, new DifferentLocationSaveStrategy("unpack", repository));
 
         Assert.Equal(2, ((IDirectoryEntity)repository.OpenEntity("unpack")).Entities().Count());
     }
@@ -181,7 +182,7 @@ public class ConsoleTestExtra
         RestorePoint restorePoint = backupTask.Start();
         repository.DeleteEntity("test1");
         repository.DeleteEntity("test3.txt");
-        backupTask.RestoreBackupToOriginalLocation(restorePoint);
+        backupTask.RestoreBackup(restorePoint, new OriginalLocationSaveStrategy());
 
         Assert.True(repository.IsDirectory("test1") && repository.IsFile("test3.txt"));
     }
