@@ -1,4 +1,6 @@
-﻿namespace Backups.Extra.Visitor;
+﻿using Backups.Extra.AlgorithmSuper;
+
+namespace Backups.Extra.Visitor;
 
 public interface IAlgorithmVisitor
 {
