@@ -8,8 +8,8 @@ namespace Backups.Extra.Merger;
 
 public class RestorePointMerger : IMerger
 {
-    private readonly IRestorePointDeleter _deleter;
-    public RestorePointMerger(IRestorePointDeleter deleter)
+    private readonly IDeleter _deleter;
+    public RestorePointMerger(IDeleter deleter)
     {
         _deleter = deleter;
     }

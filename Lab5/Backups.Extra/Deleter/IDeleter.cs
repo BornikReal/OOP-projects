@@ -2,7 +2,7 @@
 
 namespace Backups.Extra.Deleter;
 
-public interface IRestorePointDeleter
+public interface IDeleter
 {
     void DeleteRestorePoint(IEnumerable<RestorePoint> restorePoints);
 }

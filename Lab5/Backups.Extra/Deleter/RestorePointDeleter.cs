@@ -3,7 +3,7 @@ using Backups.Models;
 
 namespace Backups.Extra.Deleter;
 
-public class RestorePointDeleter : IRestorePointDeleter
+public class RestorePointDeleter : IDeleter
 {
     private readonly IRepositorySuper _repository;
     private string _loggerString = string.Empty;
