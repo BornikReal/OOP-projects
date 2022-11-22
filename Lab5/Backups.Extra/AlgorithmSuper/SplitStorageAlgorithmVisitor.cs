@@ -1,7 +1,7 @@
 ﻿using Backups.Algorithms;
 using Backups.Archiver;
+using Backups.Extra.AlgorithmVisitors;
 using Backups.Extra.LoggingEntities;
-using Backups.Extra.Visitor;
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Repository;
 using Backups.Storages;

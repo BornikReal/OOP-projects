@@ -1,5 +1,5 @@
 ﻿using Backups.Algorithms;
-using Backups.Extra.Visitor;
+using Backups.Extra.AlgorithmVisitors;
 
 namespace Backups.Extra.AlgorithmSuper;
 

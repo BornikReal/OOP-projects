@@ -1,6 +1,6 @@
 ﻿using Backups.Extra.AlgorithmSuper;
 
-namespace Backups.Extra.Visitor;
+namespace Backups.Extra.AlgorithmVisitors;
 
 public interface IAlgorithmVisitor
 {

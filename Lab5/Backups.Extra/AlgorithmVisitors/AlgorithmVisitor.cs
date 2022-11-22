@@ -5,7 +5,7 @@ using Backups.Interlayer;
 using Backups.Models;
 using Backups.Storages;
 
-namespace Backups.Extra.Visitor;
+namespace Backups.Extra.AlgorithmVisitors;
 
 public class AlgorithmVisitor : IAlgorithmVisitor
 {

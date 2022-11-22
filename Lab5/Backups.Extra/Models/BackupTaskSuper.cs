@@ -4,7 +4,7 @@ using Backups.Extra.Cleaner;
 using Backups.Extra.Deleter;
 using Backups.Extra.LoggingEntities;
 using Backups.Extra.Merger;
-using Backups.Extra.Restorer;
+using Backups.Extra.RestorePointVisitors;
 using Backups.Extra.Wrappers;
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Interlayer;
@@ -95,7 +95,7 @@ public class BackupTaskSuper : IBackupTaskSuper
     public void RestoreBackupToOriginalLocation(RestorePoint restorePoint)
     {
         _logger.Log($"Start restoring backup to original location on path {restorePoint.RestorePointPath}");
-        var restorer = new RestorerVisitor(Repository);
+        var restorer = new RestorePointVisitor();
         IRepoDisposable interlayer = restorePoint.Storage.GetEntities();
         foreach (IFileSystemEntity entity in interlayer.Entities)
         {
@@ -115,7 +115,10 @@ public class BackupTaskSuper : IBackupTaskSuper
     public void RestoreBackupToDifferentLocation(RestorePoint restorePoint, string savingPath, IRepositorySuper repository)
     {
         _logger.Log($"Start restoring backup to different location on path {restorePoint.RestorePointPath}");
-        var restorer = new RestorerVisitor(repository);
+        var restorer = new RestorePointVisitor
+        {
+            Repository = repository,
+        };
         IRepoDisposable interlayer = restorePoint.Storage.GetEntities();
         foreach (IFileSystemEntity entity in interlayer.Entities)
         {
