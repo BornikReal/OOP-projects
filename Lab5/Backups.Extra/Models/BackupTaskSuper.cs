@@ -4,8 +4,8 @@ using Backups.Extra.Cleaner;
 using Backups.Extra.Deleter;
 using Backups.Extra.LoggingEntities;
 using Backups.Extra.Merger;
-using Backups.Extra.RestorePointVisitors;
 using Backups.Extra.SaveStrategy;
+using Backups.Extra.Visitors;
 using Backups.Extra.Wrappers;
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Interlayer;
@@ -101,7 +101,7 @@ public class BackupTaskSuper : IBackupTaskSuper
         foreach (IFileSystemEntity entity in interlayer.Entities)
         {
             BackupObject backupObject = _backupObjects.Find(s => s.ObjectPath[(s.ObjectPath.LastIndexOf(Repository.PathSeparator) + 1) ..] == entity.Name) !;
-            saveStrategy.SetNewSaveData(backupObject, entity, restorer);
+            saveStrategy.SetNewSaveData(backupObject, entity);
         }
 
         interlayer.Dispose();

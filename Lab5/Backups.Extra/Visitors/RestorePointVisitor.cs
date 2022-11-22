@@ -1,9 +1,10 @@
 ﻿using Backups.Extra.Wrappers;
 using Backups.FileSystemEntities.Interfaces;
+using Backups.Visitors;
 
-namespace Backups.Extra.RestorePointVisitors;
+namespace Backups.Extra.Visitors;
 
-public class RestorePointVisitor : IRestorePointVisitor
+public class RestorePointVisitor : IArchiveVisitor
 {
     public string SavingPath { get; set; } = string.Empty;
     public IRepositorySuper? Repository { get; set; }

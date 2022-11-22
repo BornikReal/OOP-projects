@@ -1,4 +1,4 @@
-﻿using Backups.Extra.RestorePointVisitors;
+﻿using Backups.Extra.Visitors;
 using Backups.Extra.Wrappers;
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Models;
@@ -7,14 +7,15 @@ namespace Backups.Extra.SaveStrategy;
 
 public class OriginalLocationSaveStrategy : ISaveStrategy
 {
-    public void SetNewSaveData(BackupObject backupObject, IFileSystemEntity entity, IRestorePointVisitor restorer)
+    private readonly RestorePointVisitor _restorer = new RestorePointVisitor();
+    public void SetNewSaveData(BackupObject backupObject, IFileSystemEntity entity)
     {
-        restorer.SavingPath = $"{backupObject.ObjectPath}";
+        _restorer.SavingPath = $"{backupObject.ObjectPath}";
         if (backupObject.Repository as IRepositorySuper != null)
-            restorer.Repository = (IRepositorySuper)backupObject.Repository;
+            _restorer.Repository = (IRepositorySuper)backupObject.Repository;
         else
             throw new Exception();
-        entity.Accept(restorer);
+        entity.Accept(_restorer);
     }
 
     public override string ToString()
