@@ -20,17 +20,14 @@ public class BackupTaskSuper : IBackupTaskSuper
     private readonly ILogger _logger;
     private readonly IBackupSuper _backup;
 
-    public BackupTaskSuper(ITimeStrategy strategy, IRepositorySuper repository, IAlgorithmSuper algorithm, ILogger logger, IBackupSuper? backup = null)
+    public BackupTaskSuper(ITimeStrategy strategy, IRepositorySuper repository, IAlgorithmSuper algorithm, ILogger logger, IBackupSuper backup)
     {
         _logger = logger;
         _logger.Log("Initialization of BackupTask");
         Repository = repository;
         Algorithm = algorithm;
         BackupTaskPath = $"BackupTask-{Guid.NewGuid()}";
-        if (backup == null)
-            _backup = new BackupSuper();
-        else
-            _backup = backup;
+        _backup = backup;
         Repository.CreateDirectory(BackupTaskPath);
         TimeStrategy = strategy;
         _logger.Log("Initialization finished");

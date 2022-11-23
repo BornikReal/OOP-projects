@@ -11,15 +11,12 @@ public class BackupTask : IBackupTask
     private readonly List<BackupObject> _backupObjects = new List<BackupObject>();
     private readonly IBackup _backup;
 
-    public BackupTask(ITimeStrategy strategy, IRepository repository, IAlgorithm algorithm, IBackup? backup = null)
+    public BackupTask(ITimeStrategy strategy, IRepository repository, IAlgorithm algorithm, IBackup backup)
     {
         Repository = repository;
         Algorithm = algorithm;
         BackupTaskPath = $"BackupTask-{Guid.NewGuid()}";
-        if (backup == null)
-            _backup = new Backup();
-        else
-            _backup = backup;
+        _backup = backup;
         Repository.CreateDirectory(BackupTaskPath);
         TimeStrategy = strategy;
     }
