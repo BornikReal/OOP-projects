@@ -1,22 +1,17 @@
-﻿using Backups.Extra.Wrappers;
+﻿using Backups.Extra.RepositorySuper;
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Visitors;
 
-namespace Backups.Extra.Restorer;
+namespace Backups.Extra.Visitors;
 
-public class RestorerVisitor : IArchiveVisitor
+public class RestorePointVisitor : IArchiveVisitor
 {
-    public RestorerVisitor(IRepositorySuper repository)
-    {
-        Repository = repository;
-    }
-
     public string SavingPath { get; set; } = string.Empty;
-    public IRepositorySuper Repository { get; set; }
+    public IRepositorySuper? Repository { get; set; }
 
     public void Visit(IFileEntity fileEnity)
     {
-        if (Repository.IsFile(SavingPath))
+        if (Repository!.IsFile(SavingPath))
             Repository.DeleteEntity(SavingPath);
         Stream fileStream = Repository.CreateFile(SavingPath);
         Stream entityStream = fileEnity.FuncStream();
@@ -27,7 +22,7 @@ public class RestorerVisitor : IArchiveVisitor
 
     public void Visit(IDirectoryEntity directoryEnity)
     {
-        if (Repository.IsDirectory(SavingPath))
+        if (Repository!.IsDirectory(SavingPath))
             Repository.DeleteEntity(SavingPath);
         Repository.CreateDirectory(SavingPath);
         string oldSavingPath = new string(SavingPath);

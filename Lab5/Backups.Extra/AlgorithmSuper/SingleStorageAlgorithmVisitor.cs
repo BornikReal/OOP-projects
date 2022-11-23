@@ -1,7 +1,6 @@
 ﻿using Backups.Algorithms;
 using Backups.Archiver;
 using Backups.Extra.LoggingEntities;
-using Backups.Extra.Visitor;
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Repository;
 using Backups.Storages;
@@ -12,23 +11,15 @@ public class SingleStorageAlgorithmVisitor : IAlgorithmSuper
 {
     private readonly SingleStorageAlgorithm _algorithm;
 
-    public SingleStorageAlgorithmVisitor(IArchiver archiver, ILogger logger)
+    public SingleStorageAlgorithmVisitor(IArchiver archiver)
     {
         _algorithm = new SingleStorageAlgorithm(archiver);
-        Logger = logger;
     }
 
-    public ILogger Logger { get; set; }
-
-    public void Accept(IAlgorithmVisitor visitor)
-    {
-        visitor.Visit(this);
-    }
-
-    public IStorage CreateBackup(IEnumerable<IFileSystemEntity> entities, string restorPointPath, IRepository repository)
+    public IStorage CreateBackup(IEnumerable<IFileSystemEntity> entities, string restorPointPath, IRepository repository, ILogger logger)
     {
         IStorage storage = _algorithm.CreateBackup(entities, restorPointPath, repository);
-        Logger.Log($"{this} created backup in {restorPointPath}");
+        logger.Log($"{this} created backup in {restorPointPath}");
         return storage;
     }
 
