@@ -17,4 +17,12 @@ public class HybridCleanerAll : ICleaner
             result = result.Intersect(cleaner.Clean(restorePoints));
         return result;
     }
+
+    public override string ToString()
+    {
+        string result = "Hybrid Cleaner of at least one";
+        foreach (ICleaner cleaner in _cleaners)
+            result += $" {_cleaners}";
+        return result;
+    }
 }

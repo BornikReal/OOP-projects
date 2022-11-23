@@ -7,22 +7,19 @@ using Backups.Storages;
 
 namespace Backups.Extra.AlgorithmSuper;
 
-public class SingleStorageAlgorithmVisitor : IAlgorithm
+public class SingleStorageAlgorithmVisitor : IAlgorithmSuper
 {
     private readonly SingleStorageAlgorithm _algorithm;
 
-    public SingleStorageAlgorithmVisitor(IArchiver archiver, ILogger logger)
+    public SingleStorageAlgorithmVisitor(IArchiver archiver)
     {
         _algorithm = new SingleStorageAlgorithm(archiver);
-        Logger = logger;
     }
 
-    public ILogger Logger { get; set; }
-
-    public IStorage CreateBackup(IEnumerable<IFileSystemEntity> entities, string restorPointPath, IRepository repository)
+    public IStorage CreateBackup(IEnumerable<IFileSystemEntity> entities, string restorPointPath, IRepository repository, ILogger logger)
     {
         IStorage storage = _algorithm.CreateBackup(entities, restorPointPath, repository);
-        Logger.Log($"{this} created backup in {restorPointPath}");
+        logger.Log($"{this} created backup in {restorPointPath}");
         return storage;
     }
 

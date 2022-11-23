@@ -16,4 +16,9 @@ public class NumberCleaner : ICleaner
             return new List<RestorePoint>();
         return restorePoints.Take(restorePoints.Count() - _number);
     }
+
+    public override string ToString()
+    {
+        return "Number Cleaner";
+    }
 }

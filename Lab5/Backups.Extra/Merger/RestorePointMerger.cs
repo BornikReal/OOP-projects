@@ -1,6 +1,7 @@
-﻿using Backups.Algorithms;
+﻿using Backups.Extra.AlgorithmSuper;
 using Backups.Extra.Comparers;
 using Backups.Extra.Deleter;
+using Backups.Extra.LoggingEntities;
 using Backups.Extra.RepositorySuper;
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Interlayer;
@@ -17,7 +18,7 @@ public class RestorePointMerger : IMerger
         _deleter = deleter;
     }
 
-    public RestorePoint Merge(IEnumerable<RestorePoint> points, IAlgorithm algorithm, IRepositorySuper repository, string restorePointPath)
+    public RestorePoint Merge(IEnumerable<RestorePoint> points, IAlgorithmSuper algorithm, IRepositorySuper repository, string restorePointPath, ILogger logger)
     {
         RestorePoint point;
         var newPoints = points.ToList();
@@ -35,15 +36,19 @@ public class RestorePointMerger : IMerger
             newPoints.Remove(point);
         }
 
+        logger.Log("Made union of all points");
         repository.CreateDirectory(restorePointPath);
-        IStorage newStorage = algorithm.CreateBackup(enities, restorePointPath, repository);
+        logger.Log("Created directory of new restore point");
+        IStorage newStorage = algorithm.CreateBackup(enities, restorePointPath, repository, logger);
+        logger.Log("Archived files of new restore point");
         point = new RestorePoint(backupObjects, newStorage, restorePointPath, DateTime.Now);
+        logger.Log("Created new restore point");
         foreach (IRepoDisposable disposable in disp)
         {
             disposable.Dispose();
         }
 
-        _deleter.DeleteRestorePoint(points);
+        _deleter.DeleteRestorePoint(points, logger);
         return point;
     }
 }

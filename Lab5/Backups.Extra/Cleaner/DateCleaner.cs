@@ -14,4 +14,9 @@ public class DateCleaner : ICleaner
     {
         return restorePoints.Where(point => (DateTime.Now - point.CreationTime) > _span);
     }
+
+    public override string ToString()
+    {
+        return "Date Cleaner";
+    }
 }
