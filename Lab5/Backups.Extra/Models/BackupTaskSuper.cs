@@ -100,7 +100,8 @@ public class BackupTaskSuper : IBackupTaskSuper
         IRepoDisposable interlayer = restorePoint.Storage.GetEntities();
         foreach (IFileSystemEntity entity in interlayer.Entities)
         {
-            BackupObject backupObject = _backupObjects.Find(s => s.ObjectPath[(s.ObjectPath.LastIndexOf(Repository.PathSeparator) + 1) ..] == entity.Name) !;
+            var backupObjects = restorePoint.BackupObjects.ToList();
+            BackupObject backupObject = backupObjects.Find(s => s.ObjectPath[(s.ObjectPath.LastIndexOf(Repository.PathSeparator) + 1) ..] == entity.Name) !;
             saveStrategy.SetNewSaveData(backupObject, entity);
             _logger.Log($"Restored {entity.Name}");
         }
