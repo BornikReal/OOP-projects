@@ -85,7 +85,7 @@ public class ConsoleTestExtra
     [Fact]
     public static void TestMergerWithSingleAlgorithm()
     {
-        var repository = new RealRepositorySuper("C:\\Users\\cooln\\source\\repos\\OOP\\Lab5\\Backups.Extra.Test\\repo");
+        var repository = new InMemoryRepositorySuper("repo");
         var logger = new ConsoleLogger(true);
         var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, new SingleStorageAlgorithmVisitor(new ZipArchiver(), logger), logger);
         repository.CreateDirectory("test1");

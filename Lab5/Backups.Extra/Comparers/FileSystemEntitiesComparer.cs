@@ -1,6 +1,6 @@
 ﻿using Backups.FileSystemEntities.Interfaces;
 
-namespace Backups.Extra;
+namespace Backups.Extra.Comparers;
 
 public class FileSystemEntitiesComparer : IEqualityComparer<IFileSystemEntity>
 {

@@ -1,4 +1,5 @@
 ﻿using Backups.Algorithms;
+using Backups.Extra.Comparers;
 using Backups.Extra.Deleter;
 using Backups.Extra.RepositorySuper;
 using Backups.FileSystemEntities.Interfaces;
@@ -21,15 +22,16 @@ public class RestorePointMerger : IMerger
         RestorePoint point;
         var newPoints = points.ToList();
         var disp = new List<IRepoDisposable>();
-        var comparer = new FileSystemEntitiesComparer();
-        var enities = new List<IFileSystemEntity>().Distinct(comparer).ToList();
+        var comparerEntity = new FileSystemEntitiesComparer();
+        var comparerBackupObject = new BackupObjectComparer();
+        IEnumerable<IFileSystemEntity> enities = new List<IFileSystemEntity>();
         IEnumerable<BackupObject> backupObjects = new List<BackupObject>();
         while (newPoints.Any())
         {
             point = newPoints.MaxBy(t => t.CreationTime) !;
             disp.Add(point.Storage.GetEntities());
-            enities = enities.Union(disp.Last().Entities.Distinct(comparer).ToList()).ToList();
-            backupObjects = backupObjects.Union(point.BackupObjects);
+            enities = enities.Union(disp.Last().Entities, comparerEntity);
+            backupObjects = backupObjects.Union(point.BackupObjects, comparerBackupObject);
             newPoints.Remove(point);
         }
 
