@@ -23,7 +23,7 @@ public class BackupTaskSuper : IBackupTaskSuper
     public BackupTaskSuper(ITimeStrategy strategy, IRepositorySuper repository, IAlgorithmSuper algorithm, ILogger logger, IBackupSuper? backup = null)
     {
         _logger = logger;
-        _logger.Log("Init BackupTask");
+        _logger.Log("Initialization of BackupTask");
         Repository = repository;
         Algorithm = algorithm;
         BackupTaskPath = $"BackupTask-{Guid.NewGuid()}";
@@ -33,6 +33,7 @@ public class BackupTaskSuper : IBackupTaskSuper
             _backup = backup;
         Repository.CreateDirectory(BackupTaskPath);
         TimeStrategy = strategy;
+        _logger.Log("Initialization finished");
     }
 
     public ITimeStrategy TimeStrategy { get; set; }
