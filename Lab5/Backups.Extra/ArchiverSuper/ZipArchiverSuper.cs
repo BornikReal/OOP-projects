@@ -9,17 +9,17 @@ namespace Backups.Extra.ArchiverSuper;
 public class ZipArchiverSuper : IArchiver
 {
     private readonly ZipArchiver _archiver;
-    public ZipArchiverSuper(ZipArchiver archiver, ILogger logger)
+    private readonly ILogger _logger;
+    public ZipArchiverSuper(ILogger logger)
     {
-        _archiver = archiver;
-        Logger = logger;
+        _archiver = new ZipArchiver();
+        _logger = logger;
     }
 
-    public ILogger Logger { get; set; }
     public IStorage CreateArchive(IEnumerable<IFileSystemEntity> entities, string archivePath, IRepository repository)
     {
         IStorage storage = _archiver.CreateArchive(entities, archivePath, repository);
-        Logger.Log($"{this} created archive in {archivePath}");
+        _logger.Log($"{this} created archive in {archivePath}");
         return storage;
     }
 }

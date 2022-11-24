@@ -1,5 +1,5 @@
-﻿using Backups.Exceptions;
-using Backups.Extra.AlgorithmSuper;
+﻿using Backups.Algorithms;
+using Backups.Exceptions;
 using Backups.Extra.Cleaner;
 using Backups.Extra.Deleter;
 using Backups.Extra.LoggingEntities;
@@ -20,7 +20,7 @@ public class BackupTaskSuper : IBackupTaskSuper
     private readonly ILogger _logger;
     private readonly IBackupSuper _backup;
 
-    public BackupTaskSuper(ITimeStrategy strategy, IRepositorySuper repository, IAlgorithmSuper algorithm, ILogger logger, IBackupSuper backup)
+    public BackupTaskSuper(ITimeStrategy strategy, IRepositorySuper repository, IAlgorithm algorithm, ILogger logger, IBackupSuper backup)
     {
         _logger = logger;
         _logger.Log("Initialization of BackupTask");
@@ -38,7 +38,7 @@ public class BackupTaskSuper : IBackupTaskSuper
     public IReadOnlyList<BackupObject> BackupObjects => _backupObjects;
     public IEnumerable<RestorePoint> RestorePoints => new List<RestorePoint>(_backup.RestorePoints);
     public IRepositorySuper Repository { get; }
-    public IAlgorithmSuper Algorithm { get; }
+    public IAlgorithm Algorithm { get; }
 
     public void AddNewTask(BackupObject backupObject)
     {
@@ -61,7 +61,7 @@ public class BackupTaskSuper : IBackupTaskSuper
         _logger.Log($"Start backuping with {Algorithm.GetType()}");
         string restorePointPath = $"{BackupTaskPath}{Repository.PathSeparator}RestorePoint-{Guid.NewGuid()}";
         Repository.CreateDirectory(restorePointPath);
-        IStorage storage = Algorithm.CreateBackup(_backupObjects.Select(s => Repository.OpenEntity(s.ObjectPath)), restorePointPath, Repository, _logger);
+        IStorage storage = Algorithm.CreateBackup(_backupObjects.Select(s => Repository.OpenEntity(s.ObjectPath)), restorePointPath, Repository);
         var restorePoint = new RestorePoint(new List<BackupObject>(_backupObjects), storage, restorePointPath, TimeStrategy.SetTime());
         _backup.AddRestorePoint(restorePoint);
         _logger.Log(Algorithm.ToString() !);
@@ -78,7 +78,7 @@ public class BackupTaskSuper : IBackupTaskSuper
             throw new Exception();
         foreach (RestorePoint point in points)
             _backup.RemoveRestorePoint(point);
-        deleter.DeleteRestorePoint(points, _logger);
+        deleter.DeleteRestorePoint(points);
         _logger.Log(deleter.ToString() !);
         _logger.Log("Cleaning restor points finished");
     }
@@ -87,7 +87,7 @@ public class BackupTaskSuper : IBackupTaskSuper
     {
         _logger.Log("Start merging");
         string restorePointPath = $"{BackupTaskPath}{Repository.PathSeparator}RestorePoint-{Guid.NewGuid()}";
-        RestorePoint restorePoint = merger.Merge(points, Algorithm, Repository, restorePointPath, _logger);
+        RestorePoint restorePoint = merger.Merge(points, Algorithm, Repository, restorePointPath);
         foreach (RestorePoint point in points)
             _backup.RemoveRestorePoint(point);
         _backup.AddRestorePoint(restorePoint);

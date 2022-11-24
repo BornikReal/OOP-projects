@@ -1,4 +1,4 @@
-﻿using Backups.Extra.AlgorithmSuper;
+﻿using Backups.Algorithms;
 using Backups.Extra.Comparers;
 using Backups.Extra.Deleter;
 using Backups.Extra.LoggingEntities;
@@ -13,12 +13,14 @@ namespace Backups.Extra.Merger;
 public class RestorePointMerger : IMerger
 {
     private readonly IDeleter _deleter;
-    public RestorePointMerger(IDeleter deleter)
+    private readonly ILogger _logger;
+    public RestorePointMerger(IDeleter deleter, ILogger logger)
     {
         _deleter = deleter;
+        _logger = logger;
     }
 
-    public RestorePoint Merge(IEnumerable<RestorePoint> points, IAlgorithmSuper algorithm, IRepositorySuper repository, string restorePointPath, ILogger logger)
+    public RestorePoint Merge(IEnumerable<RestorePoint> points, IAlgorithm algorithm, IRepositorySuper repository, string restorePointPath)
     {
         RestorePoint point;
         var newPoints = points.ToList();
@@ -36,19 +38,19 @@ public class RestorePointMerger : IMerger
             newPoints.Remove(point);
         }
 
-        logger.Log("Made union of all points");
+        _logger.Log("Made union of all points");
         repository.CreateDirectory(restorePointPath);
-        logger.Log("Created directory of new restore point");
-        IStorage newStorage = algorithm.CreateBackup(enities, restorePointPath, repository, logger);
-        logger.Log("Archived files of new restore point");
+        _logger.Log("Created directory of new restore point");
+        IStorage newStorage = algorithm.CreateBackup(enities, restorePointPath, repository);
+        _logger.Log("Archived files of new restore point");
         point = new RestorePoint(backupObjects, newStorage, restorePointPath, DateTime.Now);
-        logger.Log("Created new restore point");
+        _logger.Log("Created new restore point");
         foreach (IRepoDisposable disposable in disp)
         {
             disposable.Dispose();
         }
 
-        _deleter.DeleteRestorePoint(points, logger);
+        _deleter.DeleteRestorePoint(points);
         return point;
     }
 }
