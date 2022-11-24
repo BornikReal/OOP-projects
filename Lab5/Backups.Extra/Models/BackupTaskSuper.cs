@@ -1,7 +1,5 @@
 ﻿using Backups.Algorithms;
 using Backups.Exceptions;
-using Backups.Extra.Cleaner;
-using Backups.Extra.Deleter;
 using Backups.Extra.LoggingEntities;
 using Backups.Extra.RepositorySuper;
 using Backups.Models;
@@ -63,19 +61,5 @@ public class BackupTaskSuper : IBackupTaskSuper
         _logger.Log(Algorithm.ToString() !);
         _logger.Log($"Create restore point on path {restorePointPath}");
         return restorePoint;
-    }
-
-    public void CleanRestorePoints(ICleaner cleaner, IDeleter deleter)
-    {
-        _logger.Log("Start cleaning restor points");
-        _logger.Log($"Preparing list of restor points with {cleaner}");
-        IEnumerable<RestorePoint> points = cleaner.Clean(_backup.RestorePoints);
-        if (points.Count() == _backup.RestorePoints.Count() && points.Any())
-            throw new Exception();
-        foreach (RestorePoint point in points)
-            _backup.RemoveRestorePoint(point);
-        deleter.DeleteRestorePoint(points);
-        _logger.Log(deleter.ToString() !);
-        _logger.Log("Cleaning restor points finished");
     }
 }
