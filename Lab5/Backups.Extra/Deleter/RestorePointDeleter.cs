@@ -1,4 +1,5 @@
-﻿using Backups.Extra.LoggingEntities;
+﻿using Backups.Extra.Exceptions;
+using Backups.Extra.LoggingEntities;
 using Backups.Extra.RepositorySuper;
 using Backups.Models;
 
@@ -14,11 +15,14 @@ public class RestorePointDeleter : IDeleter
         _logger = logger;
     }
 
-    public void DeleteRestorePoint(IEnumerable<RestorePoint> restorePoints)
+    public void DeleteRestorePoint(IEnumerable<RestorePoint> restorePoints, IBackup backup)
     {
+        if (restorePoints.Count() == backup.RestorePoints.Count())
+            throw new DeletingAllRestorPointsException();
         foreach (RestorePoint point in restorePoints)
         {
             _repository.DeleteEntity(point.RestorePointPath);
+            backup.RemoveRestorePoint(point);
             _logger.Log($"Restore point {point.RestorePointPath} was deleted");
         }
     }

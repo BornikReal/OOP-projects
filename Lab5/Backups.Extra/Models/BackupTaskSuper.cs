@@ -1,26 +1,20 @@
 ﻿using Backups.Algorithms;
 using Backups.Exceptions;
-using Backups.Extra.Cleaner;
-using Backups.Extra.Deleter;
 using Backups.Extra.LoggingEntities;
-using Backups.Extra.Merger;
 using Backups.Extra.RepositorySuper;
-using Backups.Extra.SaveStrategy;
-using Backups.FileSystemEntities.Interfaces;
-using Backups.Interlayer;
 using Backups.Models;
 using Backups.Storages;
 using Backups.Strategy;
 
 namespace Backups.Extra.Models;
 
-public class BackupTaskSuper : IBackupTaskSuper
+public class BackupTaskSuper : IBackupTask
 {
     private readonly List<BackupObject> _backupObjects = new List<BackupObject>();
     private readonly ILogger _logger;
-    private readonly IBackupSuper _backup;
+    private readonly IBackup _backup;
 
-    public BackupTaskSuper(ITimeStrategy strategy, IRepositorySuper repository, IAlgorithm algorithm, ILogger logger, IBackupSuper backup)
+    public BackupTaskSuper(ITimeStrategy strategy, IRepositorySuper repository, IAlgorithm algorithm, ILogger logger, IBackup backup)
     {
         _logger = logger;
         _logger.Log("Initialization of BackupTask");
@@ -67,46 +61,5 @@ public class BackupTaskSuper : IBackupTaskSuper
         _logger.Log(Algorithm.ToString() !);
         _logger.Log($"Create restore point on path {restorePointPath}");
         return restorePoint;
-    }
-
-    public void CleanRestorePoints(ICleaner cleaner, IDeleter deleter)
-    {
-        _logger.Log("Start cleaning restor points");
-        _logger.Log($"Preparing list of restor points with {cleaner}");
-        IEnumerable<RestorePoint> points = cleaner.Clean(_backup.RestorePoints);
-        if (points.Count() == _backup.RestorePoints.Count() && points.Any())
-            throw new Exception();
-        foreach (RestorePoint point in points)
-            _backup.RemoveRestorePoint(point);
-        deleter.DeleteRestorePoint(points);
-        _logger.Log(deleter.ToString() !);
-        _logger.Log("Cleaning restor points finished");
-    }
-
-    public void Merge(IEnumerable<RestorePoint> points, IMerger merger)
-    {
-        _logger.Log("Start merging");
-        string restorePointPath = $"{BackupTaskPath}{Repository.PathSeparator}RestorePoint-{Guid.NewGuid()}";
-        RestorePoint restorePoint = merger.Merge(points, Algorithm, Repository, restorePointPath);
-        foreach (RestorePoint point in points)
-            _backup.RemoveRestorePoint(point);
-        _backup.AddRestorePoint(restorePoint);
-        _logger.Log("Finish merging");
-    }
-
-    public void RestoreBackup(RestorePoint restorePoint, ISaveStrategy saveStrategy)
-    {
-        _logger.Log($"Start restoring backup with {saveStrategy} on path {restorePoint.RestorePointPath}");
-        IRepoDisposable interlayer = restorePoint.Storage.GetEntities();
-        foreach (IFileSystemEntity entity in interlayer.Entities)
-        {
-            var backupObjects = restorePoint.BackupObjects.ToList();
-            BackupObject backupObject = backupObjects.Find(s => s.ObjectPath[(s.ObjectPath.LastIndexOf(Repository.PathSeparator) + 1) ..] == entity.Name) !;
-            saveStrategy.SetNewSaveData(backupObject, entity);
-            _logger.Log($"Restored {entity.Name}");
-        }
-
-        interlayer.Dispose();
-        _logger.Log("Finish restoring");
     }
 }

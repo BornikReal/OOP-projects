@@ -1,4 +1,5 @@
-﻿using Backups.FileSystemEntities.Interfaces;
+﻿using Backups.Exceptions;
+using Backups.FileSystemEntities.Interfaces;
 using Backups.Repository;
 
 namespace Backups.Extra.RepositorySuper;
@@ -57,6 +58,6 @@ public class RealRepositorySuper : IRepositorySuper
         else if (IsDirectory(path))
             Directory.Delete(_realRepository.FullPath(path), true);
         else
-            throw new Exception();
+            throw new RepositoryOpenException();
     }
 }

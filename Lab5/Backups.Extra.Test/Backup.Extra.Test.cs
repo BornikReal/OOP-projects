@@ -4,10 +4,9 @@ using Backups.Extra.ArchiverSuper;
 using Backups.Extra.Cleaner;
 using Backups.Extra.Deleter;
 using Backups.Extra.LoggingEntities;
-using Backups.Extra.Merger;
 using Backups.Extra.Models;
 using Backups.Extra.RepositorySuper;
-using Backups.Extra.SaveStrategy;
+using Backups.Extra.Restorers;
 using Backups.FileSystemEntities;
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Interlayer;
@@ -24,7 +23,7 @@ public class ConsoleTestExtra
     {
         var repository = new InMemoryRepositorySuper("repo");
         var logger = new ConsoleLogger(true);
-        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, new SplitStorageAlgorithmVisitor(new ZipArchiverSuper(logger), logger), logger, new BackupSuper());
+        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, new SplitStorageAlgorithmVisitor(new ZipArchiverSuper(logger), logger), logger, new Backup());
         repository.CreateDirectory("test1");
         Stream stream1 = repository.CreateFile(@"test1\test2.txt");
         stream1.Write(Encoding.UTF8.GetBytes("Hello, World!"));
@@ -61,7 +60,10 @@ public class ConsoleTestExtra
     {
         var repository = new InMemoryRepositorySuper("repo");
         var logger = new ConsoleLogger(true);
-        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, new SplitStorageAlgorithmVisitor(new ZipArchiverSuper(logger), logger), logger, new BackupSuper());
+        var cleaner = new NumberCleaner(1);
+        var deleter = new RestorePointDeleter(repository, logger);
+        var backup = new Backup();
+        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, new SplitStorageAlgorithmVisitor(new ZipArchiverSuper(logger), logger), logger, backup);
         repository.CreateDirectory("test1");
         Stream stream1 = repository.CreateFile(@"test1\test2.txt");
         stream1.Write(Encoding.UTF8.GetBytes("Hello, World!"));
@@ -76,9 +78,8 @@ public class ConsoleTestExtra
         backupTask.Start();
         backupTask.RemoveTask(backupObjects[1]);
         backupTask.Start();
-        ICleaner cleaner = new NumberCleaner(1);
 
-        backupTask.CleanRestorePoints(cleaner, new RestorePointDeleter(repository, logger));
+        deleter.DeleteRestorePoint(cleaner.Clean(backup.RestorePoints), backup);
         Assert.Single(((IDirectoryEntity)repository.OpenEntity(backupTask.BackupTaskPath)).Entities());
     }
 
@@ -87,7 +88,10 @@ public class ConsoleTestExtra
     {
         var repository = new InMemoryRepositorySuper("repo");
         var logger = new ConsoleLogger(true);
-        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, new SplitStorageAlgorithmVisitor(new ZipArchiverSuper(logger), logger), logger, new BackupSuper());
+        var algorithm = new SingleStorageAlgorithmVisitor(new ZipArchiverSuper(logger), logger);
+        var backup = new Backup();
+        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, algorithm, logger, backup);
+        var merger = new RestorePointMerger(algorithm, repository, backupTask.BackupTaskPath, logger);
         repository.CreateDirectory("test1");
         Stream stream1 = repository.CreateFile(@"test1\test2.txt");
         stream1.Write(Encoding.UTF8.GetBytes("Hello, World!"));
@@ -103,10 +107,7 @@ public class ConsoleTestExtra
         backupTask.RemoveTask(backupObjects[1]);
         backupTask.Start();
 
-        var merger = new RestorePointMerger(new RestorePointDeleter(repository, logger), logger);
-
-        backupTask.Merge(backupTask.RestorePoints, merger);
-
+        merger.DeleteRestorePoint(new List<RestorePoint>(backup.RestorePoints), backup);
         Assert.Single(((IDirectoryEntity)repository.OpenEntity(backupTask.BackupTaskPath)).Entities());
     }
 
@@ -115,7 +116,10 @@ public class ConsoleTestExtra
     {
         var repository = new InMemoryRepositorySuper("repo");
         var logger = new ConsoleLogger(true);
-        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, new SplitStorageAlgorithmVisitor(new ZipArchiverSuper(logger), logger), logger, new BackupSuper());
+        var algorithm = new SplitStorageAlgorithmVisitor(new ZipArchiverSuper(logger), logger);
+        var backup = new Backup();
+        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, algorithm, logger, backup);
+        var merger = new RestorePointMerger(algorithm, repository, backupTask.BackupTaskPath, logger);
         repository.CreateDirectory("test1");
         Stream stream1 = repository.CreateFile(@"test1\test2.txt");
         stream1.Write(Encoding.UTF8.GetBytes("Hello, World!"));
@@ -131,10 +135,7 @@ public class ConsoleTestExtra
         backupTask.RemoveTask(backupObjects[1]);
         backupTask.Start();
 
-        var merger = new RestorePointMerger(new RestorePointDeleter(repository, logger), logger);
-
-        backupTask.Merge(backupTask.RestorePoints, merger);
-
+        merger.DeleteRestorePoint(new List<RestorePoint>(backup.RestorePoints), backup);
         Assert.Single(((IDirectoryEntity)repository.OpenEntity(backupTask.BackupTaskPath)).Entities());
     }
 
@@ -143,7 +144,7 @@ public class ConsoleTestExtra
     {
         var repository = new InMemoryRepositorySuper("repo");
         var logger = new ConsoleLogger(true);
-        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, new SplitStorageAlgorithmVisitor(new ZipArchiverSuper(logger), logger), logger, new BackupSuper());
+        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, new SplitStorageAlgorithmVisitor(new ZipArchiverSuper(logger), logger), logger, new Backup());
         repository.CreateDirectory("test1");
         Stream stream1 = repository.CreateFile(@"test1\test2.txt");
         stream1.Write(Encoding.UTF8.GetBytes("Hello, World!"));
@@ -157,7 +158,8 @@ public class ConsoleTestExtra
 
         RestorePoint restorePoint = backupTask.Start();
 
-        backupTask.RestoreBackup(restorePoint, new DifferentLocationSaveStrategy("unpack", repository));
+        var restorer = new DifferentLocationSaveStrategy("unpack", repository, logger);
+        restorer.RestoreBackup(restorePoint);
 
         Assert.Equal(2, ((IDirectoryEntity)repository.OpenEntity("unpack")).Entities().Count());
     }
@@ -167,7 +169,7 @@ public class ConsoleTestExtra
     {
         var repository = new InMemoryRepositorySuper("repo");
         var logger = new ConsoleLogger(true);
-        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, new SplitStorageAlgorithmVisitor(new ZipArchiverSuper(logger), logger), logger, new BackupSuper());
+        var backupTask = new BackupTaskSuper(new NowTimeStrategy(), repository, new SplitStorageAlgorithmVisitor(new ZipArchiverSuper(logger), logger), logger, new Backup());
         repository.CreateDirectory("test1");
         Stream stream1 = repository.CreateFile(@"test1\test2.txt");
         stream1.Write(Encoding.UTF8.GetBytes("Hello, World!"));
@@ -182,8 +184,9 @@ public class ConsoleTestExtra
         RestorePoint restorePoint = backupTask.Start();
         repository.DeleteEntity("test1");
         repository.DeleteEntity("test3.txt");
-        backupTask.RestoreBackup(restorePoint, new OriginalLocationSaveStrategy());
 
+        var restorer = new OriginalLocationSaveStrategy(repository, logger);
+        restorer.RestoreBackup(restorePoint);
         Assert.True(repository.IsDirectory("test1") && repository.IsFile("test3.txt"));
     }
 }
