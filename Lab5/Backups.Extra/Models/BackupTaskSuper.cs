@@ -8,7 +8,7 @@ using Backups.Strategy;
 
 namespace Backups.Extra.Models;
 
-public class BackupTaskSuper : IBackupTaskSuper
+public class BackupTaskSuper : IBackupTask
 {
     private readonly List<BackupObject> _backupObjects = new List<BackupObject>();
     private readonly ILogger _logger;
