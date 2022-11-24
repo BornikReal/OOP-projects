@@ -12,9 +12,9 @@ public class BackupTaskSuper : IBackupTask
 {
     private readonly List<BackupObject> _backupObjects = new List<BackupObject>();
     private readonly ILogger _logger;
-    private readonly IBackupSuper _backup;
+    private readonly IBackup _backup;
 
-    public BackupTaskSuper(ITimeStrategy strategy, IRepositorySuper repository, IAlgorithm algorithm, ILogger logger, IBackupSuper backup)
+    public BackupTaskSuper(ITimeStrategy strategy, IRepositorySuper repository, IAlgorithm algorithm, ILogger logger, IBackup backup)
     {
         _logger = logger;
         _logger.Log("Initialization of BackupTask");

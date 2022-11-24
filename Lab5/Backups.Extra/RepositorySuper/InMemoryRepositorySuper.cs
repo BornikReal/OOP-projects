@@ -1,4 +1,5 @@
-﻿using Backups.FileSystemEntities.Interfaces;
+﻿using Backups.Exceptions;
+using Backups.FileSystemEntities.Interfaces;
 using Backups.Repository;
 using Zio;
 
@@ -58,7 +59,7 @@ public class InMemoryRepositorySuper : IRepositorySuper, IDisposable
         else if (IsDirectory(path))
             _inMemoryRepository.RepositoryFileSystem.DeleteDirectory((UPath)_inMemoryRepository.FullPath(path), true);
         else
-            throw new Exception();
+            throw new RepositoryOpenException();
     }
 
     public void Dispose()

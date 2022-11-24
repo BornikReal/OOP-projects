@@ -1,7 +1,6 @@
 ﻿using Backups.Algorithms;
 using Backups.Extra.Comparers;
 using Backups.Extra.LoggingEntities;
-using Backups.Extra.Models;
 using Backups.Extra.RepositorySuper;
 using Backups.FileSystemEntities.Interfaces;
 using Backups.Interlayer;
@@ -16,18 +15,16 @@ public class RestorePointMerger : IDeleter
     private readonly IAlgorithm _algorithm;
     private readonly IRepositorySuper _repository;
     private readonly string _backupTaskPath;
-    private readonly IBackupSuper _backup;
 
-    public RestorePointMerger(IAlgorithm algorithm, IRepositorySuper repository, string backupTaskPath, ILogger logger, IBackupSuper backup)
+    public RestorePointMerger(IAlgorithm algorithm, IRepositorySuper repository, string backupTaskPath, ILogger logger)
     {
         _logger = logger;
         _algorithm = algorithm;
         _repository = repository;
         _backupTaskPath = backupTaskPath;
-        _backup = backup;
     }
 
-    public void DeleteRestorePoint(IEnumerable<RestorePoint> restorePoints)
+    public void DeleteRestorePoint(IEnumerable<RestorePoint> restorePoints, IBackup backup)
     {
         RestorePoint point;
         var newPoints = restorePoints.ToList();
@@ -61,10 +58,10 @@ public class RestorePointMerger : IDeleter
         foreach (RestorePoint restPoint in restorePoints)
         {
             _repository.DeleteEntity(restPoint.RestorePointPath);
-            _backup.RemoveRestorePoint(restPoint);
+            backup.RemoveRestorePoint(restPoint);
             _logger.Log($"Restore point {restPoint.RestorePointPath} was deleted");
         }
 
-        _backup.AddRestorePoint(point);
+        backup.AddRestorePoint(point);
     }
 }

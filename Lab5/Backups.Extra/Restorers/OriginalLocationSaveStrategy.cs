@@ -1,4 +1,5 @@
-﻿using Backups.Extra.LoggingEntities;
+﻿using Backups.Extra.Exceptions;
+using Backups.Extra.LoggingEntities;
 using Backups.Extra.RepositorySuper;
 using Backups.Extra.Visitors;
 using Backups.FileSystemEntities.Interfaces;
@@ -32,7 +33,7 @@ public class OriginalLocationSaveStrategy : IRestorer
             if (backupObject.Repository as IRepositorySuper != null)
                 _restorer.Repository = (IRepositorySuper)backupObject.Repository;
             else
-                throw new Exception();
+                throw new InvalidBackupObjectRepositoryException();
             entity.Accept(_restorer);
             _logger.Log($"Restored {entity.Name}");
         }
