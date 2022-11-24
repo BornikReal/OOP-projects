@@ -7,19 +7,21 @@ using Backups.Storages;
 
 namespace Backups.Extra.AlgorithmSuper;
 
-public class SplitStorageAlgorithmVisitor : IAlgorithmSuper
+public class SplitStorageAlgorithmVisitor : IAlgorithm
 {
     private readonly SplitStorageAlgorithm _algorithm;
+    private readonly ILogger _logger;
 
-    public SplitStorageAlgorithmVisitor(IArchiver archiver)
+    public SplitStorageAlgorithmVisitor(IArchiver archiver, ILogger logger)
     {
         _algorithm = new SplitStorageAlgorithm(archiver);
+        _logger = logger;
     }
 
-    public IStorage CreateBackup(IEnumerable<IFileSystemEntity> entities, string restorPointPath, IRepository repository, ILogger logger)
+    public IStorage CreateBackup(IEnumerable<IFileSystemEntity> entities, string restorPointPath, IRepository repository)
     {
         IStorage storage = _algorithm.CreateBackup(entities, restorPointPath, repository);
-        logger.Log($"{this} created backup in {restorPointPath}");
+        _logger.Log($"{this} created backup in {restorPointPath}");
         return storage;
     }
 
