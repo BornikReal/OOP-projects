@@ -12,9 +12,8 @@ public class FileLogger : ILogger
 
     public void Log(string message)
     {
-        message = $"\n{DateTime.Now:HH:mm:ss.fff}|{message}";
         if (_isPrefix)
-            message = message.Replace("\n", $"\n{DateTime.Now:HH:mm:ss.fff}|");
+            message = $"{DateTime.Now:HH:mm:ss.fff}|{message}";
         using StreamWriter writer = File.AppendText(_logFilePath);
         writer.WriteLine(message);
     }

@@ -10,9 +10,8 @@ public class ConsoleLogger : ILogger
 
     public void Log(string message)
     {
-        message = $"\n{DateTime.Now:HH:mm:ss.fff}|{message}";
         if (_isPrefix)
-            message = message.Replace("\n", $"\n{DateTime.Now:HH:mm:ss.fff}|");
+            message = $"{DateTime.Now:HH:mm:ss.fff}|{message}";
         Console.WriteLine(message);
     }
 }
