@@ -21,6 +21,6 @@ public class SplitStorageAlgorithm : IAlgorithm
 
     public override string ToString()
     {
-        return "Split Storage Algorithm";
+        return $"Split Storage Algorithm with {_archiver}";
     }
 }
