@@ -14,7 +14,7 @@ public class NumberCleaner : ICleaner
     {
         if (restorePoints.Count() <= _number)
             return new List<RestorePoint>();
-        return restorePoints.Take(restorePoints.Count() - _number);
+        return restorePoints.Take(_number);
     }
 
     public override string ToString()

@@ -26,6 +26,8 @@ public class RestorePointMerger : IDeleter
 
     public void DeleteRestorePoint(IEnumerable<RestorePoint> restorePoints, IBackup backup)
     {
+        if (!restorePoints.Any())
+            return;
         RestorePoint point;
         var newPoints = restorePoints.ToList();
         var disp = new List<IRepoDisposable>();

@@ -14,13 +14,13 @@ public class BackupTaskSuper : IBackupTask
     private readonly ILogger _logger;
     private readonly IBackup _backup;
 
-    public BackupTaskSuper(ITimeStrategy strategy, IRepositorySuper repository, IAlgorithm algorithm, ILogger logger, IBackup backup)
+    public BackupTaskSuper(ITimeStrategy strategy, IRepositorySuper repository, IAlgorithm algorithm, ILogger logger, IBackup backup, string backupTaskPath)
     {
         _logger = logger;
         _logger.Log("Initialization of BackupTask");
         Repository = repository;
         Algorithm = algorithm;
-        BackupTaskPath = $"BackupTask-{Guid.NewGuid()}";
+        BackupTaskPath = backupTaskPath;
         _backup = backup;
         Repository.CreateDirectory(BackupTaskPath);
         TimeStrategy = strategy;
