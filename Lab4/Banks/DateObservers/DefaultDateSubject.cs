@@ -3,7 +3,7 @@
 public class DefaultDateSubject : IDateSubject
 {
     private readonly List<IDateObserver> _observers = new List<IDateObserver>();
-    public DateTime CurDate { get; set; } = DateTime.Now;
+    public DateTime CurDate => DateTime.Now;
     public void Attach(IDateObserver observer)
     {
         _observers.Add(observer);

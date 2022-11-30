@@ -6,14 +6,15 @@ public class DepositAccount : IBankAccount, IDateObserver
 {
     private decimal _interestBalance;
     private DateTime _curDate;
-    public DepositAccount(decimal interestRate, DateTime date)
+    public DepositAccount(decimal balance, decimal interestRate, DateTime date)
     {
         _interestBalance = 0;
         InterestRate = interestRate;
         DateOfEnding = date;
+        Balance = balance;
     }
 
-    public decimal Balance { get; private set; } = 0;
+    public decimal Balance { get; private set; }
     public decimal InterestRate { get; }
     public decimal ComissionRate => 0;
     public DateTime DateOfEnding { get; }

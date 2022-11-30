@@ -1,6 +1,6 @@
 ﻿using Banks.BankAccounts;
 
-namespace Banks.Persons;
+namespace Banks.Models;
 
 public interface IPerson
 {

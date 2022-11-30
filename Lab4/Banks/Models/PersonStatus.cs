@@ -1,4 +1,4 @@
-﻿namespace Banks.Persons;
+﻿namespace Banks.Models;
 
 public enum PersonStatus
 {
