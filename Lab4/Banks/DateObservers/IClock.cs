@@ -1,6 +1,6 @@
 ﻿namespace Banks.DateObservers;
 
-public interface IDateSubject
+public interface IClock
 {
     public DateTime CurDate { get; }
     void Attach(IDateObserver observer);

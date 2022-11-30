@@ -4,9 +4,9 @@ namespace Banks.BankAccounts;
 
 public class DepositAccount : IBankAccount, IDateObserver
 {
-    private readonly IDateSubject _dateSubject;
+    private readonly IClock _dateSubject;
     private decimal _interestBalance;
-    public DepositAccount(decimal balance, decimal interestRate, DateTime date, IDateSubject dateSubject, decimal transferLimit)
+    public DepositAccount(decimal balance, decimal interestRate, DateTime date, IClock dateSubject, decimal transferLimit)
     {
         _interestBalance = 0;
         InterestRate = interestRate;

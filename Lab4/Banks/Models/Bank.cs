@@ -7,10 +7,10 @@ namespace Banks.Models;
 public class Bank
 {
     private readonly List<IBankAccount> _accounts = new List<IBankAccount>();
-    private readonly IDateSubject _dateSubject;
+    private readonly IClock _dateSubject;
     private decimal _debitInterestRate;
 
-    private Bank(IDateSubject dateSubject, decimal debitInterestRate, IInterestRateStrategy strategy, TimeSpan depositSpan, decimal commisionRate, decimal creditLimit)
+    public Bank(IClock dateSubject, decimal debitInterestRate, IInterestRateStrategy strategy, TimeSpan depositSpan, decimal commisionRate, decimal creditLimit)
     {
         _dateSubject = dateSubject;
         DebitInterestRate = debitInterestRate;
@@ -21,9 +21,7 @@ public class Bank
     }
 
     public delegate void AccountHandler(IBankAccount account);
-    private event AccountHandler? Notify;
-    public static BankBuilder Builder { get; } = new BankBuilder();
-
+    public event AccountHandler? Notify;
     public decimal DebitInterestRate
     {
         get => _debitInterestRate;
@@ -64,66 +62,5 @@ public class Bank
         var account = new CreditAccount(ComissionRate, CreditLimit, TransferLimit);
         Notify?.Invoke(account);
         _accounts.Add(account);
-    }
-
-    public class BankBuilder
-    {
-        private decimal? _debitInterestRate;
-        private IInterestRateStrategy? _interestRateStrategy;
-        private TimeSpan? _depositSpan;
-        private decimal? _comissionRate;
-        private decimal? _creditLimit;
-
-        public delegate void BankHandler(Bank bank);
-        private event BankHandler? Notify;
-
-        public BankBuilder SetDebitInterestRate(decimal debitInterestRate)
-        {
-            _debitInterestRate = debitInterestRate;
-            return this;
-        }
-
-        public BankBuilder SetInterestRateStrategy(IInterestRateStrategy rateStrategy)
-        {
-            _interestRateStrategy = rateStrategy;
-            return this;
-        }
-
-        public BankBuilder SetDepositSpan(TimeSpan depositSpan)
-        {
-            _depositSpan = depositSpan;
-            return this;
-        }
-
-        public BankBuilder SetComissionRate(decimal comissionRate)
-        {
-            _comissionRate = comissionRate;
-            return this;
-        }
-
-        public BankBuilder SetCreditLimit(decimal creditLimit)
-        {
-            _creditLimit = creditLimit;
-            return this;
-        }
-
-        public void Reset()
-        {
-            _debitInterestRate = null;
-            _interestRateStrategy = null;
-            _depositSpan = null;
-            _comissionRate = null;
-            _creditLimit = null;
-        }
-
-        public Bank Build()
-        {
-            if (_debitInterestRate == null || _interestRateStrategy == null || _depositSpan == null || _comissionRate == null || _creditLimit == null)
-                throw new Exception();
-
-            var bank = new Bank((decimal)_debitInterestRate, _interestRateStrategy, (TimeSpan)_depositSpan, (decimal)_comissionRate, (decimal)_creditLimit);
-            Notify?.Invoke(bank);
-            return bank;
-        }
     }
 }

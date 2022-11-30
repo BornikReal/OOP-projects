@@ -1,6 +1,6 @@
 ﻿namespace Banks.DateObservers;
 
-public class DefaultDateSubject : IDateSubject
+public class DefaultClock : IClock
 {
     private readonly List<IDateObserver> _observers = new List<IDateObserver>();
     public DateTime CurDate => DateTime.Now;
