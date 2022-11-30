@@ -7,10 +7,7 @@ public class CentralBank : ICentralBank
     private readonly List<Bank> _banks = new List<Bank>();
     private readonly List<IBankAccount> _accounts = new List<IBankAccount>();
 
-    public Bank CreateBank()
-    {
-        throw new NotImplementedException();
-    }
+    public 
 
     private void OnBankAccountCreated(IBankAccount account)
     {

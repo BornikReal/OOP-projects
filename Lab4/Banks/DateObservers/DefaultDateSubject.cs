@@ -14,11 +14,21 @@ public class DefaultDateSubject : IDateSubject
         _observers.Remove(observer);
     }
 
-    public void Notify()
+    public void NotifyNewDay()
     {
         foreach (IDateObserver observer in _observers)
         {
-            observer.Update(this);
+            observer.UpdateNewDay();
+        }
+    }
+
+    public void NotifyNewMonth()
+    {
+        {
+            foreach (IDateObserver observer in _observers)
+            {
+                observer.UpdateNewMonth();
+            }
         }
     }
 }

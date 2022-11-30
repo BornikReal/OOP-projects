@@ -2,5 +2,4 @@
 
 public interface ICentralBank
 {
-    Bank CreateBank();
 }

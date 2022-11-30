@@ -2,5 +2,6 @@
 
 public interface IDateObserver
 {
-    void Update(IDateSubject dateSubject);
+    void UpdateNewDay();
+    void UpdateNewMonth();
 }

@@ -4,20 +4,23 @@ namespace Banks.BankAccounts;
 
 public class DepositAccount : IBankAccount, IDateObserver
 {
+    private readonly IDateSubject _dateSubject;
     private decimal _interestBalance;
-    private DateTime _curDate;
-    public DepositAccount(decimal balance, decimal interestRate, DateTime date)
+    public DepositAccount(decimal balance, decimal interestRate, DateTime date, IDateSubject dateSubject, decimal transferLimit)
     {
         _interestBalance = 0;
         InterestRate = interestRate;
         DateOfEnding = date;
         Balance = balance;
+        _dateSubject = dateSubject;
+        TransferLimit = transferLimit;
     }
 
+    public Guid Id { get; } = Guid.NewGuid();
     public decimal Balance { get; private set; }
     public decimal InterestRate { get; }
-    public decimal ComissionRate => 0;
     public DateTime DateOfEnding { get; }
+    public decimal TransferLimit { get; }
 
     public void Deposit(decimal amount)
     {
@@ -29,22 +32,20 @@ public class DepositAccount : IBankAccount, IDateObserver
         Balance += amount;
     }
 
-    public void Update(IDateSubject dateSubject)
+    public void UpdateNewDay()
     {
-        if (dateSubject.CurDate.Day != _curDate.Day)
-            _interestBalance += InterestRate / 365 * Balance;
-        if (dateSubject.CurDate.Month != _curDate.Month)
-        {
-            Balance += _interestBalance;
-            _interestBalance = 0;
-        }
+        _interestBalance += InterestRate / 365 * Balance;
+    }
 
-        _curDate = dateSubject.CurDate;
+    public void UpdateNewMonth()
+    {
+        Balance += _interestBalance;
+        _interestBalance = 0;
     }
 
     public void Withdraw(decimal amount)
     {
-        if (_curDate < DateOfEnding)
+        if (_dateSubject.CurDate < DateOfEnding)
         {
             throw new ArgumentException("You can't withdraw money before the end of the deposit");
         }

@@ -4,16 +4,18 @@ namespace Banks.BankAccounts;
 
 public class DebitAccount : IBankAccount, IDateObserver
 {
+    private readonly decimal _interestRate;
     private decimal _interestBalance;
-    private DateTime _curDate;
-    public DebitAccount(decimal interestRate)
+    public DebitAccount(decimal interestRate, decimal transferLimit)
     {
-        InterestRate = interestRate;
+        _interestBalance = 0;
+        _interestRate = interestRate;
+        TransferLimit = transferLimit;
     }
 
+    public Guid Id { get; } = Guid.NewGuid();
     public decimal Balance { get; private set; } = 0;
-    public decimal InterestRate { get; }
-    public decimal ComissionRate => 0;
+    public decimal TransferLimit { get; }
 
     public void Deposit(decimal amount)
     {
@@ -25,17 +27,15 @@ public class DebitAccount : IBankAccount, IDateObserver
         Balance += amount;
     }
 
-    public void Update(IDateSubject dateSubject)
+    public void UpdateNewDay()
     {
-        if (dateSubject.CurDate.Day != _curDate.Day)
-            _interestBalance += InterestRate / 365 * Balance;
-        if (dateSubject.CurDate.Month != _curDate.Month)
-        {
-            Balance += _interestBalance;
-            _interestBalance = 0;
-        }
+        _interestBalance += _interestRate / 365 * Balance;
+    }
 
-        _curDate = dateSubject.CurDate;
+    public void UpdateNewMonth()
+    {
+        Balance += _interestBalance;
+        _interestBalance = 0;
     }
 
     public void Withdraw(decimal amount)

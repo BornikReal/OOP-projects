@@ -3,8 +3,8 @@
 public interface IBankAccount
 {
     decimal Balance { get; }
-    decimal InterestRate { get; }
-    decimal ComissionRate { get; }
+    decimal TransferLimit { get; }
+    Guid Id { get; }
     void Deposit(decimal amount);
     void Withdraw(decimal amount);
 }
