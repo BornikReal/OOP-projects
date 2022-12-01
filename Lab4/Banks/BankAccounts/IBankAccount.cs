@@ -10,4 +10,6 @@ public interface IBankAccount : ICancelable
     IPerson Person { get; }
     void Deposit(decimal amount);
     void Withdraw(decimal amount);
+    bool CanDeposit(decimal amount);
+    bool CanWithdraw(decimal amount);
 }

@@ -20,22 +20,25 @@ public class CreditAccount : IBankAccount
     public decimal TransferLimit { get; }
     public IPerson Person { get; }
 
-    public void Cancel()
+    public Action Cancel()
     {
-        _balanceChange!();
+        return new Action(_balanceChange!);
+    }
+
+    public bool CanDeposit(decimal amount)
+    {
+        return !(amount < 0 || (Person.Status == PersonStatus.Unverified && amount > TransferLimit));
+    }
+
+    public bool CanWithdraw(decimal amount)
+    {
+        return !(amount < 0 || (Person.Status == PersonStatus.Unverified && amount > TransferLimit) || Balance - amount < CreditLimit);
     }
 
     public void Deposit(decimal amount)
     {
-        if (amount < 0)
-        {
-            throw new ArgumentException("Amount must be positive");
-        }
-
-        if (Person.Status == PersonStatus.Unverified && amount > TransferLimit)
-        {
-            throw new ArgumentException("Amount must be less than transfer limit for unverified person");
-        }
+        if (!CanDeposit(amount))
+            throw new InvalidOperationException("Cannot deposit");
 
         Balance += amount;
         _balanceChange = () => Balance -= amount;
@@ -43,15 +46,8 @@ public class CreditAccount : IBankAccount
 
     public void Withdraw(decimal amount)
     {
-        if (amount < 0)
-        {
-            throw new ArgumentException("Amount must be positive");
-        }
-
-        if (Person.Status == PersonStatus.Unverified && amount > TransferLimit)
-        {
-            throw new ArgumentException("Amount must be less than transfer limit for unverified person");
-        }
+        if (!CanWithdraw(amount))
+            throw new InvalidOperationException("Cannot withdraw");
 
         switch (Balance)
         {
@@ -59,13 +55,11 @@ public class CreditAccount : IBankAccount
                 Balance -= amount;
                 _balanceChange = () => Balance += amount;
                 break;
-            case var balance when balance >= CreditLimit:
+            case var balance when balance - amount >= CreditLimit:
                 decimal withdrawAmount = amount + ComissionRate;
                 Balance -= withdrawAmount;
                 _balanceChange = () => Balance += withdrawAmount;
                 break;
-            default:
-                throw new InvalidOperationException("Unexpected balance value");
         }
     }
 }

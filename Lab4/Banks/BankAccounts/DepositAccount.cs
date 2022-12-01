@@ -26,22 +26,25 @@ public class DepositAccount : IBankAccount, IDateObserver
     public decimal TransferLimit { get; }
     public IPerson Person { get; }
 
-    public void Cancel()
+    public Action Cancel()
     {
-        _balanceChange!();
+        return new Action(_balanceChange!);
+    }
+
+    public bool CanDeposit(decimal amount)
+    {
+        return !(amount < 0 || (Person.Status == PersonStatus.Unverified && amount > TransferLimit));
+    }
+
+    public bool CanWithdraw(decimal amount)
+    {
+        return !(_dateSubject.CurDate < DateOfEnding || amount < 0 || amount > Balance || (Person.Status == PersonStatus.Unverified && amount > TransferLimit));
     }
 
     public void Deposit(decimal amount)
     {
-        if (amount < 0)
-        {
-            throw new ArgumentException("Amount must be positive");
-        }
-
-        if (Person.Status == PersonStatus.Unverified && amount > TransferLimit)
-        {
-            throw new ArgumentException("Amount must be less than transfer limit for unverified person");
-        }
+        if (!CanDeposit(amount))
+            throw new InvalidOperationException("Cannot deposit");
 
         Balance += amount;
         _balanceChange = () => Balance -= amount;
@@ -60,25 +63,8 @@ public class DepositAccount : IBankAccount, IDateObserver
 
     public void Withdraw(decimal amount)
     {
-        if (_dateSubject.CurDate < DateOfEnding)
-        {
-            throw new ArgumentException("You can't withdraw money before the end of the deposit");
-        }
-
-        if (amount < 0)
-        {
-            throw new ArgumentException("Amount must be positive");
-        }
-
-        if (amount > Balance)
-        {
-            throw new ArgumentException("Not enough money on the account");
-        }
-
-        if (Person.Status == PersonStatus.Unverified && amount > TransferLimit)
-        {
-            throw new ArgumentException("Amount must be less than transfer limit for unverified person");
-        }
+        if (!CanWithdraw(amount))
+            throw new InvalidOperationException("Cannot withdraw");
 
         Balance -= amount;
         _balanceChange = () => Balance += amount;

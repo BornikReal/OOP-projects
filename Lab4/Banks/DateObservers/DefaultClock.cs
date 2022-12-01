@@ -1,4 +1,5 @@
 ﻿using Banks.BankAccounts;
+using Banks.Models;
 
 namespace Banks.DateObservers;
 
@@ -10,19 +11,10 @@ public class DefaultClock : IClock
 
     public void NotifyNewDay()
     {
-        foreach (IDateObserver observer in _observers)
-        {
-            observer.UpdateNewDay();
-        }
+        Notify?.Invoke(new DebitAccount(0, 0, new Person("s", "s", null, null)));
     }
 
     public void NotifyNewMonth()
     {
-        {
-            foreach (IDateObserver observer in _observers)
-            {
-                observer.UpdateNewMonth();
-            }
-        }
     }
 }
