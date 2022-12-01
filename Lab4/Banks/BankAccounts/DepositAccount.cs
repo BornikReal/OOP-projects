@@ -1,4 +1,5 @@
 ﻿using Banks.DateObservers;
+using Banks.Models;
 
 namespace Banks.BankAccounts;
 
@@ -6,7 +7,7 @@ public class DepositAccount : IBankAccount, IDateObserver
 {
     private readonly IClock _dateSubject;
     private decimal _interestBalance;
-    public DepositAccount(decimal balance, decimal interestRate, DateTime date, IClock dateSubject, decimal transferLimit)
+    public DepositAccount(decimal balance, decimal interestRate, DateTime date, IClock dateSubject, decimal transferLimit, IPerson person)
     {
         _interestBalance = 0;
         InterestRate = interestRate;
@@ -14,6 +15,7 @@ public class DepositAccount : IBankAccount, IDateObserver
         Balance = balance;
         _dateSubject = dateSubject;
         TransferLimit = transferLimit;
+        Person = person;
     }
 
     public Guid Id { get; } = Guid.NewGuid();
@@ -21,12 +23,18 @@ public class DepositAccount : IBankAccount, IDateObserver
     public decimal InterestRate { get; }
     public DateTime DateOfEnding { get; }
     public decimal TransferLimit { get; }
+    public IPerson Person { get; }
 
     public void Deposit(decimal amount)
     {
         if (amount < 0)
         {
             throw new ArgumentException("Amount must be positive");
+        }
+
+        if (Person.Status == PersonStatus.Unverified && amount > TransferLimit)
+        {
+            throw new ArgumentException("Amount must be less than transfer limit for unverified person");
         }
 
         Balance += amount;
@@ -58,6 +66,11 @@ public class DepositAccount : IBankAccount, IDateObserver
         if (amount > Balance)
         {
             throw new ArgumentException("Not enough money on the account");
+        }
+
+        if (Person.Status == PersonStatus.Unverified && amount > TransferLimit)
+        {
+            throw new ArgumentException("Amount must be less than transfer limit for unverified person");
         }
 
         Balance -= amount;

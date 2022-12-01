@@ -6,10 +6,12 @@ namespace Banks.AccountBuilders;
 public class DepositAccountFactory : IBankAccountFactory
 {
     private readonly decimal _balance;
+    private readonly IPerson _person;
 
-    public DebitAccountFactory(decimal balance)
+    public DepositAccountFactory(decimal balance, IPerson person)
     {
         _balance = balance;
+        _person = person;
     }
 
     public IBankAccount CreateAccount(Bank bank)
@@ -17,6 +19,6 @@ public class DepositAccountFactory : IBankAccountFactory
         decimal interestRate = bank.InterestRateStrategy.CalculateInterestRate(_balance);
         if (interestRate is < 0 or > 100)
             throw new Exception();
-        return new DepositAccount(_balance, interestRate, bank.Clock.CurDate + bank.DepositSpan, bank.Clock, bank.TransferLimit);
+        return new DepositAccount(_balance, interestRate, bank.Clock.CurDate + bank.DepositSpan, bank.Clock, bank.TransferLimit, _person);
     }
 }
