@@ -1,18 +1,12 @@
-﻿namespace Banks.DateObservers;
+﻿using Banks.BankAccounts;
+
+namespace Banks.DateObservers;
 
 public class DefaultClock : IClock
 {
-    private readonly List<IDateObserver> _observers = new List<IDateObserver>();
+    public delegate void AccountHandler(IBankAccount account);
+    public event AccountHandler? Notify;
     public DateTime CurDate => DateTime.Now;
-    public void Attach(IDateObserver observer)
-    {
-        _observers.Add(observer);
-    }
-
-    public void Detach(IDateObserver observer)
-    {
-        _observers.Remove(observer);
-    }
 
     public void NotifyNewDay()
     {

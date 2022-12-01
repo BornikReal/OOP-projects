@@ -7,17 +7,18 @@ namespace Banks.Models;
 public class Bank
 {
     private readonly List<IBankAccount> _accounts = new List<IBankAccount>();
-    private readonly IClock _dateSubject;
+    private readonly IClock _clock;
     private decimal _debitInterestRate;
 
-    public Bank(IClock dateSubject, decimal debitInterestRate, IInterestRateStrategy strategy, TimeSpan depositSpan, decimal commisionRate, decimal creditLimit)
+    public Bank(IClock clock, decimal debitInterestRate, IInterestRateStrategy strategy, TimeSpan depositSpan, decimal commisionRate, decimal creditLimit, decimal transferLimit)
     {
-        _dateSubject = dateSubject;
+        _clock = clock;
         DebitInterestRate = debitInterestRate;
         InterestRateStrategy = strategy;
         DepositSpan = depositSpan;
         ComissionRate = commisionRate;
         CreditLimit = creditLimit;
+        TransferLimit = transferLimit;
     }
 
     public delegate void AccountHandler(IBankAccount account);
@@ -52,7 +53,7 @@ public class Bank
         decimal interestRate = InterestRateStrategy.CalculateInterestRate(balance);
         if (interestRate is < 0 or > 100)
             throw new Exception();
-        var account = new DepositAccount(balance, interestRate, _dateSubject.CurDate + DepositSpan, _dateSubject, TransferLimit);
+        var account = new DepositAccount(balance, interestRate, _clock.CurDate + DepositSpan, _clock, TransferLimit);
         Notify?.Invoke(account);
         _accounts.Add(account);
     }

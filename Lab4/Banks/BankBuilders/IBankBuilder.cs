@@ -1,14 +1,17 @@
-﻿using Banks.InterestRateStrategy;
+﻿using Banks.DateObservers;
+using Banks.InterestRateStrategy;
 using Banks.Models;
 
 namespace Banks.BankBuilders;
 
 public interface IBankBuilder
 {
-    public IBankBuilder SetDebitInterestRate(decimal debitInterestRate);
-    public IBankBuilder SetInterestRateStrategy(IInterestRateStrategy rateStrategy);
-    public IBankBuilder SetDepositSpan(TimeSpan depositSpan);
-    public IBankBuilder SetComissionRate(decimal comissionRate);
-    public IBankBuilder SetCreditLimit(decimal creditLimit);
+    IBankBuilder SetDebitInterestRate(decimal debitInterestRate);
+    IBankBuilder SetInterestRateStrategy(IInterestRateStrategy rateStrategy);
+    IBankBuilder SetDepositSpan(TimeSpan depositSpan);
+    IBankBuilder SetComissionRate(decimal comissionRate);
+    IBankBuilder SetCreditLimit(decimal creditLimit);
+    IBankBuilder SetTransferLimit(decimal transferLimit);
+    IBankBuilder SetClock(IClock clock);
     public Bank Build();
 }

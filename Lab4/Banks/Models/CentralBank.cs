@@ -1,6 +1,5 @@
 ﻿using Banks.BankAccounts;
-using Banks.DateObservers;
-using Banks.InterestRateStrategy;
+using Banks.BankBuilders;
 
 namespace Banks.Models;
 
@@ -9,9 +8,9 @@ public class CentralBank : ICentralBank
     private readonly List<Bank> _banks = new List<Bank>();
     private readonly List<IBankAccount> _accounts = new List<IBankAccount>();
 
-    public Bank CreateBank(IClock dateSubject, decimal debitInterestRate, IInterestRateStrategy strategy, TimeSpan depositSpan, decimal commisionRate, decimal creditLimit)
+    public Bank CreateBank(IBankBuilder builder)
     {
-        var bank = new Bank(dateSubject, debitInterestRate, strategy, depositSpan, commisionRate, creditLimit);
+        Bank bank = builder.Build();
         bank.Notify += OnBankAccountCreated;
         _banks.Add(bank);
         return bank;
