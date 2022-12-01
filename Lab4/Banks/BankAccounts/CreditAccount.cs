@@ -4,6 +4,7 @@ namespace Banks.BankAccounts;
 
 public class CreditAccount : IBankAccount
 {
+    private Action? _balanceChange;
     public CreditAccount(decimal comissionRate, decimal creditLimit, decimal transferLimit, IPerson person)
     {
         ComissionRate = comissionRate;
@@ -19,6 +20,11 @@ public class CreditAccount : IBankAccount
     public decimal TransferLimit { get; }
     public IPerson Person { get; }
 
+    public void Cancel()
+    {
+        _balanceChange!();
+    }
+
     public void Deposit(decimal amount)
     {
         if (amount < 0)
@@ -32,6 +38,7 @@ public class CreditAccount : IBankAccount
         }
 
         Balance += amount;
+        _balanceChange = () => Balance -= amount;
     }
 
     public void Withdraw(decimal amount)
@@ -46,11 +53,19 @@ public class CreditAccount : IBankAccount
             throw new ArgumentException("Amount must be less than transfer limit for unverified person");
         }
 
-        Balance -= Balance switch
+        switch (Balance)
         {
-            var b when b >= 0 => amount + ComissionRate,
-            var b when b >= CreditLimit => amount,
-            _ => throw new ArgumentException("Not enough money on the account"),
-        };
+            case var balance when balance >= 0:
+                Balance -= amount;
+                _balanceChange = () => Balance += amount;
+                break;
+            case var balance when balance >= CreditLimit:
+                decimal withdrawAmount = amount + ComissionRate;
+                Balance -= withdrawAmount;
+                _balanceChange = () => Balance += withdrawAmount;
+                break;
+            default:
+                throw new InvalidOperationException("Unexpected balance value");
+        }
     }
 }

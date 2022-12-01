@@ -2,7 +2,7 @@
 
 namespace Banks.BankAccounts;
 
-public interface IBankAccount
+public interface IBankAccount : ICancelable
 {
     decimal Balance { get; }
     decimal TransferLimit { get; }

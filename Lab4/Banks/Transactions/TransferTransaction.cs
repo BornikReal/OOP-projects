@@ -6,13 +6,13 @@ public class TransferTransaction : IAccountTransaction
 {
     public TransferTransaction(Guid fromAccountId, Guid toAccountId, decimal amount)
     {
-        WithdrawTransaction = new WithdrawTransaction(fromAccountId, amount);
-        DepositTransaction = new DepositTransaction(toAccountId, amount);
+        FromAccountId = fromAccountId;
+        ToAccountId = toAccountId;
         Amount = amount;
     }
 
-    public WithdrawTransaction WithdrawTransaction { get; }
-    public DepositTransaction DepositTransaction { get; }
+    public Guid FromAccountId { get; }
+    public Guid ToAccountId { get; }
     public decimal Amount { get; }
     public Guid TransactionId { get; } = Guid.NewGuid();
 

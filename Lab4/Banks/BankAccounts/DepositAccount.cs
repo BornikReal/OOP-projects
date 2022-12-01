@@ -7,6 +7,7 @@ public class DepositAccount : IBankAccount, IDateObserver
 {
     private readonly IClock _dateSubject;
     private decimal _interestBalance;
+    private Action? _balanceChange;
     public DepositAccount(decimal balance, decimal interestRate, DateTime date, IClock dateSubject, decimal transferLimit, IPerson person)
     {
         _interestBalance = 0;
@@ -25,6 +26,11 @@ public class DepositAccount : IBankAccount, IDateObserver
     public decimal TransferLimit { get; }
     public IPerson Person { get; }
 
+    public void Cancel()
+    {
+        _balanceChange!();
+    }
+
     public void Deposit(decimal amount)
     {
         if (amount < 0)
@@ -38,6 +44,7 @@ public class DepositAccount : IBankAccount, IDateObserver
         }
 
         Balance += amount;
+        _balanceChange = () => Balance -= amount;
     }
 
     public void UpdateNewDay()
@@ -74,5 +81,6 @@ public class DepositAccount : IBankAccount, IDateObserver
         }
 
         Balance -= amount;
+        _balanceChange = () => Balance += amount;
     }
 }
