@@ -1,4 +1,5 @@
-﻿using Banks.BankAccounts;
+﻿using Banks.AccountBuilders;
+using Banks.BankAccounts;
 using Banks.DateObservers;
 using Banks.InterestRateStrategy;
 
@@ -7,12 +8,11 @@ namespace Banks.Models;
 public class Bank
 {
     private readonly List<IBankAccount> _accounts = new List<IBankAccount>();
-    private readonly IClock _clock;
     private decimal _debitInterestRate;
 
     public Bank(IClock clock, decimal debitInterestRate, IInterestRateStrategy strategy, TimeSpan depositSpan, decimal commisionRate, decimal creditLimit, decimal transferLimit)
     {
-        _clock = clock;
+        Clock = clock;
         DebitInterestRate = debitInterestRate;
         InterestRateStrategy = strategy;
         DepositSpan = depositSpan;
@@ -40,27 +40,11 @@ public class Bank
     public decimal ComissionRate { get; set; }
     public decimal CreditLimit { get; set; }
     public decimal TransferLimit { get; set; }
+    public IClock Clock { get; }
 
-    public void CreateDebitAccount()
+    public void CreateBankAccount(IBankAccountFactory accountFactory)
     {
-        var account = new DebitAccount(_debitInterestRate, TransferLimit);
-        Notify?.Invoke(account);
-        _accounts.Add(account);
-    }
-
-    public void CreateDepositAccount(decimal balance)
-    {
-        decimal interestRate = InterestRateStrategy.CalculateInterestRate(balance);
-        if (interestRate is < 0 or > 100)
-            throw new Exception();
-        var account = new DepositAccount(balance, interestRate, _clock.CurDate + DepositSpan, _clock, TransferLimit);
-        Notify?.Invoke(account);
-        _accounts.Add(account);
-    }
-
-    public void CreateCreditAccount()
-    {
-        var account = new CreditAccount(ComissionRate, CreditLimit, TransferLimit);
+        IBankAccount account = accountFactory.CreateAccount(this);
         Notify?.Invoke(account);
         _accounts.Add(account);
     }
