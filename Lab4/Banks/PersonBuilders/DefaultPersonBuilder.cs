@@ -1,4 +1,4 @@
-﻿using Banks.Persons;
+﻿using Banks.Models;
 
 namespace Banks.PersonBuilder;
 

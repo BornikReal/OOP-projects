@@ -12,8 +12,13 @@ public class BankTransaction
     }
 
     public IAccountTransaction Transaction { get; }
+    public TransactionStatus Status { get; private set; } = TransactionStatus.Completed;
     public void CancelTransaction()
     {
+        if (Status == TransactionStatus.Cancelled)
+            throw new InvalidOperationException("Transaction already cancelled");
+
         _cancelTransaction();
+        Status = TransactionStatus.Cancelled;
     }
 }

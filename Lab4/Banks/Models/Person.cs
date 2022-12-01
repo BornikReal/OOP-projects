@@ -1,6 +1,4 @@
-﻿using Banks.BankAccounts;
-
-namespace Banks.Models;
+﻿namespace Banks.Models;
 
 public class Person : IPerson
 {
@@ -17,6 +15,4 @@ public class Person : IPerson
     public string Surname { get; }
     public string? Adress { get; }
     public string? PassportData { get; }
-
-    public IEnumerable<IBankAccount> Accounts => throw new NotImplementedException();
 }

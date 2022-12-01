@@ -15,11 +15,9 @@ public class TransferTransaction : IAccountTransaction
     public DepositTransaction DepositTransaction { get; }
     public decimal Amount { get; }
     public Guid TransactionId { get; } = Guid.NewGuid();
-    public TransactionStatus Status { get; private set; } = TransactionStatus.Pending;
 
     public void Accept(ITransactionVisitor visitor)
     {
         visitor.Visit(this);
-        Status = TransactionStatus.Completed;
     }
 }
