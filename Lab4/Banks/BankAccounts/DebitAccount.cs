@@ -14,8 +14,8 @@ public class DebitAccount : IBankAccount
         _interestRate = interestRate;
         TransferLimit = transferLimit;
         Person = person;
-        clock.TimeSpans[TimeSpan.FromDays(1)] += IncreaseInterestSum;
-        clock.TimeSpans[TimeSpan.FromDays(30)] += DepositInterestSum;
+        clock.Subscribe(TimeSpan.FromDays(1), IncreaseInterestSum);
+        clock.Subscribe(TimeSpan.FromDays(30), DepositInterestSum);
     }
 
     public Guid Id { get; } = Guid.NewGuid();

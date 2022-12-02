@@ -2,6 +2,7 @@
 
 public interface IClock
 {
-    Dictionary<TimeSpan, Action> TimeSpans { get; }
+    void Subscribe(TimeSpan span, Action action);
+    void Unsubscribe(TimeSpan span, Action action);
     void AddTime(TimeSpan timeSpan);
 }

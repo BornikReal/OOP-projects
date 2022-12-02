@@ -14,13 +14,16 @@ public class DepositAccount : IBankAccount
         Balance = balance;
         TransferLimit = transferLimit;
         Person = person;
-        clock.TimeSpans[TimeSpan.FromDays(1)] += IncreaseInterestSum;
-        clock.TimeSpans[TimeSpan.FromDays(30)] += DepositInterestSum;
-        clock.TimeSpans[span] += () =>
+        clock.Subscribe(TimeSpan.FromDays(1), IncreaseInterestSum);
+        clock.Subscribe(TimeSpan.FromDays(30), DepositInterestSum);
+
+        void Unlock()
         {
             IsLocked = false;
-            clock.TimeSpans.Remove(span);
-        };
+            clock.Unsubscribe(span, Unlock);
+        }
+
+        clock.Subscribe(span, Unlock);
     }
 
     public Guid Id { get; } = Guid.NewGuid();
