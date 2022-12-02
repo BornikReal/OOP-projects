@@ -16,7 +16,11 @@ public class DepositAccount : IBankAccount
         Person = person;
         clock.TimeSpans[TimeSpan.FromDays(1)] += IncreaseInterestSum;
         clock.TimeSpans[TimeSpan.FromDays(30)] += DepositInterestSum;
-        clock.TimeSpans[span] += () => IsLocked = false;
+        clock.TimeSpans[span] += () =>
+        {
+            IsLocked = false;
+            clock.TimeSpans.Remove(span);
+        };
     }
 
     public Guid Id { get; } = Guid.NewGuid();
