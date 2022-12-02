@@ -14,6 +14,6 @@ public class DebitAccountFactory : IBankAccountFactory
 
     public IBankAccount CreateAccount(Bank bank)
     {
-        return new DebitAccount(bank.DebitInterestRate, bank.TransferLimit, _person);
+        return new DebitAccount(bank.DebitInterestRate, bank.TransferLimit, _person, bank.Clock);
     }
 }

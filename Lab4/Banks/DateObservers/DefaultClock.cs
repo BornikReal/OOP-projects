@@ -1,20 +1,24 @@
-﻿using Banks.BankAccounts;
-using Banks.Models;
-
-namespace Banks.DateObservers;
+﻿namespace Banks.DateObservers;
 
 public class DefaultClock : IClock
 {
-    public delegate void AccountHandler(IBankAccount account);
-    public event AccountHandler? Notify;
-    public DateTime CurDate => DateTime.Now;
+    private DateTime _curDate;
+    public Dictionary<TimeSpan, Action> TimeSpans { get; } = new Dictionary<TimeSpan, Action>();
 
-    public void NotifyNewDay()
+    public void AddTime(TimeSpan timeSpan)
     {
-        Notify?.Invoke(new DebitAccount(0, 0, new Person("s", "s", null, null)));
-    }
+        DateTime newDate = _curDate + timeSpan;
+        DateTime prevDate = _curDate;
+        TimeSpan minTimeSpan = TimeSpans.Min(x => x.Key);
+        for (DateTime i = _curDate + minTimeSpan; i <= newDate; i += minTimeSpan)
+        {
+            foreach (KeyValuePair<TimeSpan, Action> span in TimeSpans)
+            {
+                if ((i - prevDate) >= span.Key)
+                    span.Value();
+            }
+        }
 
-    public void NotifyNewMonth()
-    {
+        _curDate = newDate;
     }
 }

@@ -19,6 +19,6 @@ public class DepositAccountFactory : IBankAccountFactory
         decimal interestRate = bank.InterestRateStrategy.CalculateInterestRate(_balance);
         if (interestRate is < 0 or > 100)
             throw new Exception();
-        return new DepositAccount(_balance, interestRate, bank.Clock.CurDate + bank.DepositSpan, bank.Clock, bank.TransferLimit, _person);
+        return new DepositAccount(_balance, interestRate, bank.DepositSpan, bank.Clock, bank.TransferLimit, _person);
     }
 }

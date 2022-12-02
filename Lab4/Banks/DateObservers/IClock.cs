@@ -2,7 +2,6 @@
 
 public interface IClock
 {
-    public DateTime CurDate { get; }
-    void NotifyNewDay();
-    void NotifyNewMonth();
+    Dictionary<TimeSpan, Action> TimeSpans { get; }
+    void AddTime(TimeSpan timeSpan);
 }

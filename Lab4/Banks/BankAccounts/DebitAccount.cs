@@ -3,17 +3,19 @@ using Banks.Models;
 
 namespace Banks.BankAccounts;
 
-public class DebitAccount : IBankAccount, IDateObserver
+public class DebitAccount : IBankAccount
 {
     private readonly decimal _interestRate;
     private decimal _interestBalance;
     private Action? _balanceChange;
-    public DebitAccount(decimal interestRate, decimal transferLimit, IPerson person)
+    public DebitAccount(decimal interestRate, decimal transferLimit, IPerson person, IClock clock)
     {
         _interestBalance = 0;
         _interestRate = interestRate;
         TransferLimit = transferLimit;
         Person = person;
+        clock.TimeSpans[TimeSpan.FromDays(1)] += IncreaseInterestSum;
+        clock.TimeSpans[TimeSpan.FromDays(30)] += DepositInterestSum;
     }
 
     public Guid Id { get; } = Guid.NewGuid();
@@ -45,17 +47,6 @@ public class DebitAccount : IBankAccount, IDateObserver
         _balanceChange = () => Balance -= amount;
     }
 
-    public void UpdateNewDay()
-    {
-        _interestBalance += _interestRate / 365 * Balance;
-    }
-
-    public void UpdateNewMonth()
-    {
-        Balance += _interestBalance;
-        _interestBalance = 0;
-    }
-
     public void Withdraw(decimal amount)
     {
         if (!CanWithdraw(amount))
@@ -63,5 +54,16 @@ public class DebitAccount : IBankAccount, IDateObserver
 
         Balance -= amount;
         _balanceChange = () => Balance += amount;
+    }
+
+    private void IncreaseInterestSum()
+    {
+        _interestBalance += _interestRate / 365 * Balance;
+    }
+
+    private void DepositInterestSum()
+    {
+        Balance += _interestBalance;
+        _interestBalance = 0;
     }
 }
