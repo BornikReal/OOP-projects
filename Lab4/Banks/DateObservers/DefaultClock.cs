@@ -19,6 +19,6 @@ public class DefaultClock : IClock
             }
         }
 
-        _curDate = newDate;
+        _curDate = prevDate;
     }
 }
