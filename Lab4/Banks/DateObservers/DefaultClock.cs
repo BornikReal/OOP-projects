@@ -33,6 +33,11 @@ public class DefaultClock : IClock
     public void Unsubscribe(TimeSpan span, Action action)
     {
         if (_timeSpans.ContainsKey(span))
-            _timeSpans[span] = (_timeSpans[span] - action) !;
+        {
+            if (_timeSpans[span].GetInvocationList().Contains(action))
+                _timeSpans.Remove(span);
+            else
+                _timeSpans[span] = (_timeSpans[span] - action) !;
+        }
     }
 }
