@@ -60,6 +60,6 @@ public class DefaultBankBuilder : IBankBuilder
     {
         if (_clock == null || _debitInterestRate == null || _interestRateStrategy == null || _depositSpan == null || _comissionRate == null || _creditLimit == null || _transferLimit == null)
             throw new Exception();
-        return new Bank(_clock, _debitInterestRate.GetValueOrDefault(), _interestRateStrategy, _depositSpan.GetValueOrDefault(), _comissionRate.GetValueOrDefault(), _creditLimit.GetValueOrDefault(), _transferLimit.GetValueOrDefault());
+        return new Bank(_clock, _debitInterestRate.GetValueOrDefault(), _interestRateStrategy, _comissionRate.GetValueOrDefault(), _creditLimit.GetValueOrDefault(), _transferLimit.GetValueOrDefault(), _depositSpan.GetValueOrDefault());
     }
 }

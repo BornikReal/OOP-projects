@@ -1,5 +1,6 @@
 ﻿using Banks.DateObservers;
 using Banks.Models;
+using Banks.Notificators;
 
 namespace Banks.BankAccounts;
 
@@ -7,6 +8,7 @@ public class DepositAccount : IBankAccount
 {
     private decimal _interestBalance;
     private Action? _balanceChange;
+    private Action? _unclock;
     public DepositAccount(decimal balance, decimal interestRate, TimeSpan span, IClock clock, decimal transferLimit, IPerson person)
     {
         _interestBalance = 0;
@@ -14,25 +16,31 @@ public class DepositAccount : IBankAccount
         Balance = balance;
         TransferLimit = transferLimit;
         Person = person;
-        clock.Subscribe(TimeSpan.FromDays(1), IncreaseInterestSum);
-        clock.Subscribe(TimeSpan.FromDays(30), DepositInterestSum);
+        DepositSpan = span;
+        Clock = clock;
+        Clock.Subscribe(TimeSpan.FromDays(1), IncreaseInterestSum);
+        Clock.Subscribe(TimeSpan.FromDays(30), DepositInterestSum);
 
         void Unlock()
         {
             IsLocked = false;
-            clock.Unsubscribe(span, Unlock);
+            Clock.Unsubscribe(DepositSpan, Unlock);
         }
 
-        clock.Subscribe(span, Unlock);
+        _unclock = () => Clock.Unsubscribe(DepositSpan, Unlock);
+
+        Clock.Subscribe(DepositSpan, Unlock);
     }
 
     public Guid Id { get; } = Guid.NewGuid();
     public decimal Balance { get; private set; }
     public decimal InterestRate { get; }
-    public DateTime DateOfEnding { get; }
+    public TimeSpan DepositSpan { get; private set; }
     public decimal TransferLimit { get; }
     public IPerson Person { get; }
     public bool IsLocked { get; private set; } = true;
+    public INotificatorStrategy? ClienNotificator { get; set; }
+    public IClock Clock { get; }
 
     public Action Cancel()
     {
@@ -65,6 +73,26 @@ public class DepositAccount : IBankAccount
 
         Balance -= amount;
         _balanceChange = () => Balance += amount;
+    }
+
+    public void Update(Bank bank)
+    {
+        if (DepositSpan != bank.DepositSpan)
+        {
+            DepositSpan = bank.DepositSpan;
+            _unclock?.Invoke();
+
+            void Unlock()
+            {
+                IsLocked = false;
+                Clock.Unsubscribe(DepositSpan, Unlock);
+            }
+
+            _unclock = () => Clock.Unsubscribe(DepositSpan, Unlock);
+
+            Clock.Subscribe(DepositSpan, Unlock);
+            ClienNotificator?.Notify("Deposit span was updated by bank");
+        }
     }
 
     private void IncreaseInterestSum()

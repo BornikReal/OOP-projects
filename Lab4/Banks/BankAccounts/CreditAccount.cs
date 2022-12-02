@@ -1,4 +1,5 @@
 ﻿using Banks.Models;
+using Banks.Notificators;
 
 namespace Banks.BankAccounts;
 
@@ -15,10 +16,11 @@ public class CreditAccount : IBankAccount
 
     public Guid Id { get; } = Guid.NewGuid();
     public decimal Balance { get; private set; } = 0;
-    public decimal ComissionRate { get; }
+    public decimal ComissionRate { get; private set; }
     public decimal CreditLimit { get; }
     public decimal TransferLimit { get; }
     public IPerson Person { get; }
+    public INotificatorStrategy? ClienNotificator { get; set; }
 
     public Action Cancel()
     {
@@ -60,6 +62,15 @@ public class CreditAccount : IBankAccount
                 Balance -= withdrawAmount;
                 _balanceChange = () => Balance += withdrawAmount;
                 break;
+        }
+    }
+
+    public void Update(Bank bank)
+    {
+        if (ComissionRate != bank.ComissionRate)
+        {
+            ComissionRate = bank.ComissionRate;
+            ClienNotificator?.Notify("Comission rate was updated by bank");
         }
     }
 }

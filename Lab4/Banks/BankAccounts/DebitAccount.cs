@@ -1,17 +1,16 @@
 ﻿using Banks.DateObservers;
 using Banks.Models;
+using Banks.Notificators;
 
 namespace Banks.BankAccounts;
 
 public class DebitAccount : IBankAccount
 {
-    private readonly decimal _interestRate;
-    private decimal _interestBalance;
     private Action? _balanceChange;
     public DebitAccount(decimal interestRate, decimal transferLimit, IPerson person, IClock clock)
     {
-        _interestBalance = 0;
-        _interestRate = interestRate;
+        InterestBalance = 0;
+        InterestRate = interestRate;
         TransferLimit = transferLimit;
         Person = person;
         clock.Subscribe(TimeSpan.FromDays(1), IncreaseInterestSum);
@@ -19,9 +18,12 @@ public class DebitAccount : IBankAccount
     }
 
     public Guid Id { get; } = Guid.NewGuid();
+    public decimal InterestBalance { get; private set; }
+    public decimal InterestRate { get; private set; }
     public decimal Balance { get; private set; } = 0;
     public decimal TransferLimit { get; }
     public IPerson Person { get; }
+    public INotificatorStrategy? ClienNotificator { get; set; }
 
     public Action Cancel()
     {
@@ -56,14 +58,23 @@ public class DebitAccount : IBankAccount
         _balanceChange = () => Balance += amount;
     }
 
+    public void Update(Bank bank)
+    {
+        if (InterestRate != bank.DebitInterestRate)
+        {
+            InterestRate = bank.DebitInterestRate;
+            ClienNotificator?.Notify("Interest rate was updated by bank");
+        }
+    }
+
     private void IncreaseInterestSum()
     {
-        _interestBalance += _interestRate / 365 * Balance;
+        InterestBalance += InterestRate / 365 * Balance;
     }
 
     private void DepositInterestSum()
     {
-        Balance += _interestBalance;
-        _interestBalance = 0;
+        Balance += InterestBalance;
+        InterestBalance = 0;
     }
 }

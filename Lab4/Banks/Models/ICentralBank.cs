@@ -7,4 +7,5 @@ public interface ICentralBank
 {
     Bank CreateBank(IBankBuilder builder);
     void MakeTransaction(IAccountTransaction transaction);
+    void AddDays(int days);
 }

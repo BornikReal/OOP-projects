@@ -8,13 +8,26 @@ namespace Banks.Models;
 
 public class CentralBank : ICentralBank
 {
-    private readonly List<Bank> _banks = new List<Bank>();
-    private readonly List<IBankAccount> _accounts = new List<IBankAccount>();
-    private readonly List<BankTransaction> _transactions = new List<BankTransaction>();
-    private readonly List<IClock> _timers = new List<IClock>();
+    private static readonly List<Bank> _banks = new List<Bank>();
+    private static readonly List<IBankAccount> _accounts = new List<IBankAccount>();
+    private static readonly List<BankTransaction> _transactions = new List<BankTransaction>();
+    private static IClock? _clock;
+    private static ICentralBank? _instance;
+
+    private CentralBank(IClock clock)
+    {
+        _clock = clock;
+    }
+
+    public static ICentralBank GetInstance(IClock clock)
+    {
+        _instance ??= new CentralBank(clock);
+        return _instance;
+    }
 
     public Bank CreateBank(IBankBuilder builder)
     {
+        builder.SetClock(_clock!);
         Bank bank = builder.Build();
         bank.Notify += OnBankAccountCreated;
         _banks.Add(bank);
@@ -32,8 +45,7 @@ public class CentralBank : ICentralBank
     {
         if (days <= 0)
             throw new ArgumentException("Days must be positive");
-        foreach (IClock timer in _timers)
-            timer.AddTime(TimeSpan.FromDays(days));
+        _clock !.AddTime(TimeSpan.FromDays(days));
     }
 
     private void OnBankAccountCreated(IBankAccount account)
