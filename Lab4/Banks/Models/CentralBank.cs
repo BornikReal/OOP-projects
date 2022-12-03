@@ -64,6 +64,17 @@ public class CentralBank
         return _persons.Find(person => person.Id == id) !;
     }
 
+    public static void CancelTransaction(Guid id)
+    {
+        BankTransaction transaction = _transactions.Find(t => t.Transaction.TransactionId == id) !;
+        transaction.CancelTransaction();
+    }
+
+    public static decimal GetMoney(Guid id)
+    {
+        return _accounts.Find(account => account.Id == id) !.Balance;
+    }
+
     private static void OnBankAccountCreated(IBankAccount account)
     {
         _accounts.Add(account);
