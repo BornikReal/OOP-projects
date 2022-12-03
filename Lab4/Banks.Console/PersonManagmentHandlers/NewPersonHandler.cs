@@ -1,6 +1,4 @@
-﻿using Banks.BankBuilders;
-using Banks.Console.BankPartCommands;
-using Banks.Console.Commands;
+﻿using Banks.Console.Commands;
 using Banks.Console.PersonPartCommands;
 using Banks.Models;
 using Banks.PersonBuilder;
