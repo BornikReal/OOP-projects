@@ -6,60 +6,74 @@ namespace Banks.BankBuilders;
 
 public class DefaultBankBuilder : IBankBuilder
 {
-    private IClock? _clock;
-    private decimal? _debitInterestRate;
-    private IInterestRateStrategy? _interestRateStrategy;
-    private TimeSpan? _depositSpan;
-    private decimal? _comissionRate;
-    private decimal? _creditLimit;
-    private decimal? _transferLimit;
+    public DefaultBankBuilder()
+    { }
+
+    public DefaultBankBuilder(Bank bank)
+    {
+        Clock = bank.Clock;
+        DebitInterestRate = bank.DebitInterestRate;
+        InterestRateStrategy = bank.InterestRateStrategy;
+        DepositSpan = bank.DepositSpan;
+        ComissionRate = bank.ComissionRate;
+        CreditLimit = bank.CreditLimit;
+        TransferLimit = bank.TransferLimit;
+    }
+
+    public IClock? Clock { get; private set; }
+    public decimal? DebitInterestRate { get; private set; }
+    public IInterestRateStrategy? InterestRateStrategy { get; private set; }
+    public TimeSpan? DepositSpan { get; private set; }
+    public decimal? ComissionRate { get; private set; }
+    public decimal? CreditLimit { get; private set; }
+    public decimal? TransferLimit { get; private set; }
 
     public IBankBuilder SetComissionRate(decimal comissionRate)
     {
-        _comissionRate = comissionRate;
+        ComissionRate = comissionRate;
         return this;
     }
 
     public IBankBuilder SetCreditLimit(decimal creditLimit)
     {
-        _creditLimit = creditLimit;
+        CreditLimit = creditLimit;
         return this;
     }
 
     public IBankBuilder SetDebitInterestRate(decimal debitInterestRate)
     {
-        _debitInterestRate = debitInterestRate;
+        DebitInterestRate = debitInterestRate;
         return this;
     }
 
     public IBankBuilder SetDepositSpan(TimeSpan depositSpan)
     {
-        _depositSpan = depositSpan;
+        DepositSpan = depositSpan;
         return this;
     }
 
     public IBankBuilder SetInterestRateStrategy(IInterestRateStrategy rateStrategy)
     {
-        _interestRateStrategy = rateStrategy;
+        InterestRateStrategy = rateStrategy;
         return this;
     }
 
     public IBankBuilder SetTransferLimit(decimal transferLimit)
     {
-        _transferLimit = transferLimit;
+        TransferLimit = transferLimit;
         return this;
     }
 
     public IBankBuilder SetClock(IClock clock)
     {
-        _clock = clock;
+        Clock = clock;
         return this;
     }
 
     public Bank Build()
     {
-        if (_clock == null || _debitInterestRate == null || _interestRateStrategy == null || _depositSpan == null || _comissionRate == null || _creditLimit == null || _transferLimit == null)
+        if (Clock == null || DebitInterestRate == null || InterestRateStrategy == null || DepositSpan == null || ComissionRate == null || CreditLimit == null || TransferLimit == null)
             throw new Exception();
-        return new Bank(_clock, _debitInterestRate.GetValueOrDefault(), _interestRateStrategy, _comissionRate.GetValueOrDefault(), _creditLimit.GetValueOrDefault(), _transferLimit.GetValueOrDefault(), _depositSpan.GetValueOrDefault());
+        return new Bank(Clock, DebitInterestRate.GetValueOrDefault(), InterestRateStrategy, ComissionRate.GetValueOrDefault(), CreditLimit.GetValueOrDefault(), TransferLimit.GetValueOrDefault(), DepositSpan.GetValueOrDefault());
     }
 }

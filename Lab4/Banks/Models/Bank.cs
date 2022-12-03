@@ -29,6 +29,7 @@ public class Bank
 
     public delegate void AccountHandler(IBankAccount account);
     public event AccountHandler? Notify;
+    public Guid Id { get; } = Guid.NewGuid();
     public decimal DebitInterestRate
     {
         get => _debitInterestRate;

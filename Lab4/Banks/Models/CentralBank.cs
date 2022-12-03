@@ -6,26 +6,26 @@ using Banks.Transactions;
 
 namespace Banks.Models;
 
-public class CentralBank : ICentralBank
+public class CentralBank
 {
     private static readonly List<Bank> _banks = new List<Bank>();
     private static readonly List<IBankAccount> _accounts = new List<IBankAccount>();
     private static readonly List<BankTransaction> _transactions = new List<BankTransaction>();
     private static IClock? _clock;
-    private static ICentralBank? _instance;
+    private static CentralBank? _instance;
 
     private CentralBank(IClock clock)
     {
         _clock = clock;
     }
 
-    public static ICentralBank GetInstance(IClock clock)
+    public static CentralBank GetInstance(IClock clock)
     {
         _instance ??= new CentralBank(clock);
         return _instance;
     }
 
-    public Bank CreateBank(IBankBuilder builder)
+    public static Bank CreateBank(IBankBuilder builder)
     {
         builder.SetClock(_clock!);
         Bank bank = builder.Build();
@@ -34,21 +34,26 @@ public class CentralBank : ICentralBank
         return bank;
     }
 
-    public void MakeTransaction(IAccountTransaction transaction)
+    public static void MakeTransaction(IAccountTransaction transaction)
     {
         var visitor = new DefaultTransactionVisitor(_accounts);
         transaction.Accept(visitor);
         _transactions.Add(visitor.BankTransaction!);
     }
 
-    public void AddDays(int days)
+    public static void AddDays(int days)
     {
         if (days <= 0)
             throw new ArgumentException("Days must be positive");
         _clock !.AddTime(TimeSpan.FromDays(days));
     }
 
-    private void OnBankAccountCreated(IBankAccount account)
+    public static Bank GetBank(Guid id)
+    {
+        return _banks.Find(bank => bank.GuId == id);
+    }
+
+    private static void OnBankAccountCreated(IBankAccount account)
     {
         _accounts.Add(account);
     }
