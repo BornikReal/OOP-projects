@@ -6,7 +6,7 @@ public class ExitHandler : BaseHandler
 {
     public override void HandleRequest(string command)
     {
-        if (command == "5")
+        if (command == "6")
         {
             System.Console.WriteLine("Arrivederci!");
             Environment.Exit(0);

@@ -7,6 +7,8 @@ public class DefaultClock : IClock
 
     public void AddTime(TimeSpan timeSpan)
     {
+        if (_timeSpans.Count() == 0)
+            return;
         DateTime newDate = _curDate + timeSpan;
         var prevDates = _timeSpans.ToDictionary(pair => pair.Key, pair => _curDate);
         TimeSpan minTimeSpan = _timeSpans.Min(x => x.Key);

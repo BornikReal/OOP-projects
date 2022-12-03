@@ -17,18 +17,21 @@ public class Client
             System.Console.WriteLine("2. Client management");
             System.Console.WriteLine("3. Open account");
             System.Console.WriteLine("4. Make transaction");
-            System.Console.WriteLine("5. Exit");
+            System.Console.WriteLine("5. Made in heaven");
+            System.Console.WriteLine("6. Exit");
             System.Console.Write("Your choice: ");
             string? choice = System.Console.ReadLine();
             var bankManagment = new BankManagmentHandler();
             var personManagment = new ClientManagmentHandler();
             var openAccount = new AccountOpeningHandler();
             var makeTransaction = new TransactionMakingHandler();
+            var madeInHeavenHandler = new MadeInHeavenHandler();
             var exitHandler = new ExitHandler();
             bankManagment.SetNext(personManagment);
             personManagment.SetNext(openAccount);
             openAccount.SetNext(makeTransaction);
-            makeTransaction.SetNext(exitHandler);
+            makeTransaction.SetNext(madeInHeavenHandler);
+            madeInHeavenHandler.SetNext(exitHandler);
             bankManagment.HandleRequest(choice!);
         }
     }
