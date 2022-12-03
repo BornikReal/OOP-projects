@@ -104,11 +104,12 @@ public class Bank
 
     public IClock Clock { get; }
 
-    public void CreateBankAccount(IBankAccountFactory accountFactory)
+    public Guid CreateBankAccount(IBankAccountFactory accountFactory)
     {
         IBankAccount account = accountFactory.CreateAccount(this);
         Notify?.Invoke(account);
         _accounts.Add(account);
+        return account.Id;
     }
 
     public void SubcribeAccountToBankChanges(Guid accountId, INotificatorStrategy strategy)
