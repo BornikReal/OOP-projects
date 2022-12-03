@@ -10,11 +10,10 @@ public class CreditAccountHandler : BaseHandler
     {
         if (command == "3")
         {
-            System.Console.WriteLine("Enter the id of the bank:");
             Guid idBank, idPerson;
             while (true)
             {
-                System.Console.WriteLine("Enter bank id:");
+                System.Console.WriteLine("Enter the id of the bank:");
                 string? input = System.Console.ReadLine();
                 try
                 {
@@ -27,10 +26,9 @@ public class CreditAccountHandler : BaseHandler
                 }
             }
 
-            System.Console.WriteLine("Enter the id of the person:");
             while (true)
             {
-                System.Console.WriteLine("Enter bank id:");
+                System.Console.WriteLine("Enter the id of the person:");
                 string? input = System.Console.ReadLine();
                 try
                 {

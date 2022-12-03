@@ -14,11 +14,14 @@ public class TransactionMakingHandler : BaseHandler
             System.Console.WriteLine("1. Deposit");
             System.Console.WriteLine("2. Withdraw");
             System.Console.WriteLine("3. Transfer");
+            System.Console.WriteLine("4. Cancel transaction");
             var depositTransactionHandler = new DepositTransactionHandler();
             var withdrawTransactionHandler = new WithdrawTransactionHandler();
             var transferTransactionHandler = new TransferTransactionHandler();
+            var cancelTransactionHandler = new CancelTransactionHandler();
             depositTransactionHandler.SetNext(withdrawTransactionHandler);
             withdrawTransactionHandler.SetNext(transferTransactionHandler);
+            transferTransactionHandler.SetNext(cancelTransactionHandler);
             System.Console.Write("Your choice: ");
             depositTransactionHandler.HandleRequest(System.Console.ReadLine() !);
         }
