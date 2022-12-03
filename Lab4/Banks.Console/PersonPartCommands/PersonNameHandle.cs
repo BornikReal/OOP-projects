@@ -10,7 +10,7 @@ public class PersonNameHandle : PersonPartHandler
         if (command is null or "1")
         {
             System.Console.WriteLine("Enter person name:");
-            builder.SetName(System.Console.ReadLine()!);
+            builder.SetName(System.Console.ReadLine() !);
         }
 
         base.HandleRequest(command, builder);

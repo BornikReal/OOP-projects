@@ -41,9 +41,9 @@ public class ExistingPersonHandler : BaseHandler
             var personSurnameHandler = new PersonSurnameHandler();
             var personAddressHandler = new PersonAddressHandler();
             var personPassportHandler = new PersonPassportHandler();
-            personNameHandler.SetNext(personSurnameHandler)
-                .SetNext(personAddressHandler)
-                .SetNext(personPassportHandler);
+            personNameHandler.SetNext(personSurnameHandler);
+            personSurnameHandler.SetNext(personAddressHandler);
+            personAddressHandler.SetNext(personPassportHandler);
             personNameHandler.HandleRequest(choice, personBuilder);
             person.Name = personBuilder.Name!;
             person.Surname = personBuilder.Surname!;

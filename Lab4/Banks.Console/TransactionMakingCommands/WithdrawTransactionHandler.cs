@@ -43,7 +43,6 @@ public class WithdrawTransactionHandler : BaseHandler
             }
 
             CentralBank.MakeTransaction(new WithdrawTransaction(id, result));
-            System.Console.Clear();
         }
 
         base.HandleRequest(command);

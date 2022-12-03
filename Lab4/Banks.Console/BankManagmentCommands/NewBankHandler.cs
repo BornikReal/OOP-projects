@@ -18,12 +18,11 @@ public class NewBankHandler : BaseHandler
             var transferLimitHandler = new TransferLimitHandler();
             var depositAccountSpanHandler = new DepositAccountSpanHandler();
             var depositInterestRateStrategyHandler = new DepositInterestRateStrategyHandler();
-            creditComissionHandler.SetNext(depositInterestRateStrategyHandler)
-                .SetNext(depositAccountSpanHandler)
-                .SetNext(transferLimitHandler)
-                .SetNext(creditLimitHandler)
-                .SetNext(creditComissionHandler)
-                .SetNext(debitInterestRateHandler);
+            creditComissionHandler.SetNext(depositInterestRateStrategyHandler);
+            depositInterestRateStrategyHandler.SetNext(depositAccountSpanHandler);
+            depositAccountSpanHandler.SetNext(transferLimitHandler);
+            transferLimitHandler.SetNext(creditLimitHandler);
+            creditLimitHandler.SetNext(debitInterestRateHandler);
             var bankBuilder = new DefaultBankBuilder();
             creditComissionHandler.HandleRequest(null, bankBuilder);
             System.Console.WriteLine($"Created bank with id {CentralBank.CreateBank(bankBuilder).Id}");

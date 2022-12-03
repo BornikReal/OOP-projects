@@ -59,7 +59,6 @@ public class TransferTransactionHandler : BaseHandler
             }
 
             CentralBank.MakeTransaction(new TransferTransaction(id1, id2, result));
-            System.Console.Clear();
         }
 
         base.HandleRequest(command);

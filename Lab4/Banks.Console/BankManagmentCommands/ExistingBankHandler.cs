@@ -46,12 +46,12 @@ public class ExistingBankHandler : BaseHandler
             var transferLimitHandler = new TransferLimitHandler();
             var depositAccountSpanHandler = new DepositAccountSpanHandler();
             var depositInterestRateStrategyHandler = new DepositInterestRateStrategyHandler();
-            creditComissionHandler.SetNext(depositInterestRateStrategyHandler)
-                .SetNext(depositAccountSpanHandler)
-                .SetNext(transferLimitHandler)
-                .SetNext(creditLimitHandler)
-                .SetNext(creditComissionHandler)
-                .SetNext(debitInterestRateHandler);
+            creditComissionHandler.SetNext(depositInterestRateStrategyHandler);
+            depositInterestRateStrategyHandler.SetNext(depositAccountSpanHandler);
+            depositAccountSpanHandler.SetNext(transferLimitHandler);
+            transferLimitHandler.SetNext(creditLimitHandler);
+            creditLimitHandler.SetNext(creditComissionHandler);
+            creditComissionHandler.SetNext(debitInterestRateHandler);
             creditComissionHandler.HandleRequest(choice!, bankBuilder);
             bank.ComissionRate = bankBuilder.ComissionRate.GetValueOrDefault();
             bank.CreditLimit = bankBuilder.CreditLimit.GetValueOrDefault();

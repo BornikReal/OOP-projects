@@ -43,7 +43,6 @@ public class DepositTransactionHandler : BaseHandler
             }
 
             CentralBank.MakeTransaction(new DepositTransaction(id, result));
-            System.Console.Clear();
         }
 
         base.HandleRequest(command);

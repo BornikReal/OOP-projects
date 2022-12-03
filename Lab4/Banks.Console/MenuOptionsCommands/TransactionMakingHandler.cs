@@ -17,11 +17,10 @@ public class TransactionMakingHandler : BaseHandler
             var depositTransactionHandler = new DepositTransactionHandler();
             var withdrawTransactionHandler = new WithdrawTransactionHandler();
             var transferTransactionHandler = new TransferTransactionHandler();
-            depositTransactionHandler.SetNext(withdrawTransactionHandler)
-                .SetNext(transferTransactionHandler);
+            depositTransactionHandler.SetNext(withdrawTransactionHandler);
+            withdrawTransactionHandler.SetNext(transferTransactionHandler);
             System.Console.Write("Your choice: ");
             depositTransactionHandler.HandleRequest(System.Console.ReadLine() !);
-            System.Console.Clear();
         }
 
         base.HandleRequest(command);

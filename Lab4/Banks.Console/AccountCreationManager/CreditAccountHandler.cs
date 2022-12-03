@@ -45,7 +45,6 @@ public class CreditAccountHandler : BaseHandler
 
             Guid id = CentralBank.GetBank(idBank).CreateBankAccount(new CreditAccountFactory(CentralBank.GetPerson(idPerson)));
             System.Console.WriteLine($"Created a debit account with {id}");
-            System.Console.Clear();
         }
 
         base.HandleRequest(command);

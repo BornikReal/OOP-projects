@@ -1,5 +1,5 @@
-﻿using Banks.Console.BankManagmentCommands;
-using Banks.Console.Commands;
+﻿using Banks.Console.Commands;
+using Banks.Console.PersonManagmentHandlers;
 
 namespace Banks.Console.MenuOptionsCommands;
 
@@ -13,12 +13,11 @@ public class ClientManagmentHandler : BaseHandler
             System.Console.WriteLine("Options:");
             System.Console.WriteLine("1. Create new person");
             System.Console.WriteLine("2. Configure an existing person");
-            var existingBankManagment = new ExistingBankHandler();
-            var newBankManagment = new NewBankHandler();
-            newBankManagment.SetNext(existingBankManagment);
+            var existingPersonManagment = new ExistingPersonHandler();
+            var newPersonManagment = new NewPersonHandler();
+            newPersonManagment.SetNext(existingPersonManagment);
             System.Console.Write("Your choice: ");
-            newBankManagment.HandleRequest(System.Console.ReadLine() !);
-            System.Console.Clear();
+            newPersonManagment.HandleRequest(System.Console.ReadLine() !);
         }
 
         base.HandleRequest(command);

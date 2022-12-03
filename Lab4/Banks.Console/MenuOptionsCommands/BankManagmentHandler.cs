@@ -18,7 +18,6 @@ public class BankManagmentHandler : BaseHandler
             newBankManagment.SetNext(existingBankManagment);
             System.Console.Write("Your choice: ");
             newBankManagment.HandleRequest(System.Console.ReadLine() !);
-            System.Console.Clear();
         }
 
         base.HandleRequest(command);

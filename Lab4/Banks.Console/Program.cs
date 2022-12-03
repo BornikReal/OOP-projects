@@ -21,9 +21,14 @@ public class Client
             System.Console.Write("Your choice: ");
             string? choice = System.Console.ReadLine();
             var bankManagment = new BankManagmentHandler();
+            var personManagment = new ClientManagmentHandler();
+            var openAccount = new AccountOpeningHandler();
+            var makeTransaction = new TransactionMakingHandler();
             var exitHandler = new ExitHandler();
-            System.Console.Clear();
-            bankManagment.SetNext(exitHandler);
+            bankManagment.SetNext(personManagment);
+            personManagment.SetNext(openAccount);
+            openAccount.SetNext(makeTransaction);
+            makeTransaction.SetNext(exitHandler);
             bankManagment.HandleRequest(choice!);
         }
     }

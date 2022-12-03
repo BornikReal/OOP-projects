@@ -8,7 +8,7 @@ public class DebitAccountHandler : BaseHandler
 {
     public override void HandleRequest(string command)
     {
-        if (command == "2")
+        if (command == "1")
         {
             System.Console.WriteLine("Enter the id of the bank:");
             Guid idBank, idPerson;
@@ -45,7 +45,6 @@ public class DebitAccountHandler : BaseHandler
 
             Guid id = CentralBank.GetBank(idBank).CreateBankAccount(new DebitAccountFactory(CentralBank.GetPerson(idPerson)));
             System.Console.WriteLine($"Created a debit account with {id}");
-            System.Console.Clear();
         }
 
         base.HandleRequest(command);

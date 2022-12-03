@@ -8,7 +8,7 @@ public class DepositAccountHandler : BaseHandler
 {
     public override void HandleRequest(string command)
     {
-        if (command == "1")
+        if (command == "2")
         {
             Guid idBank, idPerson;
             while (true)
@@ -59,7 +59,6 @@ public class DepositAccountHandler : BaseHandler
 
             Guid id = CentralBank.GetBank(idBank).CreateBankAccount(new DepositAccountFactory(result, CentralBank.GetPerson(idPerson)));
             System.Console.WriteLine($"Created a deposit account with {id}");
-            System.Console.Clear();
         }
 
         base.HandleRequest(command);

@@ -17,12 +17,10 @@ public class AccountOpeningHandler : BaseHandler
             var debitAccountHandler = new DebitAccountHandler();
             var depositAccountHandler = new DepositAccountHandler();
             var creditAccountHandler = new CreditAccountHandler();
-            debitAccountHandler.SetNext(depositAccountHandler)
-                .SetNext(creditAccountHandler)
-                .SetNext(debitAccountHandler);
+            debitAccountHandler.SetNext(depositAccountHandler);
+            depositAccountHandler.SetNext(creditAccountHandler);
             System.Console.Write("Your choice: ");
             debitAccountHandler.HandleRequest(System.Console.ReadLine() !);
-            System.Console.Clear();
         }
 
         base.HandleRequest(command);
