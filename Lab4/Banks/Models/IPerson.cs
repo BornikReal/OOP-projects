@@ -2,9 +2,10 @@
 
 public interface IPerson
 {
+    Guid Id { get; }
     PersonStatus Status { get; }
-    string Name { get; }
-    string Surname { get; }
-    string? Adress { get; }
-    string? PassportData { get; }
+    string Name { get; set; }
+    string Surname { get; set; }
+    string? Adress { get; set; }
+    string? PassportData { get; set; }
 }

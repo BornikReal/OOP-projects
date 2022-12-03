@@ -28,5 +28,7 @@ public class NewBankHandler : BaseHandler
             creditComissionHandler.HandleRequest(null, bankBuilder);
             System.Console.WriteLine($"Created bank with id {CentralBank.CreateBank(bankBuilder).Id}");
         }
+
+        base.HandleRequest(command);
     }
 }

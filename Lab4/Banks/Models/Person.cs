@@ -11,8 +11,9 @@ public class Person : IPerson
     }
 
     public PersonStatus Status => (Adress == null || PassportData == null) ? PersonStatus.Unverified : PersonStatus.Verified;
-    public string Name { get; }
-    public string Surname { get; }
-    public string? Adress { get; }
-    public string? PassportData { get; }
+    public string Name { get; set; }
+    public string Surname { get; set; }
+    public string? Adress { get; set; }
+    public string? PassportData { get; set; }
+    public Guid Id { get; } = Guid.NewGuid();
 }

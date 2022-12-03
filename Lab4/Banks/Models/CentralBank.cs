@@ -11,6 +11,7 @@ public class CentralBank
     private static readonly List<Bank> _banks = new List<Bank>();
     private static readonly List<IBankAccount> _accounts = new List<IBankAccount>();
     private static readonly List<BankTransaction> _transactions = new List<BankTransaction>();
+    private static readonly List<IPerson> _persons = new List<IPerson>();
     private static IClock? _clock;
     private static CentralBank? _instance;
 
@@ -48,9 +49,19 @@ public class CentralBank
         _clock !.AddTime(TimeSpan.FromDays(days));
     }
 
+    public static void RegisterPerson(IPerson person)
+    {
+        _persons.Add(person);
+    }
+
     public static Bank GetBank(Guid id)
     {
-        return _banks.Find(bank => bank.GuId == id);
+        return _banks.Find(bank => bank.Id == id) !;
+    }
+
+    public static IPerson GetPerson(Guid id)
+    {
+        return _persons.Find(person => person.Id == id) !;
     }
 
     private static void OnBankAccountCreated(IBankAccount account)

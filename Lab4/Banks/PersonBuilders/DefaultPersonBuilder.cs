@@ -4,39 +4,49 @@ namespace Banks.PersonBuilder;
 
 public class DefaultPersonBuilder : IPersonBuilder
 {
-    private string? _name;
-    private string? _surname;
-    private string? _adress;
-    private string? _passportData;
+    public DefaultPersonBuilder()
+    { }
+    public DefaultPersonBuilder(IPerson person)
+    {
+        Name = person.Name;
+        Surname = person.Surname;
+        Adress = person.Adress;
+        PassportData = person.PassportData;
+    }
+
+    public string? Name { get; private set; }
+    public string? Surname { get; private set; }
+    public string? Adress { get; private set; }
+    public string? PassportData { get; private set; }
 
     public IPersonBuilder SetName(string name)
     {
-        _name = name;
+        Name = name;
         return this;
     }
 
     public IPersonBuilder SetSurname(string surname)
     {
-        _surname = surname;
+        Surname = surname;
         return this;
     }
 
     public IPersonBuilder SetAdress(string adress)
     {
-        _adress = adress;
+        Adress = adress;
         return this;
     }
 
     public IPersonBuilder SetPassportData(string phone)
     {
-        _passportData = phone;
+        PassportData = phone;
         return this;
     }
 
     public IPerson Build()
     {
-        if (_name == null || _surname == null)
+        if (Name == null || Surname == null)
             throw new Exception();
-        return new Person(_name, _surname, _adress, _passportData);
+        return new Person(Name, Surname, Adress, PassportData);
     }
 }
