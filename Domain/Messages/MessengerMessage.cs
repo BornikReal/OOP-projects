@@ -2,16 +2,10 @@
 
 public class MessengerMessage : BaseMessage
 {
-    public MessengerMessage(string sender, string message, Guid id) : base(id)
+    public MessengerMessage(string sender, string message, Guid id, string label, MessageState state) : base(id, message, state, label)
     {
         Sender = sender;
-        Message = message;
     }
-
+    
     public string Sender { get; }
-    public string Message { get; }
-    public override string GetMessage()
-    {
-        return Message;
-    }
 }

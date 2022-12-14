@@ -2,18 +2,12 @@
 
 public class EmailMessage : BaseMessage
 {
-    public EmailMessage(string sender, string messageSubject, string message, Guid id) : base(id)
+    public EmailMessage(string sender, string messageSubject, string message, Guid id, string label, MessageState state) : base(id, message, state, label)
     {
         Sender = sender;
         MessageSubject = messageSubject;
-        Message = message;
     }
     
     public string Sender { get; }
     public string MessageSubject { get; }
-    public string Message { get; }
-    public override string GetMessage()
-    {
-        return $"{MessageSubject}:{Message}";
-    }
 }
