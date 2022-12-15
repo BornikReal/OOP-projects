@@ -22,21 +22,15 @@ public class Account
             throw new ArgumentException("Source already exists", nameof(source));
     }
 
-    public BaseMessage? LoadMessage(SlaveWorker worker, Guid messageId)
+    public IReadOnlyCollection<BaseMessage> LoadMessage(SlaveWorker worker)
     {
         if (worker.Access.Access < Access.Access)
             throw new UnauthorizedAccessException("Worker has no access to this account");
 
-        foreach (BaseMessageSource source in _sources)
-        {
-            BaseMessage? message = source.Messages.FirstOrDefault(m => m.Id == messageId);
-            if (message is not null)
-            {
-                message.State = Messages.MessageState.Received;
-                return message;
-            }
-        }
+        var messages = _sources.SelectMany(x => x.Messages).ToList();
+        foreach (BaseMessage? message in messages)
+            message.State = MessageState.Received;
 
-        return null;
+        return messages;
     }
 }

@@ -11,8 +11,6 @@ public abstract class BaseMessageSource : IMessageSource
     }
     
     public Guid Id { get; }
-
     public string Label { get; }
-
     public abstract IReadOnlyCollection<BaseMessage> Messages { get; }
 }
