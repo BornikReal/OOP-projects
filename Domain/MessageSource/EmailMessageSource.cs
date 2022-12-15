@@ -3,23 +3,19 @@ using System.Text.RegularExpressions;
 
 namespace Domain.MessageSource;
 
-public class EmailMessageSource : IMessageSource
+public class EmailMessageSource : BaseMessageSource
 {
     private readonly HashSet<EmailMessage> _messages;
     private static readonly Regex RegexEmail = new Regex(@"[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+", RegexOptions.Compiled);
     
-    public EmailMessageSource(Guid id, string label)
+    public EmailMessageSource(Guid id, string label) : base(id, label)
     {
-        Id = id;
         if (!RegexEmail.Match(label).Success)
             throw new ArgumentException("Invalid email address", nameof(label));
-        Label = label;
         _messages = new HashSet<EmailMessage>();
     }
     
-    public Guid Id { get; }
-    public IReadOnlyCollection<IBaseMessage> Messages => _messages;
-    public string Label { get; }
+    public override IReadOnlyCollection<IBaseMessage> Messages => _messages;
 
     public void AddMessage(EmailMessage message)
     {
