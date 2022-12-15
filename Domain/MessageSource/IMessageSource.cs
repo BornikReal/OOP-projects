@@ -6,5 +6,5 @@ public interface IMessageSource
 {
     Guid Id { get; }
     string Label { get; }
-    IReadOnlyCollection<IBaseMessage> Messages { get; }
+    IReadOnlyCollection<BaseMessage> Messages { get; }
 }

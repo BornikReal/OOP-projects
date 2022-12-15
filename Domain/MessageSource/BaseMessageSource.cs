@@ -14,5 +14,5 @@ public abstract class BaseMessageSource : IMessageSource
 
     public string Label { get; }
 
-    public abstract IReadOnlyCollection<IBaseMessage> Messages { get; }
+    public abstract IReadOnlyCollection<BaseMessage> Messages { get; }
 }

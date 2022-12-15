@@ -10,7 +10,7 @@ public class MessengerMessageSource : BaseMessageSource
         _messages = new HashSet<MessengerMessage>();
     }
     
-    public override IReadOnlyCollection<IBaseMessage> Messages => _messages;
+    public override IReadOnlyCollection<BaseMessage> Messages => _messages;
 
     public void AddMessage(MessengerMessage message)
     {

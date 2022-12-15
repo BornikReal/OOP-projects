@@ -14,7 +14,7 @@ public class PhoneMessageSource : BaseMessageSource
         _messages = new HashSet<PhoneMessage>();
     }
     
-    public override IReadOnlyCollection<IBaseMessage> Messages => _messages;
+    public override IReadOnlyCollection<BaseMessage> Messages => _messages;
 
     public void AddMessage(PhoneMessage message)
     {

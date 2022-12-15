@@ -15,7 +15,7 @@ public class EmailMessageSource : BaseMessageSource
         _messages = new HashSet<EmailMessage>();
     }
     
-    public override IReadOnlyCollection<IBaseMessage> Messages => _messages;
+    public override IReadOnlyCollection<BaseMessage> Messages => _messages;
 
     public void AddMessage(EmailMessage message)
     {
