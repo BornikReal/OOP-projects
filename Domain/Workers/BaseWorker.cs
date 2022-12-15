@@ -1,4 +1,5 @@
 ﻿using Domain.Accounts;
+using Domain.Activity;
 
 namespace Domain.Workers;
 
@@ -14,4 +15,5 @@ public abstract class BaseWorker
     public string Name { get; }
     public Guid Id { get; }
     public AccessLayer Access { get; }
+    public abstract IReadOnlyCollection<MessageLog> GetMessageLogs(DateTime time, TimeSpan duration);
 }

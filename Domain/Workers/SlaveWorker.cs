@@ -12,11 +12,18 @@ public class SlaveWorker : BaseWorker
         _activity = new WorkerActivity();
     }
 
-    public void HandleMessage(BaseMessage message, Guid sourceId)
+    public void HandleMessage(BaseMessage message, Guid sourceId, DateTime time)
     {
         if (message.State != MessageState.Received)
             throw new InvalidOperationException("Message is not received");
         message.State = MessageState.Processed;
-        _activity.AddMessageLog(new MessageLog(sourceId, DateTime.Now));
+        _activity.AddMessageLog(new MessageLog(sourceId, time));
+    }
+
+    public override IReadOnlyCollection<MessageLog> GetMessageLogs(DateTime time, TimeSpan duration)
+    {
+        return _activity.MessageLogs
+            .Where(x => time - x.StateChangeTime <= duration)
+            .ToList();
     }
 }
