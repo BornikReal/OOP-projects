@@ -13,7 +13,7 @@ public class Report
 
     public int GetNumberOfMessagesProcessedBySubordinates() => _messageLogs.Count;
 
-    public int GetNumberOfMessagesReceivedToASpecificSource(Guid sourceId) => _messageLogs.Count(x => x.SourceId == sourceId);
+    public int GetNumberOfMessagesReceivedToASpecificSource(Guid sourceId) => _messageLogs.Count(x => x.sourceId == sourceId);
 
-    public int GetNumberOfMessagesDuringTheRequestedInterval(DateTime timeStart, TimeSpan timeSpan) => _messageLogs.Count(x => x.StateChangeTime - timeStart < timeSpan);
+    public int GetNumberOfMessagesDuringTheRequestedInterval(DateTime timeStart, TimeSpan timeSpan) => _messageLogs.Count(x => x.stateChangeTime - timeStart < timeSpan);
 }

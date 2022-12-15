@@ -4,5 +4,5 @@ public enum MessageState
 {
     New,
     Received,
-    Processed
+    Processed,
 }

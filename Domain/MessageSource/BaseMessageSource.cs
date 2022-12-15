@@ -9,7 +9,7 @@ public abstract class BaseMessageSource : IMessageSource
         Id = id;
         Label = label;
     }
-    
+
     public Guid Id { get; }
     public string Label { get; }
     public abstract IReadOnlyCollection<BaseMessage> Messages { get; }

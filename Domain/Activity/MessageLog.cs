@@ -1,3 +1,3 @@
 ﻿namespace Domain.Activity;
 
-public record struct MessageLog(Guid SourceId, DateTime StateChangeTime);
+public record struct MessageLog(Guid sourceId, DateTime stateChangeTime);

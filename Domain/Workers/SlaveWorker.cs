@@ -7,7 +7,8 @@ namespace Domain.Workers;
 public class SlaveWorker : BaseWorker
 {
     private readonly WorkerActivity _activity;
-    public SlaveWorker(string name, Guid id, AccessLayer access) : base(name, id, access)
+    public SlaveWorker(string name, Guid id, AccessLayer access)
+        : base(name, id, access)
     {
         _activity = new WorkerActivity();
     }
@@ -23,7 +24,7 @@ public class SlaveWorker : BaseWorker
     public override IReadOnlyCollection<MessageLog> GetMessageLogs(DateTime time, TimeSpan duration)
     {
         return _activity.MessageLogs
-            .Where(x => time - x.StateChangeTime <= duration)
+            .Where(x => time - x.stateChangeTime <= duration)
             .ToList();
     }
 }

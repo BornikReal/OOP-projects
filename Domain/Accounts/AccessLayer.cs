@@ -10,7 +10,7 @@ public record class AccessLayer
         {
             if (value < 0)
                 throw new ArgumentOutOfRangeException(nameof(value), "Access must be upper than 0");
-                
+
             _access = value;
         }
     }

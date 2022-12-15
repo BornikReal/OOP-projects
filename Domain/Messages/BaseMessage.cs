@@ -9,7 +9,7 @@ public abstract class BaseMessage : IBaseMessage
         State = state;
         Label = label;
     }
-    
+
     public Guid Id { get; }
     public string Label { get; }
     public MessageState State { get; set; }
