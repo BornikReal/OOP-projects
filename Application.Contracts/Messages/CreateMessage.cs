@@ -1,9 +1,10 @@
-﻿using MediatR;
+﻿using Application.Contracts.MessageFactory;
+using MediatR;
 
 namespace Application.Contracts.Messages;
 
 public class CreateMessage
 {
-    public record struct Command(string login, string password) : IRequest<Response>;
-    public record struct Response(Guid sessionId);
+    public record struct Command(BaseMessageFactory messageFactory) : IRequest<Response>;
+    public record struct Response(Guid messageId);
 }

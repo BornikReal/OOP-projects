@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions.DataAccess;
-using Domain.Accounts;
+using Domain.Messages;
 using MediatR;
+using static Application.Contracts.Messages.CreateMessage;
 
 namespace Application.Messages;
 
@@ -15,14 +16,11 @@ public class CreateMessageHandler : IRequestHandler<Command, Response>
 
     public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
     {
-        Domain.Accounts.WorkerAuthenticator? workerAuth = _context.WorkerAuthenticators.FirstOrDefault(x => x.login == request.login && x.password == request.password);
-        if (workerAuth == null)
-            throw new Exception();
-        var session = new Session(Guid.NewGuid(), workerAuth.workerId);
+        BaseMessage message = request.messageFactory.CreateMessage((x) => _context.MessageSources.Where(y => y.Label == x).ToList());
 
-        _context.ActiveSessions.Add(session);
+        _context.Messages.Add(message);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new Response(session.SessionId);
+        return new Response(message.Id);
     }
 }

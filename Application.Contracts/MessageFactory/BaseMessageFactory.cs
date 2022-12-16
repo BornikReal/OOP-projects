@@ -1,7 +1,7 @@
-﻿using Application.Abstractions.DataAccess;
-using Domain.Messages;
+﻿using Domain.Messages;
+using Domain.MessageSource;
 
-namespace Application.MessageFactory;
+namespace Application.Contracts.MessageFactory;
 
 public abstract class BaseMessageFactory
 {
@@ -13,5 +13,5 @@ public abstract class BaseMessageFactory
         _message = message;
     }
     
-    public abstract BaseMessage CreateMessage(IDatabaseContext databaseContext);
+    public abstract BaseMessage CreateMessage(Func<string, IReadOnlyCollection<BaseMessageSource>> getSources);
 }
