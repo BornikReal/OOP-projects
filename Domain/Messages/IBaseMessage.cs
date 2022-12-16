@@ -4,6 +4,6 @@ public interface IBaseMessage
 {
     Guid Id { get; }
     string Label { get; }
-    MessageState State { get; set; }
+    MessageState State { get; }
     string Message { get; }
 }

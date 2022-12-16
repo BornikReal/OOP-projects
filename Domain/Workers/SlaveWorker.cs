@@ -15,9 +15,7 @@ public class SlaveWorker : BaseWorker
 
     public void HandleMessage(BaseMessage message, Guid sourceId, DateTime time)
     {
-        if (message.State != MessageState.Received)
-            throw new InvalidOperationException("Message is not received");
-        message.State = MessageState.Processed;
+        message.HandleMessage();
         _activity.AddMessageLog(new MessageLog(sourceId, time));
     }
 

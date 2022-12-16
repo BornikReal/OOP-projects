@@ -24,12 +24,12 @@ public class Account
 
     public IReadOnlyCollection<BaseMessage> LoadMessage(SlaveWorker worker)
     {
-        if (worker.Access.Access < Access.Access)
+        if (worker.Access.Value < Access.Value)
             throw new UnauthorizedAccessException("Worker has no access to this account");
 
         var messages = _sources.SelectMany(x => x.Messages).ToList();
         foreach (BaseMessage? message in messages)
-            message.State = MessageState.Received;
+            message.LoadMessage();
 
         return messages;
     }

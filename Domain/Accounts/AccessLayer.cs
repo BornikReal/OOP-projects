@@ -1,19 +1,17 @@
 ﻿namespace Domain.Accounts;
 
-public record class AccessLayer
+public readonly record struct AccessLayer
 {
-    private int _access;
-    public int Access
+    public AccessLayer(int value)
     {
-        get => _access;
-        set
-        {
-            if (value < 0)
-                throw new ArgumentOutOfRangeException(nameof(value), "Access must be upper than 0");
+        if (value < 0)
+            throw new ArgumentOutOfRangeException(nameof(value), "Access must be upper than 0");
 
-            _access = value;
-        }
+        Value = value;
     }
 
-    public AccessLayer(int access) => Access = access;
+    public int Value { get; }
+
+    public static implicit operator int(AccessLayer accessLayer) => accessLayer.Value;
+    public static implicit operator AccessLayer(int value) => new AccessLayer(value);
 }
