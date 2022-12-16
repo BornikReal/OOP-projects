@@ -1,6 +1,4 @@
-﻿using Shops.Entities;
-using Shops.Exception.CashAccountException;
-using Shops.Exception.ProductsContainerException;
+﻿using Shops.Exception.CashAccountException;
 using Shops.Products.ConcreteProduct;
 
 namespace Shops.Models;

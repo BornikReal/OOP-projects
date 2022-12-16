@@ -7,14 +7,16 @@ namespace Domain.Accounts;
 public class Account
 {
     private readonly HashSet<BaseMessageSource> _sources;
-    public Account(AccessLayer access)
+    public Account(AccessLayer access, Guid id)
     {
         Access = access;
+        Id = id;
         _sources = new HashSet<BaseMessageSource>();
     }
 
     public IReadOnlyCollection<BaseMessageSource> Sources => _sources;
     public AccessLayer Access { get; }
+    public Guid Id { get; }
 
     public void AddMessageSource(BaseMessageSource source)
     {

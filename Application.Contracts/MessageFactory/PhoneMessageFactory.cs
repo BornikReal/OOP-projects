@@ -1,5 +1,4 @@
-﻿using Application.Abstractions.DataAccess;
-using Domain.Messages;
+﻿using Domain.Messages;
 using Domain.MessageSource;
 
 namespace Application.Contracts.MessageFactory;
