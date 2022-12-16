@@ -17,7 +17,7 @@ public class CreateRootMasterHandler : IRequestHandler<Command, Response>
 
     public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
     {
-        var master = new MasterWorker(request.name, Guid.NewGuid(), request.access);
+        var master = new MasterWorker(request.name, Guid.NewGuid(), 0);
         _context.Workers.Add(master);
         _context.WorkerAuthenticators.Add(new WorkerAuthenticator(request.login, request.password, master.Id));
         await _context.SaveChangesAsync(cancellationToken);
