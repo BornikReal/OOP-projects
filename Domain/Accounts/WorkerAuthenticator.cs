@@ -2,11 +2,21 @@
 
 public record class WorkerAuthenticator
 {
-    public string Login { get; }
-    public string Password { get; }
-    public WorkerAuthenticator(string login, string password)
+    private readonly string _login;
+    private readonly string _password;
+    private readonly Guid _workerId;
+
+    public Session? Authorize(string login, string password)
     {
-        Login = login;
-        Password = password;
+        if (login != _login || password != _password)
+            return new Session(_workerId, Guid.NewGuid());
+        return null;
+    }
+
+    public WorkerAuthenticator(string login, string password, Guid workerId)
+    {
+        _login = login;
+        _password = password;
+        _workerId = workerId;
     }
 }
