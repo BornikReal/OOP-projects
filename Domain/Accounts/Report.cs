@@ -4,16 +4,18 @@ namespace Domain.Accounts;
 
 public class Report
 {
-    private readonly HashSet<MessageLog> _messageLogs;
-
     public Report(IReadOnlyCollection<MessageLog> messageLogs)
     {
-        _messageLogs = new HashSet<MessageLog>(messageLogs);
+        MessageLogs = new List<MessageLog>(messageLogs);
     }
 
-    public int GetNumberOfMessagesProcessedBySubordinates() => _messageLogs.Count;
+#pragma warning disable CS8618
+    protected Report() { }
+    protected virtual List<MessageLog> MessageLogs { get; set; }
 
-    public int GetNumberOfMessagesReceivedToASpecificSource(Guid sourceId) => _messageLogs.Count(x => x.sourceId == sourceId);
+    public int GetNumberOfMessagesProcessedBySubordinates() => MessageLogs.Count;
 
-    public int GetNumberOfMessagesDuringTheRequestedInterval(DateTime timeStart, TimeSpan timeSpan) => _messageLogs.Count(x => x.stateChangeTime - timeStart < timeSpan);
+    public int GetNumberOfMessagesReceivedToASpecificSource(Guid sourceId) => MessageLogs.Count(x => x.sourceId == sourceId);
+
+    public int GetNumberOfMessagesDuringTheRequestedInterval(DateTime timeStart, TimeSpan timeSpan) => MessageLogs.Count(x => x.stateChangeTime - timeStart < timeSpan);
 }

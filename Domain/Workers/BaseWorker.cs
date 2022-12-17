@@ -12,8 +12,11 @@ public abstract class BaseWorker
         Access = access;
     }
 
+#pragma warning disable CS8618
+    protected BaseWorker() { }
+
     public string Name { get; }
     public Guid Id { get; }
-    public AccessLayer Access { get; }
+    public virtual AccessLayer Access { get; }
     public abstract IReadOnlyCollection<MessageLog> GetMessageLogs(DateTime time, TimeSpan duration);
 }

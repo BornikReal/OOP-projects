@@ -2,7 +2,7 @@
 
 namespace Domain.MessageSource;
 
-public abstract class BaseMessageSource : IMessageSource
+public abstract class BaseMessageSource
 {
     public BaseMessageSource(Guid id, string label)
     {
@@ -10,7 +10,10 @@ public abstract class BaseMessageSource : IMessageSource
         Label = label;
     }
 
+#pragma warning disable CS8618
+    protected BaseMessageSource() { }
+
     public Guid Id { get; }
     public string Label { get; }
-    public abstract IReadOnlyCollection<BaseMessage> Messages { get; }
+    public virtual IReadOnlyCollection<BaseMessage> Messages { get; } = null!;
 }

@@ -8,5 +8,8 @@ public class MessengerMessage : BaseMessage
         Sender = sender;
     }
 
+#pragma warning disable CS8618
+    protected MessengerMessage() { }
+
     public string Sender { get; }
 }

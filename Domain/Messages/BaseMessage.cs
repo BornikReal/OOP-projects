@@ -1,6 +1,6 @@
 ﻿namespace Domain.Messages;
 
-public abstract class BaseMessage : IBaseMessage
+public abstract class BaseMessage
 {
     public BaseMessage(Guid id, string message, MessageState state, string label)
     {
@@ -9,6 +9,9 @@ public abstract class BaseMessage : IBaseMessage
         State = state;
         Label = label;
     }
+
+#pragma warning disable CS8618
+    protected BaseMessage() { }
 
     public Guid Id { get; }
     public string Label { get; }

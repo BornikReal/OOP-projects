@@ -9,6 +9,9 @@ public class EmailMessage : BaseMessage
         MessageSubject = messageSubject;
     }
 
+#pragma warning disable CS8618
+    protected EmailMessage() { }
+
     public string Sender { get; }
     public string MessageSubject { get; }
 }

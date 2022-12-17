@@ -6,22 +6,25 @@ namespace Domain.Accounts;
 
 public class Account
 {
-    private readonly HashSet<BaseMessageSource> _sources;
     public Account(AccessLayer access, Guid id)
     {
         Access = access;
         Id = id;
-        _sources = new HashSet<BaseMessageSource>();
+        SourcesList = new List<BaseMessageSource>();
     }
 
-    public IReadOnlyCollection<BaseMessageSource> Sources => _sources;
-    public AccessLayer Access { get; }
+#pragma warning disable CS8618
+    protected Account() { }
+    public IReadOnlyCollection<BaseMessageSource> Sources => SourcesList;
+    public virtual AccessLayer Access { get; }
     public Guid Id { get; }
+    protected virtual List<BaseMessageSource> SourcesList { get; set; }
 
     public void AddMessageSource(BaseMessageSource source)
     {
-        if (_sources.Add(source) is false)
+        if (!SourcesList.Contains(source))
             throw new ArgumentException("Source already exists", nameof(source));
+        SourcesList.Add(source);
     }
 
     public IReadOnlyCollection<BaseMessage> LoadMessage(SlaveWorker worker)
@@ -29,7 +32,7 @@ public class Account
         if (worker.Access.Value > Access.Value)
             throw new UnauthorizedAccessException("Worker has no access to this account");
 
-        var messages = _sources.SelectMany(x => x.Messages).ToList();
+        var messages = SourcesList.SelectMany(x => x.Messages).ToList();
         foreach (BaseMessage? message in messages)
             message.LoadMessage();
 

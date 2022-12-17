@@ -10,4 +10,6 @@ public record class Session
         WorkerId = workerId;
         SessionId = sessionId;
     }
+
+    protected Session() { }
 }

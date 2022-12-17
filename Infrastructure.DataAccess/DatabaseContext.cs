@@ -24,24 +24,5 @@ public class DatabaseContext : DbContext, IDatabaseContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<BaseMessage>()
-            .ToTable("Messages")
-            .HasDiscriminator<int>("ContractType")
-            .HasValue<EmailMessage>(1)
-            .HasValue<PhoneMessage>(2)
-            .HasValue<MessengerMessage>(3);
-
-        modelBuilder.Entity<BaseMessageSource>()
-            .ToTable("MessageSources")
-            .HasDiscriminator<int>("ContractType")
-            .HasValue<EmailMessageSource>(1)
-            .HasValue<PhoneMessageSource>(2)
-            .HasValue<MessengerMessageSource>(3);
-
-        modelBuilder.Entity<BaseWorker>()
-            .ToTable("Employees")
-            .HasDiscriminator<int>("ContractType")
-            .HasValue<SlaveWorker>(1)
-            .HasValue<MasterWorker>(2);
     }
 }

@@ -2,18 +2,15 @@
 
 public class WorkerActivity
 {
-    private readonly HashSet<MessageLog> _messageLogs;
+    public WorkerActivity() { }
 
-    public WorkerActivity()
-    {
-        _messageLogs = new HashSet<MessageLog>();
-    }
-
-    public IReadOnlyCollection<MessageLog> MessageLogs => _messageLogs;
+    public IReadOnlyCollection<MessageLog> MessageLogs => MessageLogsList;
+    protected virtual List<MessageLog> MessageLogsList { get; set; } = new List<MessageLog>();
 
     public void AddMessageLog(MessageLog messageLog)
     {
-        if (_messageLogs.Add(messageLog) is false)
+        if (!MessageLogsList.Contains(messageLog))
             throw new InvalidOperationException("Message log already exists");
+        MessageLogsList.Add(messageLog);
     }
 }
