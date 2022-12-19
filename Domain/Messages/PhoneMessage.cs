@@ -4,8 +4,8 @@ namespace Domain.Messages;
 
 public class PhoneMessage : BaseMessage
 {
-    public PhoneMessage(string phoneNumber, string message, Guid id, string label, MessageState state)
-        : base(id, message, state, label)
+    public PhoneMessage(string phoneNumber, string message, Guid id, string label)
+        : base(id, message, MessageState.New, label)
     {
         PhoneNumber = phoneNumber;
         if (Encoding.Unicode.GetByteCount(message) > MessageSizeBytes)
