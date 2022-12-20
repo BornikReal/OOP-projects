@@ -13,12 +13,17 @@ public class MasterWorker : BaseWorker
 
 #pragma warning disable CS8618
     protected MasterWorker() { }
-    public IReadOnlyCollection<BaseWorker> Slaves => SlavesList;
-    protected virtual List<BaseWorker> SlavesList { get; set; }
+    public virtual IReadOnlyCollection<BaseWorker> Slaves
+    {
+        get => SlavesList;
+        protected set => SlavesList = value.ToList();
+    }
+
+    protected List<BaseWorker> SlavesList { get; set; }
 
     public void AddWorker(BaseWorker worker)
     {
-        if (!SlavesList.Contains(worker))
+        if (SlavesList.Contains(worker))
             throw new ArgumentException("Worker already exists", nameof(worker));
         SlavesList.Add(worker);
     }

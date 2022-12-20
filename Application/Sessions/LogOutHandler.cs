@@ -16,7 +16,7 @@ public class LogOutHandler : IRequestHandler<Command, Response>
 
     public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
     {
-        Session? session = _context.ActiveSessions.SingleOrDefault(session => session.SessionId == request.sessionId);
+        Session? session = _context.ActiveSessions.SingleOrDefault(session => session.Id == request.sessionId);
         
         if (session == null)
             throw new Exception();

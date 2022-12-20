@@ -11,5 +11,5 @@ public class MessengerMessage : BaseMessage
 #pragma warning disable CS8618
     protected MessengerMessage() { }
 
-    public string Sender { get; }
+    public string Sender { get; protected init; }
 }

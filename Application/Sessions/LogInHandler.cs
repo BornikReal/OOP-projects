@@ -24,6 +24,6 @@ public class LogInHandler : IRequestHandler<Command, Response>
         _context.ActiveSessions.Add(session);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new Response(session.SessionId);
+        return new Response(session.Id);
     }
 }

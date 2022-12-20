@@ -1,6 +1,6 @@
 ﻿namespace Domain.Accounts;
 
-public readonly record struct AccessLayer
+public record class AccessLayer
 {
     public AccessLayer(int value)
     {
@@ -10,7 +10,9 @@ public readonly record struct AccessLayer
         Value = value;
     }
 
-    public int Value { get; }
+    protected AccessLayer() { }
+
+    public int Value { get; protected init; }
 
     public static implicit operator int(AccessLayer accessLayer) => accessLayer.Value;
     public static implicit operator AccessLayer(int value) => new AccessLayer(value);

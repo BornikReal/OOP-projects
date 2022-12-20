@@ -13,10 +13,10 @@ public abstract class BaseMessage
 #pragma warning disable CS8618
     protected BaseMessage() { }
 
-    public Guid Id { get; }
-    public string Label { get; }
-    public MessageState State { get; private set; }
-    public string Message { get; }
+    public Guid Id { get; protected init; }
+    public string Label { get; protected init; }
+    public MessageState State { get; protected set; }
+    public string Message { get; protected init; }
 
     public void LoadMessage()
     {

@@ -12,6 +12,6 @@ public class EmailMessage : BaseMessage
 #pragma warning disable CS8618
     protected EmailMessage() { }
 
-    public string Sender { get; }
-    public string MessageSubject { get; }
+    public string Sender { get; protected init; }
+    public string MessageSubject { get; protected init; }
 }

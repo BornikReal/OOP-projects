@@ -15,9 +15,9 @@ public class Account
 
 #pragma warning disable CS8618
     protected Account() { }
-    public IReadOnlyCollection<BaseMessageSource> Sources => SourcesList;
-    public virtual AccessLayer Access { get; }
-    public Guid Id { get; }
+    public virtual IReadOnlyCollection<BaseMessageSource> Sources => SourcesList;
+    public virtual AccessLayer Access { get; protected init; }
+    public Guid Id { get; protected init; }
     protected virtual List<BaseMessageSource> SourcesList { get; set; }
 
     public void AddMessageSource(BaseMessageSource source)

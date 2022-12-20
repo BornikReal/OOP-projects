@@ -2,13 +2,13 @@
 
 public record class Session
 {
-    public Guid WorkerId { get; }
-    public Guid SessionId { get; }
+    public Guid WorkerId { get; protected init; }
+    public Guid Id { get; protected init; }
 
     public Session(Guid workerId, Guid sessionId)
     {
         WorkerId = workerId;
-        SessionId = sessionId;
+        Id = sessionId;
     }
 
     protected Session() { }

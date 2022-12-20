@@ -4,22 +4,27 @@ namespace Domain.MessageSource;
 
 public class MessengerMessageSource : BaseMessageSource
 {
-    private readonly List<MessengerMessage> _messages;
     public MessengerMessageSource(Guid id, string label)
         : base(id, label)
     {
-        _messages = new List<MessengerMessage>();
+        MessagesList = new List<MessengerMessage>();
     }
 
 #pragma warning disable CS8618
     protected MessengerMessageSource() { }
 
-    public override IReadOnlyCollection<BaseMessage> Messages => _messages;
+    public override IReadOnlyCollection<BaseMessage> Messages
+    {
+        get => MessagesList;
+        protected init => MessagesList = value.Select(x => (MessengerMessage)x).ToList();
+    }
+
+    protected virtual List<MessengerMessage> MessagesList { get; set; }
 
     public void AddMessage(MessengerMessage message)
     {
-        if (!_messages.Contains(message))
+        if (MessagesList.Contains(message))
             throw new InvalidOperationException("Message already exists.");
-        _messages.Add(message);
+        MessagesList.Add(message);
     }
 }

@@ -7,7 +7,7 @@ public class PhoneMessage : BaseMessage
     public PhoneMessage(string phoneNumber, string message, Guid id, string label)
         : base(id, message, MessageState.New, label)
     {
-        PhoneNumber = phoneNumber;
+        Sender = phoneNumber;
         if (Encoding.Unicode.GetByteCount(message) > MessageSizeBytes)
         {
             throw new ArgumentException($"Message is too long. Max length is {MessageSizeBytes} bytes.");
@@ -17,6 +17,6 @@ public class PhoneMessage : BaseMessage
 #pragma warning disable CS8618
     protected PhoneMessage() { }
 
-    public int MessageSizeBytes { get; } = 140;
-    public string PhoneNumber { get; }
+    public static int MessageSizeBytes { get; } = 140;
+    public string Sender { get; protected init; }
 }

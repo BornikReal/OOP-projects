@@ -1,5 +1,4 @@
 ﻿using Domain.Messages;
-
 namespace Domain.MessageSource;
 
 public abstract class BaseMessageSource
@@ -13,7 +12,7 @@ public abstract class BaseMessageSource
 #pragma warning disable CS8618
     protected BaseMessageSource() { }
 
-    public Guid Id { get; }
-    public string Label { get; }
-    public virtual IReadOnlyCollection<BaseMessage> Messages { get; } = null!;
+    public Guid Id { get; protected init; }
+    public string Label { get; protected init; }
+    public abstract IReadOnlyCollection<BaseMessage> Messages { get; protected init; }
 }

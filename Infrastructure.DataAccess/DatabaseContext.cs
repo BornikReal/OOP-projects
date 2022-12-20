@@ -3,6 +3,7 @@ using Domain.Accounts;
 using Domain.Messages;
 using Domain.MessageSource;
 using Domain.Workers;
+using Infrastructure.DataAccess.ValueConverters;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.DataAccess;
@@ -24,5 +25,32 @@ public class DatabaseContext : DbContext, IDatabaseContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<BaseMessageSource>()
+            .ToTable("MessageSources")
+            .HasDiscriminator<int>("ContractType")
+            .HasValue<EmailMessageSource>(1)
+            .HasValue<PhoneMessageSource>(2)
+            .HasValue<MessengerMessageSource>(3);
+
+        modelBuilder.Entity<BaseMessage>()
+            .HasDiscriminator<int>("ContractType")
+            .HasValue<EmailMessage>(1)
+            .HasValue<PhoneMessage>(2)
+            .HasValue<MessengerMessage>(3);
+        
+        modelBuilder.Entity<BaseWorker>()
+            .HasDiscriminator<int>("ContractType")
+            .HasValue<SlaveWorker>(1)
+            .HasValue<MasterWorker>(2);
+        
+        modelBuilder.Entity<WorkerAuthenticator>().HasKey(x => x.workerId);
+
+        modelBuilder.Entity<MasterWorker>()
+            .Navigation(x => x.Slaves);
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder.Properties<AccessLayer>().HaveConversion<AccessLayerConverter>();
     }
 }
