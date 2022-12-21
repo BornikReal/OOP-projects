@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application.Abstractions\Application.Abstractions.csproj" />
+    <ProjectReference Include="..\Application.Dto\Application.Dto.csproj" />
   </ItemGroup>
 
 </Project>

@@ -14,6 +14,7 @@ public interface IDatabaseContext
     DbSet<BaseWorker> Workers { get; }
     DbSet<WorkerAuthenticator> WorkerAuthenticators { get; }
     DbSet<Session> ActiveSessions { get; }
+    DbSet<Report> Reports { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

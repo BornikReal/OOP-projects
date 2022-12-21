@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.DataAccess;
+using Application.Mapping;
 using Domain.Accounts;
 using Domain.Workers;
 using MediatR;
@@ -27,8 +28,9 @@ public class CreateReportHandler : IRequestHandler<Command, Response>
             throw new InvalidOperationException("Slaves can't create reports");
 
         Report report = ((MasterWorker)worker).CreateReport(request.time, request.duration);
+        _context.Reports.Add(report);
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new Response(report);
+        return new Response(report.AsDto());
     }
 }
