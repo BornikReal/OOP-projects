@@ -7,5 +7,5 @@ Lab6 Roadmap:
 6.	Handle message		+
 7.	Add source			-+ (TODO: COR)
 8.	Create account		+
-9.	Generate report		+- (TODO: dto)
+9.	Generate report		+
 10.	Log out				+
