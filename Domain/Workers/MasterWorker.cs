@@ -13,7 +13,7 @@ public class MasterWorker : BaseWorker
 
 #pragma warning disable CS8618
     protected MasterWorker() { }
-    public virtual IReadOnlyCollection<BaseWorker> Slaves
+    public IReadOnlyCollection<BaseWorker> Slaves
     {
         get => SlavesList;
         protected set => SlavesList = value.ToList();

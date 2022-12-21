@@ -45,8 +45,8 @@ public class DatabaseContext : DbContext, IDatabaseContext
         
         modelBuilder.Entity<WorkerAuthenticator>().HasKey(x => x.workerId);
 
-        modelBuilder.Entity<MasterWorker>()
-            .Navigation(x => x.Slaves);
+        //modelBuilder.Entity<MasterWorker>()
+        //    .Navigation(x => x.Slaves);
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
