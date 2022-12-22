@@ -1,5 +1,7 @@
 ﻿using Application.Abstractions.DataAccess;
+using Application.СhainOfResponsibilities.SourceHandlerChain;
 using Domain.Accounts;
+using Domain.MessageSource;
 using MediatR;
 using static Application.Contracts.Accounts.CreateSource;
 
@@ -16,7 +18,16 @@ public class CreateSourceHandler : IRequestHandler<Command, Response>
 
     public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
     {
-        Domain.MessageSource.BaseMessageSource source = request.factory.CreateMessageSource();
+        var emailChain = new EmailSourceHandler();
+        var phoneChain = new PhoneSourceHandler();
+        var messengerChain = new MessengerSourceHandler();
+        emailChain.SetNext(phoneChain);
+        phoneChain.SetNext(messengerChain);
+
+        BaseMessageSource? source = emailChain.HandleRequest(request.model);
+        if (source == null)
+            throw new Exception("This messege source is not suported");
+        
         Account? account = _context.Accounts.FirstOrDefault(x => x.Id == request.account);
         if (account == null)
             throw new Exception("Account not found");

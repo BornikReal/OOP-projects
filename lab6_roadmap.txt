@@ -1,11 +1,11 @@
 Lab6 Roadmap:
 1.	Log in				+
 2.	Create boss			+
-3.	Create new worker
-4.	Add message			-+ (TODO: COR)
-5.	Show message
+3.	Create new worker	
+4.	Add message			+
+5.	Show message		
 6.	Handle message		+
-7.	Add source			-+ (TODO: COR)
+7.	Add source			+
 8.	Create account		+
 9.	Generate report		+
 10.	Log out				+

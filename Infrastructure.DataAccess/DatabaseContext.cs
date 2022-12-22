@@ -22,6 +22,7 @@ public class DatabaseContext : DbContext, IDatabaseContext
     public DbSet<BaseWorker> Workers { get; private init; } = null!;
     public DbSet<WorkerAuthenticator> WorkerAuthenticators { get; private init; } = null!;
     public DbSet<Session> ActiveSessions { get; private init; } = null!;
+    public DbSet<Report> Reports { get; private init; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

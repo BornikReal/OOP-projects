@@ -35,8 +35,8 @@ public class MasterWorker : BaseWorker
             .ToList();
     }
 
-    public Report CreateReport(DateTime time, TimeSpan duration)
+    public Report CreateReport(Guid id, DateTime time, TimeSpan duration)
     {
-        return new Report(GetMessageLogs(time, duration));
+        return new Report(id, GetMessageLogs(time, duration));
     }
 }
