@@ -1,0 +1,45 @@
+﻿using Application.Abstractions.DataAccess;
+using Application.СhainOfResponsibilities.WorkerHandlerChain;
+using Domain.Accounts;
+using Domain.Workers;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using static Application.Contracts.Workers.CreateWorker;
+
+namespace Application.Workers;
+
+public class CreateWorkerHandler : IRequestHandler<Command, Response>
+{
+    private readonly IDatabaseContext _context;
+
+    public CreateWorkerHandler(IDatabaseContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
+    {
+
+        Session? session = await _context.ActiveSessions.FirstOrDefaultAsync(x => x.Id == request.sessionId, cancellationToken);
+        if (session == null)
+            throw new InvalidOperationException("Session not found.");
+
+        BaseWorker master = await _context.Workers.FirstAsync(x => x.Id == session.Id, cancellationToken);
+        if (master is not MasterWorker)
+            throw new InvalidOperationException("Slaves can't create slaves");
+
+        var slaveChain = new SlaveWorkerHandler();
+        var masterChain = new MasterWorkerHandler();
+        slaveChain.SetNext(masterChain);
+
+        BaseWorker? worker = slaveChain.HandleRequest(request.model);
+        if (worker == null)
+            throw new Exception("Worker isn't supported");
+
+        _context.Workers.Add(worker);
+        _context.WorkerAuthenticators.Add(new WorkerAuthenticator(request.login, request.password, worker.Id));
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return new Response(worker.Id);
+    }
+}

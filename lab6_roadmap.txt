@@ -1,7 +1,7 @@
 Lab6 Roadmap:
 1.	Log in				+
 2.	Create boss			+
-3.	Create new worker	
+3.	Create new worker	+
 4.	Add message			+
 5.	Show message		
 6.	Handle message		+
