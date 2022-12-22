@@ -16,10 +16,10 @@ public class SlaveWorker : BaseWorker
     protected SlaveWorker() { }
     protected virtual WorkerActivity Activity { get; set; }
 
-    public void HandleMessage(BaseMessage message, Guid sourceId, DateTime time)
+    public void HandleMessage(BaseMessage message, Guid logId, Guid sourceId, DateTime time)
     {
         message.HandleMessage();
-        Activity.AddMessageLog(new MessageLog(sourceId, time));
+        Activity.AddMessageLog(new MessageLog(logId, sourceId, time));
     }
 
     public override IReadOnlyCollection<MessageLog> GetMessageLogs(DateTime time, TimeSpan duration)

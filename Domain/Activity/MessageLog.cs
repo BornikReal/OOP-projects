@@ -1,3 +1,3 @@
 ﻿namespace Domain.Activity;
 
-public record MessageLog(Guid sourceId, DateTime stateChangeTime);
+public record MessageLog(Guid id, Guid sourceId, DateTime stateChangeTime);
