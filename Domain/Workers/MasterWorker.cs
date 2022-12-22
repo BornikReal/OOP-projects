@@ -5,32 +5,32 @@ namespace Domain.Workers;
 
 public class MasterWorker : BaseWorker
 {
+    private List<BaseWorker> _slaves;
+
     public MasterWorker(string name, Guid id, AccessLayer access)
         : base(name, id, access)
     {
-        SlavesList = new List<BaseWorker>();
+        _slaves = new List<BaseWorker>();
     }
 
 #pragma warning disable CS8618
     protected MasterWorker() { }
-    public IReadOnlyCollection<BaseWorker> Slaves
+    public virtual IReadOnlyCollection<BaseWorker> Slaves
     {
-        get => SlavesList;
-        protected set => SlavesList = value.ToList();
+        get => _slaves;
+        protected init => _slaves = value.ToList();
     }
-
-    protected List<BaseWorker> SlavesList { get; set; }
 
     public void AddWorker(BaseWorker worker)
     {
-        if (SlavesList.Contains(worker))
+        if (_slaves.Contains(worker))
             throw new ArgumentException("Worker already exists", nameof(worker));
-        SlavesList.Add(worker);
+        _slaves.Add(worker);
     }
 
     public override IReadOnlyCollection<MessageLog> GetMessageLogs(DateTime time, TimeSpan duration)
     {
-        return SlavesList
+        return _slaves
             .SelectMany(x => x.GetMessageLogs(time, duration))
             .ToList();
     }

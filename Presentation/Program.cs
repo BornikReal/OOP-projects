@@ -16,8 +16,8 @@ var db = new DatabaseContext(options);
 //db.Messages.Add(message);
 //db.MessageSources.Add(source);
 
-MasterWorker master = db.Workers.OfType<MasterWorker>().Include(x => x.Slaves).First();
-db.Entry(master).Collection(e => e.Slaves).Query().Load();
+MasterWorker master = db.Workers.OfType<MasterWorker>().First();
+//db.Entry(master).Collection(e => e.Slaves).Query().Load();
 Console.WriteLine(((MasterWorker)master.Slaves.First()).Slaves.Count);
 
 //var manager = new MasterWorker("maksim", Guid.NewGuid(), 1);

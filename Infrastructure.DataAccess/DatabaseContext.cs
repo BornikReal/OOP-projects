@@ -46,12 +46,19 @@ public class DatabaseContext : DbContext, IDatabaseContext
         
         modelBuilder.Entity<WorkerAuthenticator>().HasKey(x => x.workerId);
 
-        //modelBuilder.Entity<MasterWorker>()
-        //    .Navigation(x => x.Slaves);
+        modelBuilder.Entity<BaseMessageSource>()
+            .Navigation(x => x.Messages)
+            .UsePropertyAccessMode(PropertyAccessMode.PreferProperty);
     }
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
         configurationBuilder.Properties<AccessLayer>().HaveConversion<AccessLayerConverter>();
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder
+            .UseLazyLoadingProxies();
     }
 }

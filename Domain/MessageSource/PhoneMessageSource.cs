@@ -6,13 +6,14 @@ namespace Domain.MessageSource;
 public class PhoneMessageSource : BaseMessageSource
 {
     private static readonly Regex RegexPhone = new Regex(@"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$", RegexOptions.Compiled);
+    private List<PhoneMessage> _messages;
 
     public PhoneMessageSource(Guid id, string label)
         : base(id, label)
     {
         if (!RegexPhone.Match(label).Success)
             throw new ArgumentException("Invalid phone number", nameof(label));
-        MessagesList = new List<PhoneMessage>();
+        _messages = new List<PhoneMessage>();
     }
 
 #pragma warning disable CS8618
@@ -20,16 +21,14 @@ public class PhoneMessageSource : BaseMessageSource
 
     public override IReadOnlyCollection<BaseMessage> Messages
     {
-        get => MessagesList;
-        protected init => MessagesList = value.Select(x => (PhoneMessage)x).ToList();
+        get => _messages;
+        protected init => _messages = value.Select(x => (PhoneMessage)x).ToList();
     }
-
-    protected virtual List<PhoneMessage> MessagesList { get; set; }
 
     public void AddMessage(PhoneMessage message)
     {
-        if (MessagesList.Contains(message))
+        if (_messages.Contains(message))
             throw new InvalidOperationException("Message already exists.");
-        MessagesList.Add(message);
+        _messages.Add(message);
     }
 }

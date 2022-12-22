@@ -6,6 +6,7 @@ namespace Domain.MessageSource;
 public class EmailMessageSource : BaseMessageSource
 {
     private static readonly Regex RegexEmail = new Regex(@"[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+", RegexOptions.Compiled);
+    private List<EmailMessage> _messages;
 
     public EmailMessageSource(Guid id, string label)
         : base(id, label)
@@ -14,7 +15,7 @@ public class EmailMessageSource : BaseMessageSource
             throw new ArgumentException("Invalid email address", nameof(label));
 
         // TODO: I Blame you
-        MessagesList = new List<EmailMessage>();
+        _messages = new List<EmailMessage>();
     }
 
 #pragma warning disable CS8618
@@ -22,16 +23,14 @@ public class EmailMessageSource : BaseMessageSource
 
     public override IReadOnlyCollection<BaseMessage> Messages
     {
-        get => MessagesList;
-        protected init => MessagesList = value.Select(x => (EmailMessage)x).ToList();
+        get => _messages;
+        protected init => _messages = value.Select(x => (EmailMessage)x).ToList();
     }
-
-    protected virtual List<EmailMessage> MessagesList { get; init; }
 
     public void AddMessage(EmailMessage message)
     {
-        if (MessagesList.Contains(message))
+        if (_messages.Contains(message))
             throw new InvalidOperationException("Message already exists.");
-        MessagesList.Add(message);
+        _messages.Add(message);
     }
 }
