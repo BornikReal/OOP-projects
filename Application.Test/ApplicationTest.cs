@@ -22,7 +22,7 @@ public class ApplicationTest
     public ApplicationTest()
     {        
         var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
-        DbContextOptions<DatabaseContext> options = optionsBuilder.UseSqlite($"Data Source=db/{Guid.NewGuid()}.db").Options;
+        DbContextOptions<DatabaseContext> options = optionsBuilder.UseInMemoryDatabase(databaseName: $"{Guid.NewGuid()}").Options;
         _db = new DatabaseContext(options);
     }
 
