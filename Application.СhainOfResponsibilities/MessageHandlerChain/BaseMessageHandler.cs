@@ -1,4 +1,4 @@
-﻿using Application.СhainOfResponsibilities.MessegeModels;
+﻿using Application.СhainOfResponsibilities.MessageModels;
 using Domain.Messages;
 using Domain.MessageSource;
 

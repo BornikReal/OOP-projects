@@ -8,7 +8,7 @@ using Application.Messages;
 using Application.Sessions;
 using Application.Workers;
 using Application.ÑhainOfResponsibilities.MessageSourceModels;
-using Application.ÑhainOfResponsibilities.MessegeModels;
+using Application.ÑhainOfResponsibilities.MessageModels;
 using Application.ÑhainOfResponsibilities.WorkerModels;
 using Domain.Messages;
 using Infrastructure.DataAccess;
@@ -20,7 +20,7 @@ public class ApplicationTest
     private readonly IDatabaseContext _db;
 
     public ApplicationTest()
-    {
+    {        
         var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
         DbContextOptions<DatabaseContext> options = optionsBuilder.UseSqlite($"Data Source=db/{Guid.NewGuid()}.db").Options;
         _db = new DatabaseContext(options);
@@ -34,10 +34,6 @@ public class ApplicationTest
         Task<CreateRootMaster.Response> s = t.Handle(command, new CancellationToken());
         s.Wait();
         Assert.Throws<AggregateException>(() => t.Handle(command, new CancellationToken()).Wait());
-        while (File.Exists("db/mydb.db"))
-        {
-            File.Delete("db/mydb.db");
-        }
     }
 
     [Fact]
@@ -78,10 +74,5 @@ public class ApplicationTest
         Task<HandleMessage.Response> s9 = t9.Handle(new HandleMessage.Command(res7.sessionId, res8.messages.messageIds.First()), new CancellationToken());
         s9.Wait();
         Assert.Equal(MessageState.Processed, _db.Messages.First().State);
-
-        while (File.Exists("db/mydb.db"))
-        {
-            File.Delete("db/mydb.db");
-        }
     }
 }

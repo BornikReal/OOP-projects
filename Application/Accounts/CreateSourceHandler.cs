@@ -28,7 +28,7 @@ public class CreateSourceHandler : IRequestHandler<Command, Response>
         if (source == null)
             throw new Exception("This messege source is not suported");
         
-        Account? account = _context.Accounts.FirstOrDefault(x => x.Id == request.account);
+        Account? account = _context.Accounts.FirstOrDefault(x => x.Id == request.accountId);
         if (account == null)
             throw new Exception("Account not found");
         account.AddMessageSource(source);
