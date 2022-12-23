@@ -1,4 +1,6 @@
-﻿namespace Domain.Activity;
+﻿using Domain.Common.Exceptions;
+
+namespace Domain.Activity;
 
 public class WorkerActivity
 {
@@ -14,7 +16,7 @@ public class WorkerActivity
     public void AddMessageLog(MessageLog messageLog)
     {
         if (_messageLogs.Contains(messageLog))
-            throw new InvalidOperationException("Message log already exists");
+            throw WorkerActivityException.MessageLogAlreadyInAccount(messageLog.sourceId);
         _messageLogs.Add(messageLog);
     }
 }

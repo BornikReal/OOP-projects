@@ -1,11 +1,13 @@
-﻿namespace Domain.Accounts;
+﻿using Domain.Common.Exceptions;
+
+namespace Domain.Accounts;
 
 public record class AccessLayer
 {
     public AccessLayer(int value)
     {
         if (value < 0)
-            throw new ArgumentOutOfRangeException(nameof(value), "Access must be upper than 0");
+            throw AccessLayerException.InvalidAccessLayer(value);
 
         Value = value;
     }

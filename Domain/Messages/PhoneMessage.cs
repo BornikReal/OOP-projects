@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Domain.Common.Exceptions;
 
 namespace Domain.Messages;
 
@@ -10,7 +11,7 @@ public class PhoneMessage : BaseMessage
         Sender = phoneNumber;
         if (Encoding.Unicode.GetByteCount(message) > MessageSizeBytes)
         {
-            throw new ArgumentException($"Message is too long. Max length is {MessageSizeBytes} bytes.");
+            throw MessageException.PhoneMessageSizeExceed();
         }
     }
 

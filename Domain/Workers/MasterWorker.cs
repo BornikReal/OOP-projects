@@ -1,5 +1,6 @@
 ﻿using Domain.Accounts;
 using Domain.Activity;
+using Domain.Common.Exceptions;
 
 namespace Domain.Workers;
 
@@ -21,7 +22,7 @@ public class MasterWorker : BaseWorker
     public void AddWorker(BaseWorker worker)
     {
         if (_slaves.Contains(worker))
-            throw new ArgumentException("Worker already exists", nameof(worker));
+            throw WorkerException.WorkerAlreadyServesMaster(worker.Name);
         _slaves.Add(worker);
     }
 

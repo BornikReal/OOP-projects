@@ -23,4 +23,8 @@
     <EditorConfigFiles Remove="C:\Users\cooln\source\repos\OOP\.editorconfig" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Domain.Common\Domain.Common.csproj" />
+  </ItemGroup>
+
 </Project>

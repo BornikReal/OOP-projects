@@ -1,4 +1,5 @@
-﻿using Domain.Messages;
+﻿using Domain.Common.Exceptions;
+using Domain.Messages;
 using Domain.MessageSource;
 using Domain.Workers;
 
@@ -27,14 +28,14 @@ public class Account
     public void AddMessageSource(BaseMessageSource source)
     {
         if (_sources.Contains(source))
-            throw new ArgumentException("Source already exists", nameof(source));
+            throw AccountException.SourceAlreadyInAccount(source.Id);
         _sources.Add(source);
     }
 
     public IReadOnlyCollection<BaseMessage> LoadMessage(SlaveWorker worker)
     {
         if (worker.Access.Value > Access.Value)
-            throw new UnauthorizedAccessException("Worker has no access to this account");
+            throw AccessLayerException.InsufficientPermissions(Access, worker.Access);
 
         var messages = _sources.SelectMany(x => x.Messages).ToList();
         foreach (BaseMessage? message in messages)

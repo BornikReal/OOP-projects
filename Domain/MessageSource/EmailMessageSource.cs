@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using Domain.Common.Exceptions;
 using Domain.Messages;
 
 namespace Domain.MessageSource;
@@ -12,7 +13,7 @@ public class EmailMessageSource : BaseMessageSource
         : base(id, label)
     {
         if (!RegexEmail.Match(label).Success)
-            throw new ArgumentException("Invalid email address", nameof(label));
+            throw MessageSourceException.InvalidEmailAddress(label);
     }
 
 #pragma warning disable CS8618
@@ -27,7 +28,7 @@ public class EmailMessageSource : BaseMessageSource
     public void AddMessage(EmailMessage message)
     {
         if (_messages.Contains(message))
-            throw new InvalidOperationException("Message already exists.");
+            throw MessageSourceException.MessageAlreadyExistInSource(Id);
         _messages.Add(message);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Domain.Messages;
+﻿using Domain.Common.Exceptions;
+
+namespace Domain.Messages;
 
 public abstract class BaseMessage
 {
@@ -21,14 +23,14 @@ public abstract class BaseMessage
     public void LoadMessage()
     {
         if (State != MessageState.New)
-            throw new InvalidOperationException("Message is not received");
+            throw MessageException.LoadMessage(Id);
         State = MessageState.Received;
     }
 
     public void HandleMessage()
     {
         if (State != MessageState.Received)
-            throw new InvalidOperationException("Message is not received");
+            throw MessageException.ProcessedMessage(Id);
         State = MessageState.Processed;
     }
 }

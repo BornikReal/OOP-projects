@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using Domain.Common.Exceptions;
 using Domain.Messages;
 
 namespace Domain.MessageSource;
@@ -12,7 +13,7 @@ public class PhoneMessageSource : BaseMessageSource
         : base(id, label)
     {
         if (!RegexPhone.Match(label).Success)
-            throw new ArgumentException("Invalid phone number", nameof(label));
+            throw MessageSourceException.InvalidPhoneNumber(label);
     }
 
     protected PhoneMessageSource() { }
@@ -26,7 +27,7 @@ public class PhoneMessageSource : BaseMessageSource
     public void AddMessage(PhoneMessage message)
     {
         if (_messages.Contains(message))
-            throw new InvalidOperationException("Message already exists.");
+            throw MessageSourceException.MessageAlreadyExistInSource(Id);
         _messages.Add(message);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Domain.Messages;
+﻿using Domain.Common.Exceptions;
+using Domain.Messages;
 
 namespace Domain.MessageSource;
 
@@ -20,7 +21,7 @@ public class MessengerMessageSource : BaseMessageSource
     public void AddMessage(MessengerMessage message)
     {
         if (_messages.Contains(message))
-            throw new InvalidOperationException("Message already exists.");
+            throw MessageSourceException.MessageAlreadyExistInSource(Id);
         _messages.Add(message);
     }
 }
