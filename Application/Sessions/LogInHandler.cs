@@ -1,7 +1,8 @@
 ﻿using Application.Abstractions.DataAccess;
+using Application.Exceptions;
+using Application.Exceptions.NotFound;
 using Domain.Accounts;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using static Application.Contracts.Sessions.LogIn;
 
 namespace Application.Sessions;
@@ -19,10 +20,10 @@ public class LogInHandler : IRequestHandler<Command, Response>
     {
         WorkerAuthenticator? workerAuth = _context.WorkerAuthenticators.FirstOrDefault(x => (x.login.Equals(request.login) && x.password.Equals(request.password)));
         if (workerAuth == null)
-            throw new Exception();
+            throw EntityNotFoundException<WorkerAuthenticator>.Create($"{request.login} {request.password}");
 
         if (_context.ActiveSessions.FirstOrDefault(x => x.WorkerId == workerAuth.workerId) != null)
-            throw new Exception();
+            throw new AlreadyLogInException();
         
         var session = new Session(Guid.NewGuid(), workerAuth.workerId);
 

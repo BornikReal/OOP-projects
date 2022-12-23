@@ -1,4 +1,6 @@
 ﻿using Application.Abstractions.DataAccess;
+using Application.Exceptions.NotFound;
+using Application.Exceptions.NotSupported;
 using Application.СhainOfResponsibilities.SourceHandlerChain;
 using Domain.Accounts;
 using Domain.MessageSource;
@@ -26,11 +28,11 @@ public class CreateSourceHandler : IRequestHandler<Command, Response>
 
         BaseMessageSource? source = emailChain.HandleRequest(request.model);
         if (source == null)
-            throw new Exception("This messege source is not suported");
-        
+            throw EntityNotSupportedException<BaseMessageSource>.Create();
+
         Account? account = _context.Accounts.FirstOrDefault(x => x.Id == request.accountId);
         if (account == null)
-            throw new Exception("Account not found");
+            throw EntityNotFoundException<Account>.Create(request.accountId);
         account.AddMessageSource(source);
 
         _context.MessageSources.Add(source);

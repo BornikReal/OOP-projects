@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.DataAccess;
+using Application.Exceptions.NotSupported;
 using Application.СhainOfResponsibilities.MessageHandlerChain;
 using Domain.Messages;
 using MediatR;
@@ -25,7 +26,7 @@ public class CreateMessageHandler : IRequestHandler<Command, Response>
 
         BaseMessage? message = emailChain.HandleRequest(request.messageModel, x => _context.MessageSources.Where(y => y.Label == x).ToList());
         if (message == null)
-            throw new Exception("This message isn't supported");
+            throw EntityNotSupportedException<BaseMessage>.Create();
 
         _context.Messages.Add(message);
         await _context.SaveChangesAsync(cancellationToken);

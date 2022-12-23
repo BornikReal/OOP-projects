@@ -1,4 +1,6 @@
 ﻿using Application.Abstractions.DataAccess;
+using Application.Exceptions;
+using Application.Exceptions.NotFound;
 using Application.Mapping;
 using Domain.Accounts;
 using Domain.Workers;
@@ -21,11 +23,11 @@ public class CreateReportHandler : IRequestHandler<Command, Response>
     {
         Session? session = await _context.ActiveSessions.FirstOrDefaultAsync(x => x.Id == request.sessionId, cancellationToken);
         if (session == null)
-            throw new InvalidOperationException("Session not found.");
+            throw EntityNotFoundException<Session>.Create(request.sessionId);
 
         BaseWorker worker = await _context.Workers.FirstAsync(x => x.Id == session.Id, cancellationToken);
         if (worker is not MasterWorker)
-            throw new InvalidOperationException("Slaves can't create reports");
+            throw NotEnoughPermissionsException.WorkerNotEnoughPermissionsException(worker.Name);
 
         Report report = ((MasterWorker)worker).CreateReport(Guid.NewGuid(), request.time, request.duration);
         _context.Reports.Add(report);

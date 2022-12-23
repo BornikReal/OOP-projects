@@ -1,5 +1,8 @@
 ﻿using Application.Abstractions.DataAccess;
 using Application.Dto.Messages;
+using Application.Exceptions;
+using Application.Exceptions.NotFound;
+using Application.Exceptions.NotSupported;
 using Application.Mapping;
 using Domain.Accounts;
 using Domain.Messages;
@@ -23,21 +26,21 @@ public class ShowMessageHandler : IRequestHandler<Command, Response>
     {
         Session? session = await _context.ActiveSessions.FirstOrDefaultAsync(x => x.Id == request.sessionId, cancellationToken);
         if (session == null)
-            throw new InvalidOperationException("Session not found.");
+            throw EntityNotFoundException<Session>.Create(request.sessionId);
 
         BaseWorker worker = await _context.Workers.FirstAsync(x => x.Id == session.Id, cancellationToken);
         if (worker is not SlaveWorker)
-            throw new InvalidOperationException("Manager can't show messages");
+            throw NotEnoughPermissionsException.WorkerNotEnoughPermissionsException(worker.Name);
 
         BaseMessage? message = await _context.Messages.FirstOrDefaultAsync(x => x.Id == request.messageId, cancellationToken);
         if (message == null)
-            throw new Exception("Message with this id not found");
+            throw EntityNotFoundException<BaseMessage>.Create(request.messageId);
         BaseMessageDto dto = message switch
         {
             EmailMessage messageConc => messageConc.AsDto(),
             PhoneMessage messageConc => messageConc.AsDto(),
             MessengerMessage messageConc => messageConc.AsDto(),
-            _ => throw new Exception("Unknown message type"),
+            _ => throw EntityNotSupportedException<BaseMessageDto>.Create(),
         };
         return new Response(dto);
     }

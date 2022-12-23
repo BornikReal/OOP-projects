@@ -1,4 +1,7 @@
 ﻿using Application.Abstractions.DataAccess;
+using Application.Exceptions;
+using Application.Exceptions.NotFound;
+using Application.Exceptions.NotSupported;
 using Application.СhainOfResponsibilities.WorkerHandlerChain;
 using Domain.Accounts;
 using Domain.Workers;
@@ -22,11 +25,11 @@ public class CreateWorkerHandler : IRequestHandler<Command, Response>
 
         Session? session = await _context.ActiveSessions.FirstOrDefaultAsync(x => x.Id == request.sessionId, cancellationToken);
         if (session == null)
-            throw new InvalidOperationException("Session not found.");
+            throw EntityNotFoundException<Session>.Create(request.sessionId);
 
         BaseWorker master = await _context.Workers.FirstAsync(x => x.Id == session.Id, cancellationToken);
         if (master is not MasterWorker)
-            throw new InvalidOperationException("Slaves can't create slaves");
+            throw NotEnoughPermissionsException.WorkerNotEnoughPermissionsException(master.Name);
 
         var slaveChain = new SlaveWorkerHandler();
         var masterChain = new MasterWorkerHandler();
@@ -34,7 +37,7 @@ public class CreateWorkerHandler : IRequestHandler<Command, Response>
 
         BaseWorker? worker = slaveChain.HandleRequest(request.model);
         if (worker == null)
-            throw new Exception("Worker isn't supported");
+            throw EntityNotSupportedException<BaseWorker>.Create();
 
         _context.Workers.Add(worker);
         _context.WorkerAuthenticators.Add(new WorkerAuthenticator(request.login, request.password, worker.Id));

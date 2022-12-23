@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.DataAccess;
+using Application.Exceptions;
 using Domain.Accounts;
 using Domain.Workers;
 using MediatR;
@@ -18,7 +19,7 @@ public class CreateRootMasterHandler : IRequestHandler<Command, Response>
     public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
     {
         if (_context.Workers.Any())
-            throw new InvalidOperationException("Root master already exists");
+            throw new RootMasterAlreadyExistsException();
         
         var master = new MasterWorker(request.name, Guid.NewGuid(), 0);
         _context.Workers.Add(master);

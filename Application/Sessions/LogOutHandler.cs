@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.DataAccess;
+using Application.Exceptions.NotFound;
 using Domain.Accounts;
 using MediatR;
 using static Application.Contracts.Sessions.LogOut;
@@ -19,7 +20,7 @@ public class LogOutHandler : IRequestHandler<Command, Response>
         Session? session = _context.ActiveSessions.SingleOrDefault(session => session.Id == request.sessionId);
         
         if (session == null)
-            throw new Exception();
+            throw EntityNotFoundException<Session>.Create(request.sessionId);
 
         _context.ActiveSessions.Remove(session);
         await _context.SaveChangesAsync(cancellationToken);
