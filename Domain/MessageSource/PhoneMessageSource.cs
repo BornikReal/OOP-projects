@@ -6,14 +6,14 @@ namespace Domain.MessageSource;
 public class PhoneMessageSource : BaseMessageSource
 {
     private static readonly Regex RegexPhone = new Regex(@"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$", RegexOptions.Compiled);
-    private List<PhoneMessage> _messages;
+    private List<BaseMessage> _messages;
 
     public PhoneMessageSource(Guid id, string label)
         : base(id, label)
     {
         if (!RegexPhone.Match(label).Success)
             throw new ArgumentException("Invalid phone number", nameof(label));
-        _messages = new List<PhoneMessage>();
+        _messages = new List<BaseMessage>();
     }
 
 #pragma warning disable CS8618
@@ -22,7 +22,7 @@ public class PhoneMessageSource : BaseMessageSource
     public override IReadOnlyCollection<BaseMessage> Messages
     {
         get => _messages;
-        protected init => _messages = value.Select(x => (PhoneMessage)x).ToList();
+        protected init => _messages = value.ToList();
     }
 
     public void AddMessage(PhoneMessage message)

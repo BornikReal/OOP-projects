@@ -27,7 +27,7 @@ public class Account
 
     public void AddMessageSource(BaseMessageSource source)
     {
-        if (!_sources.Contains(source))
+        if (_sources.Contains(source))
             throw new ArgumentException("Source already exists", nameof(source));
         _sources.Add(source);
     }

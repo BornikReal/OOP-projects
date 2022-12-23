@@ -4,11 +4,11 @@ namespace Domain.MessageSource;
 
 public class MessengerMessageSource : BaseMessageSource
 {
-    private List<MessengerMessage> _messages;
+    private List<BaseMessage> _messages;
     public MessengerMessageSource(Guid id, string label)
         : base(id, label)
     {
-        _messages = new List<MessengerMessage>();
+        _messages = new List<BaseMessage>();
     }
 
 #pragma warning disable CS8618
@@ -17,7 +17,7 @@ public class MessengerMessageSource : BaseMessageSource
     public override IReadOnlyCollection<BaseMessage> Messages
     {
         get => _messages;
-        protected init => _messages = value.Select(x => (MessengerMessage)x).ToList();
+        protected init => _messages = value.ToList();
     }
 
     public void AddMessage(MessengerMessage message)

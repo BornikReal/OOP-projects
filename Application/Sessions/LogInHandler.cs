@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions.DataAccess;
 using Domain.Accounts;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using static Application.Contracts.Sessions.LogIn;
 
 namespace Application.Sessions;
@@ -16,11 +17,11 @@ public class LogInHandler : IRequestHandler<Command, Response>
 
     public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
     {
-        WorkerAuthenticator? workerAuth = _context.WorkerAuthenticators.FirstOrDefault(x => x.login == request.login && x.password == request.password);
+        WorkerAuthenticator? workerAuth = _context.WorkerAuthenticators.FirstOrDefault(x => (x.login.Equals(request.login) && x.password.Equals(request.password)));
         if (workerAuth == null)
             throw new Exception();
 
-        if (_context.ActiveSessions.FirstOrDefault(x => x.Id == workerAuth.workerId) != null)
+        if (_context.ActiveSessions.FirstOrDefault(x => x.WorkerId == workerAuth.workerId) != null)
             throw new Exception();
         
         var session = new Session(Guid.NewGuid(), workerAuth.workerId);

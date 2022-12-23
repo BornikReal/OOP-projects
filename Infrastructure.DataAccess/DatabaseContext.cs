@@ -1,4 +1,5 @@
-﻿using Application.Abstractions.DataAccess;
+﻿using Application;
+using Application.Abstractions.DataAccess;
 using Domain.Accounts;
 using Domain.Messages;
 using Domain.MessageSource;
@@ -26,6 +27,8 @@ public class DatabaseContext : DbContext, IDatabaseContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(IAssemblyMarker).Assembly);
+        
         modelBuilder.Entity<BaseMessageSource>()
             .ToTable("MessageSources")
             .HasDiscriminator<int>("ContractType")

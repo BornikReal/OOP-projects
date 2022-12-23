@@ -40,6 +40,6 @@ public class CreateWorkerHandler : IRequestHandler<Command, Response>
         _context.WorkerAuthenticators.Add(new WorkerAuthenticator(request.login, request.password, worker.Id));
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new Response(worker.Id);
+        return new Response();
     }
 }

@@ -17,11 +17,14 @@ public class CreateRootMasterHandler : IRequestHandler<Command, Response>
 
     public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
     {
+        if (_context.Workers.Any())
+            throw new InvalidOperationException("Root master already exists");
+        
         var master = new MasterWorker(request.name, Guid.NewGuid(), 0);
         _context.Workers.Add(master);
         _context.WorkerAuthenticators.Add(new WorkerAuthenticator(request.login, request.password, master.Id));
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new Response(master.Id);
+        return new Response();
     }
 }

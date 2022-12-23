@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions.DataAccess;
 using Application.Dto;
 using Domain.Accounts;
+using Domain.Messages;
 using Domain.Workers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -27,14 +28,15 @@ public class LoadMessagesHandler : IRequestHandler<Command, Response>
         if (worker is not SlaveWorker)
             throw new InvalidOperationException("Manager can't load messages");
 
-        var messages = _context.Accounts
+        IQueryable<BaseMessage> messages = _context.Accounts
             .Where(x => x.Access >= worker.Access)
-            .SelectMany(x => x.LoadMessage((SlaveWorker)worker))
-            .Select(x => x.Id)
-            .ToList();
-        
+            .SelectMany(x => x.Sources)
+            .SelectMany(x => x.Messages);
+        foreach (BaseMessage? message in messages)
+            message.LoadMessage();
+
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new Response(new MessageListDto(messages));
+        return new Response(new MessageListDto(messages.Select(x => x.Id).ToList()));
     }
 }

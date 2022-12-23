@@ -9,7 +9,7 @@ public class WorkerActivity
 
     public void AddMessageLog(MessageLog messageLog)
     {
-        if (!MessageLogsList.Contains(messageLog))
+        if (MessageLogsList.Contains(messageLog))
             throw new InvalidOperationException("Message log already exists");
         MessageLogsList.Add(messageLog);
     }

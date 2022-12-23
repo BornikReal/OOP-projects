@@ -7,5 +7,5 @@ public static class CreateWorker
 {
     public record struct Command(Guid sessionId, BaseWorkerModel model, string login, string password) : IRequest<Response>;
 
-    public record struct Response(Guid managerId);
+    public record struct Response();
 }
