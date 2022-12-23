@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions.DataAccess;
 using Application.Exceptions.NotFound;
 using Application.Exceptions.NotSupported;
-using Application.СhainOfResponsibilities.SourceHandlerChain;
+using Application.ChainOfResponsibilities.SourceHandlerChain;
 using Domain.Accounts;
 using Domain.MessageSource;
 using MediatR;

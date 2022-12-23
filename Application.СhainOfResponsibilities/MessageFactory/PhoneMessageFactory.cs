@@ -1,7 +1,7 @@
 ﻿using Domain.Messages;
 using Domain.MessageSource;
 
-namespace Application.СhainOfResponsibilities.MessageFactory;
+namespace Application.ChainOfResponsibilities.MessageFactory;
 
 public class PhoneMessageFactory : BaseMessageFactory
 {

@@ -1,8 +1,8 @@
-﻿using Application.СhainOfResponsibilities.MessageModels;
+﻿using Application.ChainOfResponsibilities.MessageModels;
 using Domain.Messages;
 using Domain.MessageSource;
 
-namespace Application.СhainOfResponsibilities.MessageHandlerChain;
+namespace Application.ChainOfResponsibilities.MessageHandlerChain;
 
 public class BaseMessageHandler
 {

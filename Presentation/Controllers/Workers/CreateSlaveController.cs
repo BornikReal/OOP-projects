@@ -1,5 +1,5 @@
 ﻿using Application.Contracts.Workers;
-using Application.СhainOfResponsibilities.WorkerModels;
+using Application.ChainOfResponsibilities.WorkerModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

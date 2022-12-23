@@ -2,7 +2,7 @@
 using Application.Exceptions;
 using Application.Exceptions.NotFound;
 using Application.Exceptions.NotSupported;
-using Application.СhainOfResponsibilities.WorkerHandlerChain;
+using Application.ChainOfResponsibilities.WorkerHandlerChain;
 using Domain.Accounts;
 using Domain.Workers;
 using MediatR;

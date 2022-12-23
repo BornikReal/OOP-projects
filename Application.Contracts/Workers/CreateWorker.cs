@@ -1,4 +1,4 @@
-﻿using Application.СhainOfResponsibilities.WorkerModels;
+﻿using Application.ChainOfResponsibilities.WorkerModels;
 using MediatR;
 
 namespace Application.Contracts.Workers;

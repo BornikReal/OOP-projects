@@ -63,7 +63,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.DataAccess", "Infrastructure.DataAccess\Infrastructure.DataAccess.csproj", "{65067D1C-C631-412D-A16D-8F45F70B199C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.СhainOfResponsibilities", "Application.СhainOfResponsibilities\Application.СhainOfResponsibilities.csproj", "{7DB39D09-3957-44C5-A55B-ACE1B3ACE940}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.ChainOfResponsibilities", "Application.СhainOfResponsibilities\Application.ChainOfResponsibilities.csproj", "{7DB39D09-3957-44C5-A55B-ACE1B3ACE940}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{D37B0F01-DAA4-440A-9B8B-35DBE480DD33}"
 EndProject
@@ -71,7 +71,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Test", "Applica
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "Presentation\Presentation.csproj", "{5D2E78D1-65A2-473E-8B30-E6ACD62AC755}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Common", "Domain.Common\Domain.Common.csproj", "{D5A1CE75-B7DD-4A4B-96EA-74B48CC33FBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Common", "Domain.Common\Domain.Common.csproj", "{D5A1CE75-B7DD-4A4B-96EA-74B48CC33FBB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,6 @@
 //using Application.Accounts;
 //using Application.Contracts.Accounts;
-//using Application.ÑhainOfResponsibilities.MessageSourceModels;
+//using Application.ChainOfResponsibilities.MessageSourceModels;
 //using Infrastructure.DataAccess;
 //using Microsoft.EntityFrameworkCore;
 

@@ -1,8 +1,8 @@
-﻿using Application.СhainOfResponsibilities.SourceFactory;
-using Application.СhainOfResponsibilities.MessageSourceModels;
+﻿using Application.ChainOfResponsibilities.SourceFactory;
+using Application.ChainOfResponsibilities.MessageSourceModels;
 using Domain.MessageSource;
 
-namespace Application.СhainOfResponsibilities.SourceHandlerChain;
+namespace Application.ChainOfResponsibilities.SourceHandlerChain;
 
 public class MessengerSourceHandler : BaseSourceHandler
 {

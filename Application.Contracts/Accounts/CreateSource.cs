@@ -1,4 +1,4 @@
-﻿using Application.СhainOfResponsibilities.MessageSourceModels;
+﻿using Application.ChainOfResponsibilities.MessageSourceModels;
 using MediatR;
 
 namespace Application.Contracts.Accounts;

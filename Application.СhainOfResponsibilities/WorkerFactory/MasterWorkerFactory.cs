@@ -1,6 +1,6 @@
 ﻿using Domain.Workers;
 
-namespace Application.СhainOfResponsibilities.WorkerFactory;
+namespace Application.ChainOfResponsibilities.WorkerFactory;
 
 public class MasterWorkerFactory : BaseWorkerFactory
 {

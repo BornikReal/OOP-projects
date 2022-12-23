@@ -1,6 +1,6 @@
 ﻿using Application.Abstractions.DataAccess;
 using Application.Exceptions.NotSupported;
-using Application.СhainOfResponsibilities.MessageHandlerChain;
+using Application.ChainOfResponsibilities.MessageHandlerChain;
 using Domain.Messages;
 using MediatR;
 using static Application.Contracts.Messages.CreateMessage;

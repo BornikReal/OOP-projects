@@ -1,7 +1,7 @@
-﻿using Application.СhainOfResponsibilities.WorkerModels;
+﻿using Application.ChainOfResponsibilities.WorkerModels;
 using Domain.Workers;
 
-namespace Application.СhainOfResponsibilities.WorkerHandlerChain;
+namespace Application.ChainOfResponsibilities.WorkerHandlerChain;
 
 public class BaseWorkerHandler
 {

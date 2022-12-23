@@ -1,6 +1,6 @@
 ﻿using Domain.MessageSource;
 
-namespace Application.СhainOfResponsibilities.SourceFactory;
+namespace Application.ChainOfResponsibilities.SourceFactory;
 
 public class MessengerMessageSourceFactory : BaseMessageSourceFactory
 {

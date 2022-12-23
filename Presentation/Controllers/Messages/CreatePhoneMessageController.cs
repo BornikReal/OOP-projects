@@ -1,5 +1,5 @@
 ﻿using Application.Contracts.Messages;
-using Application.СhainOfResponsibilities.MessageModels;
+using Application.ChainOfResponsibilities.MessageModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Models.MessageModels;

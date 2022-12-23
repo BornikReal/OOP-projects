@@ -1,7 +1,7 @@
-﻿using Application.СhainOfResponsibilities.MessageSourceModels;
+﻿using Application.ChainOfResponsibilities.MessageSourceModels;
 using Domain.MessageSource;
 
-namespace Application.СhainOfResponsibilities.SourceHandlerChain;
+namespace Application.ChainOfResponsibilities.SourceHandlerChain;
 
 public abstract class BaseSourceHandler
 {

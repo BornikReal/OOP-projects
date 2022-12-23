@@ -1,3 +1,3 @@
-﻿namespace Application.СhainOfResponsibilities.MessageSourceModels;
+﻿namespace Application.ChainOfResponsibilities.MessageSourceModels;
 
 public record EmailMessageSourceModel(string label) : BaseMessageSourceModel(label);

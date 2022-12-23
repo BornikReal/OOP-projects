@@ -1,5 +1,5 @@
 ﻿using Application.Contracts.Accounts;
-using Application.СhainOfResponsibilities.MessageSourceModels;
+using Application.ChainOfResponsibilities.MessageSourceModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Models.MessageSourceModels;
