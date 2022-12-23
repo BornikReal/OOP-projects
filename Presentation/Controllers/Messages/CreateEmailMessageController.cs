@@ -6,6 +6,8 @@ using Presentation.Models.MessageModels;
 
 namespace Presentation.Controllers.Messages;
 
+[ApiController]
+[Route("api/[controller]")]
 public class CreateEmailMessageController : ControllerBase
 {
     private readonly IMediator _mediator;

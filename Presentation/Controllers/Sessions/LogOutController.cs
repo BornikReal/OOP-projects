@@ -5,6 +5,8 @@ using Presentation.Models.Sessions;
 
 namespace Presentation.Controllers.Sessions;
 
+[ApiController]
+[Route("api/[controller]")]
 public class LogOutController : ControllerBase
 {
     private readonly IMediator _mediator;

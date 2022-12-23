@@ -5,6 +5,8 @@ using Presentation.Models;
 
 namespace Presentation.Controllers.Messages;
 
+[ApiController]
+[Route("api/[controller]")]
 public class HandleMessageController : ControllerBase
 {
     private readonly IMediator _mediator;

@@ -5,6 +5,8 @@ using Presentation.Models.Accounts;
 
 namespace Presentation.Controllers.Accounts;
 
+[ApiController]
+[Route("api/[controller]")]
 public class CreateAccountController : ControllerBase
 {
     private readonly IMediator _mediator;

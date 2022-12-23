@@ -6,6 +6,8 @@ using Presentation.Models.MessageSourceModels;
 
 namespace Presentation.Controllers.Accounts;
 
+[ApiController]
+[Route("api/[controller]")]
 public class CreatePhoneSourceController : ControllerBase
 {
     private readonly IMediator _mediator;
