@@ -1,9 +1,6 @@
-﻿using Application.Extensions;
+using Application.Extensions;
 using Infrastructure.DataAccess.Extensions;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
