@@ -20,7 +20,7 @@ public class CreateMessengerSourceController : ControllerBase
     public CancellationToken CancellationToken => HttpContext.RequestAborted;
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateAsync([FromBody] CreateMessengerMessageSourceModel model)
+    public async Task<ActionResult> CreateAsync([FromBody] CreateMessengerMessageSourceModel model)
     {
         var command = new CreateSource.Command(model.accountId, new MessengerMessageSourceModel(model.label));
         _ = await _mediator.Send(command, CancellationToken);

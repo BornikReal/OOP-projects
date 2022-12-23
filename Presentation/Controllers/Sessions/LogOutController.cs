@@ -19,7 +19,7 @@ public class LogOutController : ControllerBase
     public CancellationToken CancellationToken => HttpContext.RequestAborted;
 
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateAsync([FromBody] LogOutModel model)
+    public async Task<ActionResult> CreateAsync([FromBody] LogOutModel model)
     {
         var command = new LogOut.Command(model.sessionId);
         _ = await _mediator.Send(command, CancellationToken);

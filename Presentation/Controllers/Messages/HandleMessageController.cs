@@ -19,7 +19,7 @@ public class HandleMessageController : ControllerBase
     public CancellationToken CancellationToken => HttpContext.RequestAborted;
     
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateAsync([FromBody] HandleMessageModel model)
+    public async Task<ActionResult> CreateAsync([FromBody] HandleMessageModel model)
     {
         var command = new HandleMessage.Command(model.sessionId, model.messageId);
         _ = await _mediator.Send(command, CancellationToken);

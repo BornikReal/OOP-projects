@@ -1,4 +1,5 @@
 ﻿using Application.Contracts.Messages;
+using Application.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Models;
@@ -17,9 +18,9 @@ public class LoadMessageController : ControllerBase
     }
 
     public CancellationToken CancellationToken => HttpContext.RequestAborted;
-
+    
     [HttpPost]
-    public async Task<ActionResult<Guid>> CreateAsync([FromBody] LoadMessageModel model)
+    public async Task<ActionResult<MessageListDto>> CreateAsync([FromBody] LoadMessageModel model)
     {
         var command = new LoadMessages.Command(model.sessionId);
         LoadMessages.Response res = await _mediator.Send(command, CancellationToken);
