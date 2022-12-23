@@ -1,4 +1,3 @@
-using Infrastructure.DataAccess;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 

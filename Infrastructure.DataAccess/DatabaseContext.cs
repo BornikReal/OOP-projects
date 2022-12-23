@@ -58,10 +58,4 @@ public class DatabaseContext : DbContext, IDatabaseContext
     {
         configurationBuilder.Properties<AccessLayer>().HaveConversion<AccessLayerConverter>();
     }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder
-            .UseLazyLoadingProxies();
-    }
 }
