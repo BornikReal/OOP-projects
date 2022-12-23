@@ -365,3 +365,7 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 *.cd
+
+lab6_roadmap.txt
+*.db
+*.cshtml
