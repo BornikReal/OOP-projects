@@ -5,15 +5,12 @@ namespace Domain.Workers;
 
 public class MasterWorker : BaseWorker
 {
-    private List<BaseWorker> _slaves;
+    private List<BaseWorker> _slaves = new List<BaseWorker>();
 
     public MasterWorker(string name, Guid id, AccessLayer access)
         : base(name, id, access)
-    {
-        _slaves = new List<BaseWorker>();
-    }
+    { }
 
-#pragma warning disable CS8618
     protected MasterWorker() { }
     public virtual IReadOnlyCollection<BaseWorker> Slaves
     {

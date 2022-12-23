@@ -8,13 +8,10 @@ public class SlaveWorker : BaseWorker
 {
     public SlaveWorker(string name, Guid id, AccessLayer access)
         : base(name, id, access)
-    {
-        Activity = new WorkerActivity();
-    }
+    { }
 
-#pragma warning disable CS8618
     protected SlaveWorker() { }
-    protected virtual WorkerActivity Activity { get; set; }
+    protected virtual WorkerActivity Activity { get; set; } = new WorkerActivity();
 
     public void HandleMessage(BaseMessage message, Guid logId, Guid sourceId, DateTime time)
     {

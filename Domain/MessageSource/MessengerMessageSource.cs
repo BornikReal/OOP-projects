@@ -4,14 +4,11 @@ namespace Domain.MessageSource;
 
 public class MessengerMessageSource : BaseMessageSource
 {
-    private List<BaseMessage> _messages;
+    private List<BaseMessage> _messages = new List<BaseMessage>();
     public MessengerMessageSource(Guid id, string label)
         : base(id, label)
-    {
-        _messages = new List<BaseMessage>();
-    }
+    { }
 
-#pragma warning disable CS8618
     protected MessengerMessageSource() { }
 
     public override IReadOnlyCollection<BaseMessage> Messages

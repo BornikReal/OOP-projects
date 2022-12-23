@@ -6,12 +6,11 @@ namespace Domain.Accounts;
 
 public class Account
 {
-    private List<BaseMessageSource> _sources;
+    private List<BaseMessageSource> _sources = new List<BaseMessageSource>();
     public Account(AccessLayer access, Guid id)
     {
         Access = access;
         Id = id;
-        _sources = new List<BaseMessageSource>();
     }
 
 #pragma warning disable CS8618

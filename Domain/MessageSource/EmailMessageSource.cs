@@ -6,15 +6,13 @@ namespace Domain.MessageSource;
 public class EmailMessageSource : BaseMessageSource
 {
     private static readonly Regex RegexEmail = new Regex(@"[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+", RegexOptions.Compiled);
-    private List<BaseMessage> _messages;
+    private List<BaseMessage> _messages = new List<BaseMessage>();
 
     public EmailMessageSource(Guid id, string label)
         : base(id, label)
     {
         if (!RegexEmail.Match(label).Success)
             throw new ArgumentException("Invalid email address", nameof(label));
-
-        _messages = new List<BaseMessage>();
     }
 
 #pragma warning disable CS8618

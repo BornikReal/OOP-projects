@@ -2,15 +2,19 @@
 
 public class WorkerActivity
 {
+    private List<MessageLog> _messageLogs = new List<MessageLog>();
     public WorkerActivity() { }
 
-    public IReadOnlyCollection<MessageLog> MessageLogs => MessageLogsList;
-    protected virtual List<MessageLog> MessageLogsList { get; set; } = new List<MessageLog>();
+    public virtual IReadOnlyCollection<MessageLog> MessageLogs
+    {
+        get => _messageLogs;
+        protected init => _messageLogs = value.ToList();
+    }
 
     public void AddMessageLog(MessageLog messageLog)
     {
-        if (MessageLogsList.Contains(messageLog))
+        if (_messageLogs.Contains(messageLog))
             throw new InvalidOperationException("Message log already exists");
-        MessageLogsList.Add(messageLog);
+        _messageLogs.Add(messageLog);
     }
 }
