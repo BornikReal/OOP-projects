@@ -9,3 +9,4 @@ Lab6 Roadmap:
 8.	Create account		+
 9.	Generate report		+
 10.	Log out				+
+11. Load Messages		

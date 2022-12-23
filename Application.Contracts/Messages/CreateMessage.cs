@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Contracts.Messages;
 
-public class CreateMessage
+public static class CreateMessage
 {
     public record struct Command(BaseMessageModel messageModel) : IRequest<Response>;
     public record struct Response(Guid messageId);
