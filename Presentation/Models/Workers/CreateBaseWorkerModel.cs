@@ -1,3 +1,3 @@
 ﻿namespace Application.СhainOfResponsibilities.WorkerModels;
 
-public abstract record CreateBaseWorkerModel(string name, int access, string login, string password);
+public abstract record CreateBaseWorkerModel(Guid sessionId, string name, int access, string login, string password);

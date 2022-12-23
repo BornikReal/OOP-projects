@@ -1,4 +1,4 @@
 ﻿namespace Application.СhainOfResponsibilities.WorkerModels;
 
-public record CreateMasterWorkerModel(string name, int access, string login, string password)
-    : CreateBaseWorkerModel(name, access, login, password);
+public record CreateMasterWorkerModel(Guid sessionId, string name, int access, string login, string password)
+    : CreateBaseWorkerModel(sessionId, name, access, login, password);

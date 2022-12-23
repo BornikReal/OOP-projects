@@ -5,6 +5,6 @@ namespace Application.Contracts.Accounts;
 
 public static class CreateSource
 {
-    public record struct Command(Guid account, BaseMessageSourceModel model) : IRequest<Response>;
+    public record struct Command(Guid accountId, BaseMessageSourceModel model) : IRequest<Response>;
     public record struct Response();
 }

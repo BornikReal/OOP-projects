@@ -7,11 +7,11 @@ namespace Presentation.Controllers.Workers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class CreateMasterController : ControllerBase
+public class CreateSlaveController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public CreateMasterController(IMediator mediator)
+    public CreateSlaveController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -19,9 +19,9 @@ public class CreateMasterController : ControllerBase
     public CancellationToken CancellationToken => HttpContext.RequestAborted;
 
     [HttpPost]
-    public async Task<ActionResult> CreateAsync([FromBody] CreateMasterWorkerModel model)
+    public async Task<ActionResult> CreateAsync([FromBody] CreateSlaveWorkerModel model)
     {
-        var command = new CreateWorker.Command(model.sessionId, new MasterWorkerModel(model.name, model.access), model.login, model.password);
+        var command = new CreateWorker.Command(model.sessionId, new SlaveWorkerModel(model.name, model.access), model.login, model.password);
         _ = await _mediator.Send(command, CancellationToken);
 
         return Ok();
