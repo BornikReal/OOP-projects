@@ -16,9 +16,13 @@ public class LogInHandler : IRequestHandler<Command, Response>
 
     public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
     {
-        Domain.Accounts.WorkerAuthenticator? workerAuth = _context.WorkerAuthenticators.FirstOrDefault(x => x.login == request.login && x.password == request.password);
+        WorkerAuthenticator? workerAuth = _context.WorkerAuthenticators.FirstOrDefault(x => x.login == request.login && x.password == request.password);
         if (workerAuth == null)
             throw new Exception();
+
+        if (_context.ActiveSessions.FirstOrDefault(x => x.Id == workerAuth.workerId) != null)
+            throw new Exception();
+        
         var session = new Session(Guid.NewGuid(), workerAuth.workerId);
 
         _context.ActiveSessions.Add(session);

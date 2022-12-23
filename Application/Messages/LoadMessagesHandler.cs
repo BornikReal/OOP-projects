@@ -1,18 +1,18 @@
 ﻿using Application.Abstractions.DataAccess;
-using Application.Mapping;
+using Application.Dto;
 using Domain.Accounts;
 using Domain.Workers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using static Application.Contracts.Reports.CreateReport;
+using static Application.Contracts.Messages.LoadMessages;
 
-namespace Application.Reports;
+namespace Application.Messages;
 
-public class CreateReportHandler : IRequestHandler<Command, Response>
+public class LoadMessagesHandler : IRequestHandler<Command, Response>
 {
     private readonly IDatabaseContext _context;
 
-    public CreateReportHandler(IDatabaseContext context)
+    public LoadMessagesHandler(IDatabaseContext context)
     {
         _context = context;
     }
@@ -24,13 +24,17 @@ public class CreateReportHandler : IRequestHandler<Command, Response>
             throw new InvalidOperationException("Session not found.");
 
         BaseWorker worker = await _context.Workers.FirstAsync(x => x.Id == session.Id, cancellationToken);
-        if (worker is not MasterWorker)
-            throw new InvalidOperationException("Slaves can't create reports");
+        if (worker is not SlaveWorker)
+            throw new InvalidOperationException("Manager can't load messages");
 
-        Report report = ((MasterWorker)worker).CreateReport(Guid.NewGuid(), request.time, request.duration);
-        _context.Reports.Add(report);
+        var messages = _context.Accounts
+            .Where(x => x.Access >= worker.Access)
+            .SelectMany(x => x.LoadMessage((SlaveWorker)worker))
+            .Select(x => x.Id)
+            .ToList();
+        
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new Response(report.AsDto());
+        return new Response(new MessageListDto(messages));
     }
 }

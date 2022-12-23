@@ -34,7 +34,7 @@ public class HandleMessageHandler : IRequestHandler<Command, Response>
 
         BaseMessageSource source = await _context.MessageSources
             .FirstAsync(x => x.Label == message.Label && x.Messages.Contains(message));
-        ((SlaveWorker)worker).HandleMessage(message, source.Id, DateTime.Now);
+        ((SlaveWorker)worker).HandleMessage(message, Guid.NewGuid(), source.Id, DateTime.Now);
         await _context.SaveChangesAsync(cancellationToken);
 
         return new Response();
