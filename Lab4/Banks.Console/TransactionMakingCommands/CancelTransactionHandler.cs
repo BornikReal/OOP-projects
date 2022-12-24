@@ -1,6 +1,5 @@
 ﻿using Banks.Console.Commands;
 using Banks.Models;
-using Banks.Transactions;
 
 namespace Banks.Console.AccountCreationManager;
 
